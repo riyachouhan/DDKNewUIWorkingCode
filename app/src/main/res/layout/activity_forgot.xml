@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/outerheaderlyaout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/forgot_TV"
+        style="@style/forgotheadpay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Forgot your Password?"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_32sdp"
+        android:gravity="center"
+        style="@style/subhintdataSize"
+        android:text="We just need your registered Email address to send your password." />
+
+    <EditText
+        android:id="@+id/email_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_32sdp"
+        android:layout_marginBottom="@dimen/_1sdp"
+        android:background="@null"
+        android:hint="@string/email"
+        style="@style/EditTextSize"
+         android:inputType="textEmailAddress"
+        android:padding="8dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_marginStart="@dimen/_32sdp"
+        android:layout_marginEnd="@dimen/_32sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_width="match_parent"
+        android:background="@color/pink"
+        android:layout_height="@dimen/_1sdp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/submit_BT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_55sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_55sdp"
+        android:background="@drawable/button_accent_round_skyblue"
+        android:text="Next"
+        android:textColor="@color/white"
+        style="@style/buttontext"
+        />
+
+    <LinearLayout
+        android:id="@+id/back_view"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/_40sdp">
+
+        <ImageView
+            android:tint="#393A39"
+            android:layout_gravity="center"
+            android:padding="@dimen/_9sdp"
+            android:src="@drawable/left_double_arrow"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginLeft="-6dp"
+            android:text="Back"
+            android:textSize="16sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="#393A39"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>
+
+
