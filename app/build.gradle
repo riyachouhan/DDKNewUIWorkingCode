@@ -17,7 +17,7 @@ android {
                 minSdkVersion 21
                 targetSdkVersion 29
                 versionCode 46
-                versionName "2.4.18"
+                versionName "2.4.17"
                 multiDexEnabled true
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])

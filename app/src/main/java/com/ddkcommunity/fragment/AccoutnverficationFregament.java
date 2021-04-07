@@ -38,6 +38,7 @@ import com.ddkcommunity.LoadInterface;
 import com.ddkcommunity.MyBounceInterpolator;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.model.SAMPDModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.model.verifcationFundSource;
 import com.ddkcommunity.utilies.AppConfig;
@@ -50,6 +51,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickCancel;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,7 +72,9 @@ import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
+import static com.ddkcommunity.utilies.dataPutMethods.ShowSAMPDDialog;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowSameWalletDialog;
+import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.setVerificationdata;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -107,6 +111,11 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     TextView fund_text_status,address_text_status,video_text_status,identity_text_status,mobile_text_status,email_text_status;
     ArrayList<verifcationFundSource.Datum> fundslist;
     ArrayList<verifcationFundSource.Datum> govermentidlist;
+    TextView addressveirifcationote,videoveirifcationote,identitiyveirifcationote
+            ,fundveirifcationote,mobileveirifcationote,emailveirifcationote;
+    TextView corporatehint,corporatedailylimit,corporatemonthlylimit,
+    basichintlimit,basicdailylimit,basicmonthlylimit,
+    fullverifiedhintlimit,fullyvarifieddailylimit,fullyvarifiedmonthlylimit,contactus_view;
 
     public AccoutnverficationFregament() {
         // Required empty public constructor
@@ -126,8 +135,36 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         return rootView;
     }
 
+    public void showNoteSection(String viewvalue,String notestring,TextView notetextview)
+    {
+        if(viewvalue.equalsIgnoreCase("1"))
+        {
+            notetextview.setText(notestring);
+            notetextview.setVisibility(View.VISIBLE);
+        }else
+        {
+            notetextview.setVisibility(View.GONE);
+        }
+    }
+
     public void getAllViewIds()
     {
+        contactus_view=rootView.findViewById(R.id.contactus_view);
+        corporatehint=rootView.findViewById(R.id.corporatehint);
+        corporatedailylimit=rootView.findViewById(R.id.corporatedailylimit);
+        corporatemonthlylimit=rootView.findViewById(R.id.corporatemonthlylimit);
+        basichintlimit=rootView.findViewById(R.id.basichintlimit);
+        basicdailylimit=rootView.findViewById(R.id.basicdailylimit);
+        basicmonthlylimit=rootView.findViewById(R.id.basicmonthlylimit);
+        fullverifiedhintlimit=rootView.findViewById(R.id.fullverifiedhintlimit);
+        fullyvarifieddailylimit=rootView.findViewById(R.id.fullyvarifieddailylimit);
+        fullyvarifiedmonthlylimit=rootView.findViewById(R.id.fullyvarifiedmonthlylimit);
+        addressveirifcationote=rootView.findViewById(R.id.addressveirifcationote);
+        videoveirifcationote=rootView.findViewById(R.id.videoveirifcationote);
+        identitiyveirifcationote=rootView.findViewById(R.id.identitiyveirifcationote);
+        fundveirifcationote=rootView.findViewById(R.id.fundveirifcationote);
+        mobileveirifcationote=rootView.findViewById(R.id.mobileveirifcationote);
+        emailveirifcationote=rootView.findViewById(R.id.emailveirifcationote);
         fund_text_status=rootView.findViewById(R.id.fund_text_status);
         address_text_status=rootView.findViewById(R.id.address_text_status);
         video_text_status=rootView.findViewById(R.id.video_text_status);
@@ -154,6 +191,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         identity_layout.setOnClickListener(this);
         video_layout.setOnClickListener(this);
         address_layout.setOnClickListener(this);
+        contactus_view.setOnClickListener(this);
         getFundSources();
         getGovermentList();
         getVerificationStatus();
@@ -405,6 +443,9 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId())
         {
+            case R.id.contactus_view:
+                MainActivity.addFragment(new ContactUsFragemnt(), true);
+                break;
             case R.id.email_layout:
                 email_layout.startAnimation(myAnim);
                 emailstatusvalue=App.pref.getString(Constant.EMAIL_VERIFIED_STATUS,"");
@@ -1398,9 +1439,82 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                                         String address_verification = dataobj.getString("address_verification");
                                         String video_verification = dataobj.getString("video_verification");
                                         setVerificationdata(email_layout,mobile_layout,identity_layout,fund_layout,address_layout,video_layout, emailverifcation,moibleverifcation,id_proof_verification,fund_source_verification,address_verification,video_verification);
-
                                     }
-                                } catch (JSONException e) {
+                                    JSONArray account_limitarray=object.getJSONArray("account_limit");
+                                    if(account_limitarray.length()>0)
+                                    {
+                                        String basichint=null,dailylimit1=null,monthlylimit1=null;
+                                        String fulylverifiedhint=null,dailylimit2=null,monthlylimit2=null;
+                                        String cororpratehint = null,dailylimit3=null,monthlylimit3=null;
+                                        for(int i=0;i<account_limitarray.length();i++)
+                                        {
+                                            JSONObject accoutnobj=account_limitarray.getJSONObject(i);
+                                            if(i==0)
+                                            {
+                                                basichint=accoutnobj.getString("name");
+                                                dailylimit1=accoutnobj.getString("daily_limit");
+                                                monthlylimit1=accoutnobj.getString("monthly_limit");
+                                            }
+
+                                            if(i==1)
+                                            {
+                                                fulylverifiedhint=accoutnobj.getString("name");
+                                                dailylimit2=accoutnobj.getString("daily_limit");
+                                                monthlylimit2=accoutnobj.getString("monthly_limit");
+                                            }
+
+                                            if(i==2)
+                                            {
+                                                cororpratehint=accoutnobj.getString("name");
+                                                dailylimit3=accoutnobj.getString("daily_limit");
+                                                monthlylimit3=accoutnobj.getString("monthly_limit");
+                                            }
+                                        }
+                                        corporatehint.setText(cororpratehint);
+                                        if(dailylimit3.equalsIgnoreCase(""))
+                                        {
+                                            corporatedailylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            corporatedailylimit.setText(dailylimit3 + " USD \n Flat and Crypto");
+                                        }
+                                        if(monthlylimit3.equalsIgnoreCase(""))
+                                        {
+                                            corporatemonthlylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            corporatemonthlylimit.setText(monthlylimit3 + " USD \n Flat and Crypto");
+                                        }
+
+                                        basichintlimit.setText(basichint);
+                                        if(dailylimit1.equalsIgnoreCase(""))
+                                        {
+                                            basicdailylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            basicdailylimit.setText(dailylimit1 + " USD \n Flat and Crypto");
+                                        }
+
+                                        if(monthlylimit1.equalsIgnoreCase(""))
+                                        {
+                                            basicmonthlylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            basicmonthlylimit.setText(monthlylimit1+ " USD \n Flat and Crypto");
+                                        }
+
+                                        fullverifiedhintlimit.setText(fulylverifiedhint);
+                                        if(dailylimit2.equalsIgnoreCase(""))
+                                        {
+                                            fullyvarifieddailylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            fullyvarifieddailylimit.setText(dailylimit2+ " USD \n Flat and Crypto");
+                                        }
+
+                                        if(monthlylimit2.equalsIgnoreCase(""))
+                                        {
+                                            fullyvarifiedmonthlylimit.setText(" ---- \n Flat and Crypto");
+                                        }else {
+                                            fullyvarifiedmonthlylimit.setText(monthlylimit2+ " USD \n Flat and Crypto");
+                                        }
+                                    }
+                                   } catch (JSONException e) {
                                     AppConfig.showToast("Server error");
                                     e.printStackTrace();
                                 }
@@ -1456,6 +1570,55 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                                     String single_video_verification_status=dataobj.getString("single_video_verification_status");
                                     dataPutMethods.putUserVerification(emailverifcation,moibleverifcation,id_proof_1_verification_status,id_proof_2_verification_status,fund_source_verification_status,address_verification_status,single_video_verification_status);
                                     setProgressBar();
+
+                                    String emailnote=dataobj.getString("email_note");
+                                    if(emailnote!=null && !emailnote.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+emailnote,emailveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",emailveirifcationote);
+                                    }
+                                    String mobile_note=dataobj.getString("mobile_note");
+                                    if(mobile_note!=null && !mobile_note.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+mobile_note,mobileveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",mobileveirifcationote);
+                                    }
+                                    String address_note=dataobj.getString("address_note");
+                                    if(address_note!=null && !address_note.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+address_note,addressveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",addressveirifcationote);
+                                    }
+                                    String fund_note=dataobj.getString("fund_note");
+                                    if(fund_note!=null && !fund_note.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+fund_note,fundveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",fundveirifcationote);
+                                    }
+                                    String identitiy_note=dataobj.getString("identitiy_note");
+                                    if(identitiy_note!=null && !identitiy_note.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+identitiy_note,identitiyveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",identitiyveirifcationote);
+                                    }
+                                    String video_note=dataobj.getString("video_note");
+                                    if(video_note!=null && !video_note.equalsIgnoreCase(""))
+                                    {
+                                        showNoteSection("1","Note : "+video_note,videoveirifcationote);
+                                    }else
+                                    {
+                                        showNoteSection("0","",videoveirifcationote);
+                                    }
 
                                 } catch (JSONException e) {
                                     AppConfig.showToast("Server error");

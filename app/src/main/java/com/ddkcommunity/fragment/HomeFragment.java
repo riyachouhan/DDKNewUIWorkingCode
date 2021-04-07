@@ -1502,7 +1502,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             JSONObject object = new JSONObject(responseData);
                             if (object.getInt(Constant.STATUS) == 1)
                             {
-
                                     JSONObject dataobj=object.getJSONObject("data");
                                     String emailverifcation = dataobj.getString("email_verification_status");
                                     String moibleverifcation = dataobj.getString("mobile_verification_status");
@@ -1738,11 +1737,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 filter(searchEt.getText().toString());
@@ -1750,18 +1747,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void setBannerImages() {
+    private void setBannerImages()
+    {
         // The code below assumes that the root container has an id called 'main'
         homeBannerPager = new HomeBannerPagerAdapter(mContext, drawablesList);
         mViewPager.setAdapter(homeBannerPager);
 //        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
         mViewPagerAll.setAdapter(homeBannerPager);
 //        mViewPagerAll.setPageTransformer(true, new ZoomOutPageTransformer());
-
         changeViewPagerPage();
     }
-
 
     private void changeViewPagerPage() {
         new Handler().postDelayed(new Runnable() {
