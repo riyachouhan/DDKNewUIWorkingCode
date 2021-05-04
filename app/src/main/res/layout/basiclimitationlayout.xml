@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_250sdp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_25sdp"
+    android:layout_marginRight="@dimen/_25sdp"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_white_view"
+    >
+
+    <TextView
+        android:id="@+id/titile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorAccent"
+        android:text="Message"
+        style="@style/buttontext" />
+
+    <TextView
+        android:id="@+id/firstview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+       android:text="1. Email Verification"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:textColor="@color/colorBlackText"
+        style="@style/EditTextSize"
+        />
+
+    <TextView
+        android:id="@+id/secondview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2. Identity Verification"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:textColor="@color/colorBlackText"
+        style="@style/EditTextSize"
+        />
+
+    <TextView
+        android:id="@+id/thirdview"
+        android:text="3. Fund Source Verification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:textColor="@color/colorBlackText"
+        style="@style/EditTextSize"
+        />
+
+    <TextView
+        android:id="@+id/fourview"
+        android:text="4. Video Verification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:textColor="@color/colorBlackText"
+        style="@style/EditTextSize"
+        />
+
+    <TextView
+        android:text="5. Address Verification"
+        android:id="@+id/fiveview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:textColor="@color/colorBlackText"
+        style="@style/EditTextSize"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@color/dark_gray"/>
+
+    <TextView
+        android:id="@+id/btnGoHome"
+        android:layout_marginTop="-10dp"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="OK"
+        style="@style/buttontext"
+        android:textColor="@color/colorAccent"
+        />
+
+</LinearLayout>

@@ -1173,8 +1173,8 @@ public class SendDDkFragment extends Fragment implements View.OnClickListener {
     public void getSettingServerData(Activity activity, final String functionname,final String tabaction)
     {
         AppConfig.showLoading("Please wait..", activity);
-
-        UserModel.getInstance().getSettignSatusView(activity,functionname,new GegtSettingStatusinterface()
+        String checkAccountLimit="1";
+        UserModel.getInstance().getSettignSatusView(activity,functionname,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
@@ -1186,7 +1186,7 @@ public class SendDDkFragment extends Fragment implements View.OnClickListener {
                     {
                         if(tabaction =="final")
                         {
-                            sendOtp();
+                            checkBasicLimit();
                         }else {
                             progressBar.setVisibility(View.GONE);
                             changeThePriceView(tabaction);
@@ -1285,6 +1285,70 @@ public class SendDDkFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+
+    private void checkBasicLimit()
+    {
+        final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
+        AppConfig.showLoading(dialog, "Please wait....");
+        HashMap<String, String> hm = new HashMap<>();
+        String inpuramount=etDDKCoins.getText().toString();
+        String countrydata=userData.getUser().country.get(0).country;
+        String curkj= App.pref.getString(Constant.PHP_Functionality_View, "");
+        if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") && curkj.equalsIgnoreCase("true")))
+        {
+            if (tabclick == 1)
+            {
+                hm.put("crypto_type", "php");
+            } else
+            if (tabclick == 2) {
+                hm.put("crypto_type", "sam_koin");
+            } else if (tabclick == 3) {
+                hm.put("crypto_type", "btc");
+            } else if (tabclick == 4) {
+                hm.put("crypto_type", "eth");
+            } else if (tabclick == 5) {
+                hm.put("crypto_type", "usdt");
+            } else if (tabclick == 6) {
+                hm.put("crypto_type", "ddk");
+            }
+        }else {
+            if (tabclick == 1) {
+                hm.put("crypto_type", "sam_koin");
+            } else if (tabclick == 2) {
+                hm.put("crypto_type", "btc");
+            }else if (tabclick == 3) {
+                hm.put("crypto_type", "eth");
+            } else if (tabclick == 4) {
+                hm.put("crypto_type", "usdt");
+            }else if (tabclick == 5) {
+                hm.put("crypto_type", "ddk");
+            }
+        }
+        hm.put("input_amount", inpuramount);
+
+        AppConfig.getLoadInterface().checkUserAccountLimit(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken), hm).enqueue(new Callback<OtpResponse>() {
+            @Override
+            public void onResponse(Call<OtpResponse> call, Response<OtpResponse> response)
+            {
+                dialog.dismiss();
+                String datares=response.body().toString();
+                if (response.isSuccessful() && response.body().status == 1)
+                {
+
+                    sendOtp();
+                } else {
+                    ShowFunctionalityAlert(getActivity(), response.body().msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OtpResponse> call, Throwable t) {
+                dialog.dismiss();
+                errordurigApiCalling(getActivity(),t.getMessage());
+            }
+        });
+    }
+
     private void sendOtp() {
         HashMap<String, String> hm = new HashMap<>();
         hm.put("email", App.pref.getString(Constant.USER_EMAIL, ""));

@@ -465,9 +465,9 @@ public class HistoryFragment extends Fragment {
 
     public void getSettingServerData(Activity activity, final String functionname)
     {
-        String func=functionname;
+        String func=functionname,checkAccountLimit="0";
         func=functionname;
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)

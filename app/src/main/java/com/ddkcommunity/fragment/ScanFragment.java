@@ -1,6 +1,8 @@
 package com.ddkcommunity.fragment;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +17,24 @@ import androidx.fragment.app.Fragment;
 import com.ddkcommunity.App;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
+import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.fragment.send.EmailFragment;
 import com.ddkcommunity.fragment.send.QrScanFragment;
 import com.ddkcommunity.fragment.send.QrScanFragmentScan;
 import com.ddkcommunity.fragment.send.SendDDkFragment;
+import com.ddkcommunity.fragment.send.SendFragment;
+import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
+import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.RPResultListener;
 import com.ddkcommunity.utilies.RuntimePermissionUtil;
+
+import retrofit2.Response;
+
+import static com.ddkcommunity.utilies.dataPutMethods.ShowCahsoutDialog;
+import static com.ddkcommunity.utilies.dataPutMethods.ShowFunctionalityAlert;
 
 public class ScanFragment extends Fragment implements View.OnClickListener
 {
@@ -79,9 +90,16 @@ public class ScanFragment extends Fragment implements View.OnClickListener
                 {
                     if (RuntimePermissionUtil.checkPermissonGranted(getActivity(), cameraPerm))
                     {
-                        MainActivity.scanFragement=1;
+                        final ProgressDialog dialog = new ProgressDialog(getActivity());
+                        dialog.setMessage("Please wait ...");
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                        getSettingServerOther(dialog,getActivity(),"php");
+
+                   /*     MainActivity.scanFragement=1;
                         clickoption="usingphp";
                         MainActivity.addFragment(new QrScanFragmentScan(), true);
+                   */
                     }
                 }
 
@@ -99,9 +117,15 @@ public class ScanFragment extends Fragment implements View.OnClickListener
                 {
                     if (RuntimePermissionUtil.checkPermissonGranted(getActivity(), cameraPerm))
                     {
-                        MainActivity.scanFragement=2;
+                        final ProgressDialog dialog = new ProgressDialog(getActivity());
+                        dialog.setMessage("Please wait ...");
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                        getSettingServerOther(dialog,getActivity(),"send_sam_koin");
+                    /*    MainActivity.scanFragement=2;
                         clickoption="usingsamkoin";
                         MainActivity.addFragment(new QrScanFragmentScan(), true);
+                    */
                     }
                 }
 
@@ -120,10 +144,12 @@ public class ScanFragment extends Fragment implements View.OnClickListener
         {
             if (hasCameraPermission)
             {
+                final ProgressDialog dialog = new ProgressDialog(getActivity());
+                dialog.setMessage("Please wait ...");
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                getSettingServerOther(dialog,getActivity(),"php");
                 // Setup QREader
-                MainActivity.scanFragement=1;
-                clickoption="usingphp";
-                MainActivity.addFragment(new QrScanFragmentScan(), true);
 
             } else {
                 requestPermissions(
@@ -135,10 +161,11 @@ public class ScanFragment extends Fragment implements View.OnClickListener
         {
             if (hasCameraPermission)
             {
-                // Setup QREader
-                MainActivity.scanFragement=2;
-                clickoption="usingsamkoin";
-                MainActivity.addFragment(new QrScanFragmentScan(), true);
+                final ProgressDialog dialog = new ProgressDialog(getActivity());
+                dialog.setMessage("Please wait ...");
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                getSettingServerOther(dialog,getActivity(),"send_sam_koin");
 
             } else {
                 requestPermissions(
@@ -155,4 +182,47 @@ public class ScanFragment extends Fragment implements View.OnClickListener
         MainActivity.enableBackViews(true);
         MainActivity.scanview.setVisibility(View.GONE);
     }
+
+    public void getSettingServerOther(final ProgressDialog dialog, Activity activity, final String functionname)
+    {
+        String func=functionname,checkAccountLimit="1";
+        func=functionname;
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
+        {
+            @Override
+            public void getResponse(Response<getSettingModel> response)
+            {
+                try
+                {
+                    if (response.body().getStatus() == 1)
+                    {
+                        AppConfig.hideLoading(dialog);
+                        if(functionname.equalsIgnoreCase("php"))
+                        {
+                            MainActivity.scanFragement=1;
+                            clickoption="usingphp";
+                            MainActivity.addFragment(new QrScanFragmentScan(), true);
+
+                        }else  if(functionname.equalsIgnoreCase("send_sam_koin"))
+                        {
+                            // Setup QREader
+                            MainActivity.scanFragement=2;
+                            clickoption="usingsamkoin";
+                            MainActivity.addFragment(new QrScanFragmentScan(), true);
+                        }
+                    } else
+                    {
+                        AppConfig.hideLoading(dialog);
+                        ShowFunctionalityAlert(getActivity(), response.body().getMsg());
+                    }
+
+                } catch (Exception e)
+                {
+                    AppConfig.hideLoading(dialog);
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 }

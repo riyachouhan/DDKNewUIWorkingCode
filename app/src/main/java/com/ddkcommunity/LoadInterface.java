@@ -24,6 +24,7 @@ import com.ddkcommunity.model.SubModelReeralList;
 import com.ddkcommunity.model.TransactionDate;
 import com.ddkcommunity.model.TransactionFeesResponse;
 import com.ddkcommunity.model.UserBankListResponse;
+import com.ddkcommunity.model.baseUrlModel;
 import com.ddkcommunity.model.buyCryptoModel;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.conatcModel;
@@ -176,7 +177,6 @@ public interface LoadInterface {
     );
 
     /*@POST("edit-credentials")*/
-
     @Multipart
    // @POST("apitesting/edit-credentials")
     @POST("credentials/edit-credentials")
@@ -296,6 +296,9 @@ public interface LoadInterface {
     // @POST("ninethface/buy-crypto-list")
     @POST("commondetails/buy-crypto-list")
     Call<buyCryptoModel> getbuyCryptoList(@Query("token") String token);
+
+    @POST("commondetails/get-constant-url")
+    Call<baseUrlModel> getConstantUrl(@Query("token") String token);
 
     // @GET("ninethface/sliders")
     @GET("commondetails/sliders")
@@ -470,6 +473,9 @@ public interface LoadInterface {
     @POST("commondetails/api-constant-key")
     Call<ResponseBody> getKeyListData(@Query("token") String token);
 
+    @POST("commondetails/get_map_login_url")
+    Call<ResponseBody> getMapLoginUrl(@Query("token") String token);
+
     @POST("userauth/delete-profile-image")
     Call<ResponseBody> removePhotoCall(@Query("token") String token);
 
@@ -585,7 +591,10 @@ public interface LoadInterface {
     @POST("user-bank/add")
     Call<CashOutAddBankResponse> addBankAccount(@Query("token") String token, @Body HashMap<String, String> body);
 
-   // @POST("secondFace/email-otp")
+    @POST("commondetails/check-user-account-limits")
+    Call<OtpResponse> checkUserAccountLimit(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    // @POST("secondFace/email-otp")
     @POST("commonevent/email-otp")
     Call<OtpResponse> postOtp(@Query("token") String token, @Body HashMap<String, String> hm);
 
@@ -638,6 +647,9 @@ public interface LoadInterface {
     //@POST("apitesting/send-cash-out")
     Call<ResponseBody> sendCashOut(@Query("token") String token, @Body HashMap<String, String> hm);
 
+    @POST("kpay/withdrawl")
+    Call<ResponseBody> sendCashOutSamKoinIndonesia(@Query("token") String token, @Body HashMap<String, String> hm);
+
     @POST("sam-payment/send-cash-out")
     Call<ResponseBody> sendCashOutSamKoin(@Query("token") String token, @Body HashMap<String, String> hm);
 
@@ -646,9 +658,6 @@ public interface LoadInterface {
 
     @POST("user-bank/list")
     Call<UserBankListResponse> userBankList(@Query("token") String token, @Body HashMap<String, String> hm);
-
-    @POST("user-bank/list")
-    Call<UserBankListResponse> getMapList(@Query("token") String token);
 
     @POST("user-bank/edit")
     Call<ResponseBody> userBankEdit(@Query("token") String token, @Body HashMap<String, String> hm);

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CheckBox;
@@ -17,8 +18,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.ddkcommunity.App;
+import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.activities.SplashActivity;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.user.UserResponse;
@@ -37,6 +41,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ddkcommunity.activities.MainActivity.setTitle;
+import static com.ddkcommunity.activities.SplashActivity.baseurl;
+import static com.ddkcommunity.fragment.wallet.FragmentCreatePassphrase.TAG;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 
 /**
@@ -73,7 +79,45 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
             userData = AppConfig.getUserData(getContext());
             //........
             pdfView=view.findViewById(R.id.pdfView);
-            displayFromAsset(SAMPLE_FILE);
+            //displayFromAsset(SAMPLE_FILE);
+
+            //........for url
+            String linkmain;
+            String urlapp= App.pref.getString(Constant.apiserver,"");
+            if(!activityaction.equalsIgnoreCase("subscription"))
+            {
+                linkmain= SplashActivity.baseurl+"new_api/api/map-terms-and-conditions";
+            }else
+            {
+                linkmain=SplashActivity.baseurl+"new_api/api/sam-terms-and-conditions";
+            }
+
+            WebView webview =view.findViewById(R.id.webView);
+            WebSettings settings = webview.getSettings();
+            settings.setJavaScriptEnabled(true);
+            webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+
+            final ProgressDialog progressBar = ProgressDialog.show(getActivity(), "", "Loading...");
+            webview.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    Log.i(TAG, "Processing webview url click...");
+                    view.loadUrl(url);
+                    return true;
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    Log.i(TAG, "Finished loading URL: " +url);
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    Log.e(TAG, "Error: " + description);
+                    Toast.makeText(getActivity(), "Oh no! " + description, Toast.LENGTH_SHORT).show();
+                }
+            });
+            webview.loadUrl(linkmain);
 
         }catch (Exception e)
         {
@@ -154,9 +198,11 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
         AppConfig.showLoading(dialog, "Please wait ....");
         HashMap<String, String> hm = new HashMap<>();
         hm.put("email", emailid);
-        AppConfig.getLoadInterfaceMap().CheckUserActive(hm).enqueue(new Callback<checkRefferalModel>() {
+        AppConfig.getLoadInterfaceMap().CheckUserActive(hm).enqueue(new Callback<checkRefferalModel>()
+        {
             @Override
-            public void onResponse(Call<checkRefferalModel> call, Response<checkRefferalModel> response) {
+            public void onResponse(Call<checkRefferalModel> call, Response<checkRefferalModel> response)
+            {
                 try
                 {
                     AppConfig.hideLoading(dialog);

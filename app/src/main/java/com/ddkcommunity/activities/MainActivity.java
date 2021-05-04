@@ -9,14 +9,22 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -60,32 +69,58 @@ import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.user.User;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
+import com.ddkcommunity.utilies.CommonMethodFunction;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
+import com.ddkcommunity.utilies.dataPutMethods;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickCancel;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowFunctionalityAlert;
+import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.getSettingServerDataSt;
+import static com.ddkcommunity.utilies.dataPutMethods.putGoogleAuthStatus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -109,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String ClickViewButton="profile";
     public static ImageView scanview;
     public static BottomNavigationView bottomNavigation;
+    Bitmap changespasswordbitmap;
+    String changespasswordimgpath;
+    private Uri uri;
+    ImageView img_first_front_pic;
 
     public static void addFragment(Fragment fragment, boolean addToBackStack)
     {
@@ -197,9 +236,405 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v)
             {
-                MainActivity.addFragment(new ScanFragment(), true);
+                getProfileCallnew(MainActivity.this,"1",AppConfig.getStringPreferences(MainActivity.this, Constant.JWTToken));
             }
         });
+    }
+
+    public void getProfileCallnew(final Activity activity, final String statusdialog, String token) {
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setMessage("Please wait ...");
+        dialog.setCanceledOnTouchOutside(false);
+        if(statusdialog.equalsIgnoreCase("1")) {
+            dialog.show();
+        }
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+        Call<ResponseBody> call = AppConfig.getLoadInterface().getProfileCall(token,hm);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(statusdialog.equalsIgnoreCase("1")) {
+                    dialog.dismiss();
+                }
+                if (response.isSuccessful()) {
+                    try {
+                        String responseData = response.body().string();
+                        JSONObject object = new JSONObject(responseData);
+                        if (object.getInt(AppConfig.STATUS) == 1)
+                        {
+                            UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
+                            AppConfig.setUserData(activity, data);
+                            String user_idvalue=data.getUser().getId().toString();
+                            App.editor.putString(Constant.USER_ID,user_idvalue);
+                            String userphotoidvalue=data.getUser().getUser_photo_id().toString();
+                            String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString();
+                            String emailvalue=data.getUser().getEmail().toString();
+                            if(userphotoidvalue!=null && !userphotoidvalue.equalsIgnoreCase(""))
+                            {
+                                if(userPhotoisVerified.equalsIgnoreCase("pending"))
+                                {
+                                    AppConfig.openOkDialogDemo(mContext,"You need to full fill the 'Basic' account verification before using this functionality.");
+                                }else
+                                if(userPhotoisVerified.equalsIgnoreCase("verified"))
+                                {
+                                    MainActivity.addFragment(new ScanFragment(), true);
+                                }else
+                                {
+                                    initEmailVerification(emailvalue);
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                if(statusdialog.equalsIgnoreCase("1")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+    }
+
+    private void initEmailVerification(final String emailid)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        final View dialogViewp;
+        dialogViewp = layoutInflater.inflate(R.layout.loginchangepasswordlayout, null);
+        final BottomSheetDialog dialogp = new BottomSheetDialog(MainActivity.this, R.style.DialogStyle);
+        dialogp.setContentView(dialogViewp);
+        //CommonMethodFunction.setupFullHeight(MainActivity.this,dialogp);
+        img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
+        TextView btnnext=dialogp.findViewById(R.id.btnnext);
+        TextView infoicon=dialogp.findViewById(R.id.infoicon);
+        infoicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataPutMethods.ShowInfoAlert(MainActivity.this);
+            }
+        });
+        changespasswordimgpath ="";
+        changespasswordbitmap=null;
+        img_first_front_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //for pic img
+                selectImage();
+            }
+        });
+        btnnext.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(changespasswordimgpath.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(MainActivity.this, "Please upload ID proof with image", Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    updateIdProof(dialogp,emailid);
+                }
+            }
+        });
+        dialogp.show();
+    }
+
+    //for password
+    public void selectImage()
+    {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getPackageManager()) != null) {
+                                        startActivityForResult(intent, 1);
+                                    }
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 2);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(MainActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(MainActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode) {
+                case MainActivity.REQUEST_CODE_ENABLE:
+                    App.editor.putBoolean(AppConfig.isPin, true);
+                    App.editor.commit();
+                    String googlevaue11=App.pref.getString(Constant.GOOGLEAUTHOPTIONSTATUS, "");
+                    if(googlevaue11.equalsIgnoreCase("1"))
+                    {
+                        ClickViewButton="crediential";
+                        String googlestatus=App.pref.getString(Constant.GOOGLEAUThPendingRegit, "");
+                        if(googlestatus.equalsIgnoreCase("pending"))
+                        {
+                            MainActivity.addFragment(new GogoleAuthFragment(), true);
+                        }else
+                        {
+                            MainActivity.addFragment(new GogolePasswordFragment(), true);
+                        }
+
+                    }else
+                    {
+                        MainActivity.addFragment(new CredentialsFragment(), true);
+                    }
+                    break;
+                case MainActivity.REQUEST_CODE_DISABLE:
+                    String googlevaue1=App.pref.getString(Constant.GOOGLEAUTHOPTIONSTATUS, "");
+                    if(googlevaue1.equalsIgnoreCase("1"))
+                    {
+                        String googlestatus=App.pref.getString(Constant.GOOGLEAUThPendingRegit, "");
+                        ClickViewButton="crediential";
+                        if(googlestatus.equalsIgnoreCase("pending"))
+                        {
+                            MainActivity.addFragment(new GogoleAuthFragment(), true);
+                        }else
+                        {
+                            MainActivity.addFragment(new GogolePasswordFragment(), true);
+                        }
+
+                    }else
+                    {
+                        MainActivity.addFragment(new CredentialsFragment(), true);
+                    }
+                    break;
+
+                case 1:
+                    setImage();
+                    break;
+
+                case 2:
+                    Uri select = data.getData();
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), select);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    FileOutputStream fOut;
+                    try {
+                        String photoname="profilepic.png";
+                        File f = new File(getFilesDir(), photoname);
+                        fOut = new FileOutputStream(f);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                        fOut.flush();
+                        fOut.close();
+                        changespasswordimgpath = f.getAbsolutePath();
+                        changespasswordbitmap=bitmap;
+                        img_first_front_pic.setImageBitmap(bitmap);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void setImage() {
+        changespasswordimgpath = Utility.getFile().getAbsolutePath();
+        Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
+        FileOutputStream fOut;
+        try {
+            File f = new File(changespasswordimgpath);
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+            fOut.flush();
+            fOut.close();
+            changespasswordimgpath = f.getAbsolutePath();
+            changespasswordbitmap=bitmap;
+            img_first_front_pic.setImageBitmap(bitmap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+            e.printStackTrace(new PrintWriter(stackTrace));
+        }
+    }
+
+    private void updateIdProof(final BottomSheetDialog dialogp,final String email) {
+
+        if (AppConfig.isInternetOn())
+        {
+            final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+            AppConfig.showLoading(dialog, "Please wait..........");
+            File file = null;
+            try {
+                if (changespasswordimgpath != null) {
+                    file = new File(changespasswordimgpath);
+                }
+
+                try {
+                    File userimg=new File(changespasswordimgpath);
+                    FileOutputStream out = new FileOutputStream(userimg);
+                    changespasswordbitmap.compress(Bitmap.CompressFormat.PNG, 100, out); //100-best quality
+                    out.close();
+                    file = new File(changespasswordimgpath);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("user_photo_id", file.getName(), requestFile);
+
+                Call<ResponseBody> call = AppConfig.getLoadInterface().loginUserIdUpdate(
+                        AppConfig.getStringPreferences(MainActivity.this, Constant.JWTToken),
+                        body
+                );
+
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful())
+                        {
+                            dialog.dismiss();
+                            try {
+                                String responseData = response.body().string();
+                                JSONObject object = new JSONObject(responseData);
+                                if (object.getInt(Constant.STATUS) == 1)
+                                {
+                                    PasswordChangesSuccessfully();
+                                    dialogp.dismiss();
+
+                                } else if (object.getInt(Constant.STATUS) == 3) {
+                                    AppConfig.showToast(object.getString("msg"));
+                                    AppConfig.openSplashActivity(MainActivity.this);
+                                } else {
+                                    AppConfig.showToast(object.getString("msg"));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            dialog.dismiss();
+                            ShowApiError(MainActivity.this,"server error in edit-user-profile");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        AppConfig.hideLoading(dialog);
+                        errordurigApiCalling(MainActivity.this,t.getMessage());
+                    }
+                });
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(getContext(),"error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            AppConfig.showToast("No internet.");
+        }
+    }
+
+    private void PasswordChangesSuccessfully()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        final View dialogView;
+        dialogView = layoutInflater.inflate(R.layout.passwordchangesuccesslayout, null);
+        final BottomSheetDialog dialogs = new BottomSheetDialog(MainActivity.this, R.style.DialogStyle);
+        dialogs.setContentView(dialogView);
+        //CommonMethodFunction.setupFullHeight(MainActivity.this,dialogs);
+        Toolbar container=dialogs.findViewById(R.id.tootlbarheadr);
+        container.setVisibility(View.INVISIBLE);
+        LinearLayout back_view=dialogs.findViewById(R.id.back_view);
+        TextView btnnext=dialogs.findViewById(R.id.btnnext);
+        btnnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialogs.dismiss();
+            }
+        });
+        back_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogs.dismiss();
+            }
+        });
+        dialogs.show();
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -216,13 +651,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                              return true;
 
                         case R.id.navigation_shop:
+                            AppConfig.openOkDialogDemo(mContext,"This functionaity is currently unavailable .");
                             return true;
 
                         case R.id.navigation_distribution:
+                            //.............
+                            AppConfig.openOkDialogDemo(mContext,"This functionaity is currently unavailable .");
+                            //..
                             return true;
 
                         case R.id.navigation_wallet:
-                           // MainActivity.addFragment(new ProfileFragment(), true);
+                            AppConfig.openOkDialogDemo(mContext,"This functionaity is currently unavailable .");
                             return true;
 
                     }
@@ -312,11 +751,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
-        String func=functionname;
+        String func=functionname,checkAccountLimit="0";
         {
             func=functionname;
         }
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
@@ -554,54 +993,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case MainActivity.REQUEST_CODE_ENABLE:
-                App.editor.putBoolean(AppConfig.isPin, true);
-                App.editor.commit();
-                String googlevaue11=App.pref.getString(Constant.GOOGLEAUTHOPTIONSTATUS, "");
-                if(googlevaue11.equalsIgnoreCase("1"))
-                {
-                    ClickViewButton="crediential";
-                    String googlestatus=App.pref.getString(Constant.GOOGLEAUThPendingRegit, "");
-                    if(googlestatus.equalsIgnoreCase("pending"))
-                    {
-                        MainActivity.addFragment(new GogoleAuthFragment(), true);
-                    }else
-                    {
-                        MainActivity.addFragment(new GogolePasswordFragment(), true);
-                    }
-
-                }else
-                {
-                    MainActivity.addFragment(new CredentialsFragment(), true);
-                }
-                break;
-            case MainActivity.REQUEST_CODE_DISABLE:
-                String googlevaue1=App.pref.getString(Constant.GOOGLEAUTHOPTIONSTATUS, "");
-                if(googlevaue1.equalsIgnoreCase("1"))
-                {
-                    String googlestatus=App.pref.getString(Constant.GOOGLEAUThPendingRegit, "");
-                    ClickViewButton="crediential";
-                    if(googlestatus.equalsIgnoreCase("pending"))
-                    {
-                        MainActivity.addFragment(new GogoleAuthFragment(), true);
-                    }else
-                    {
-                        MainActivity.addFragment(new GogolePasswordFragment(), true);
-                    }
-
-                }else
-                {
-                    MainActivity.addFragment(new CredentialsFragment(), true);
-                }
-                break;
-        }
-    }
-
     private Emitter.Listener onDdkUsdtValue = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -674,7 +1065,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             BigDecimal btcSellPer = btcPrice.multiply(UserModel.getInstance().btcSellPercentage).divide(ONE_HUNDRED);
             UserModel.getInstance().btcBuyPrice = btcBuyPer.add(btcPrice);
             UserModel.getInstance().btcSellPrice = btcPrice.subtract(btcSellPer);
-
             BigDecimal usdtBuyPer = usdtPrice.multiply(UserModel.getInstance().usdtBuyPercentage).divide(ONE_HUNDRED);
             BigDecimal usdtSellPer = usdtPrice.multiply(UserModel.getInstance().usdtSellPercentage).divide(ONE_HUNDRED);
             UserModel.getInstance().usdtBuyPrice = usdtBuyPer.add(usdtPrice);

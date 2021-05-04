@@ -61,7 +61,7 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
     private String imagePath;
     private UserResponse userData;
     TextView btn_save;
-    EditText et_GCashNo,et_AccountNo,et_bankUserName;
+    EditText et_GCashNo,et_AccountNo,et_bankUserName,et_branchcityname,et_bankbrachname;
     String selectedBank="";
     String imaagepath,amountentervalue;
     String selectedBankId;
@@ -104,7 +104,7 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
 
         try {
             final String banknem=createCancellationRequestlist.get(position).getBank().getBankName();
-            if(usercountryselect==1)
+            if(usercountryselect==1 || usercountryselect==3)
             {
                 holder.audlayout.setVisibility(View.GONE);
                 holder.phlayout.setVisibility(View.VISIBLE);
@@ -161,11 +161,15 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                         et_GCashNo = dialog.findViewById(R.id.et_GCashNo);
                         et_AccountNo = dialog.findViewById(R.id.et_AccountNo);
                         et_bankUserName = dialog.findViewById(R.id.et_bankUserName);
+                        et_branchcityname= dialog.findViewById(R.id.et_branchcityname);
+                        et_bankbrachname = dialog.findViewById(R.id.et_bankbrachname);
                         btn_save = dialog.findViewById(R.id.btn_saveBank);
                         LinearLayout ll_SelectBank = dialog.findViewById(R.id.ll_SelectBank);
                         ll_SelectBankName = dialog.findViewById(R.id.ll_SelectBankName);
                         et_bankUserName.setVisibility(View.GONE);
                         et_AccountNo.setVisibility(View.GONE);
+                        et_bankbrachname.setVisibility(View.GONE);
+                        et_branchcityname.setVisibility(View.GONE);
                         et_GCashNo.setVisibility(View.GONE);
                         btn_save.setVisibility(View.GONE);
                         ll_SelectBank.setOnClickListener(new View.OnClickListener() {
@@ -181,30 +185,40 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                                 String name = et_bankUserName.getText().toString();
                                 String GcashNo = et_GCashNo.getText().toString();
                                 String AccountNo = et_AccountNo.getText().toString();
+                                String bankbranchname = et_bankbrachname.getText().toString();
+                                String branchcityname = et_branchcityname.getText().toString();
+
                                 if (name.equals("") || name.isEmpty())
                                 {
                                     String countrydata=userData.getUser().country.get(0).country;
                                     Log.d("country",countrydata);
-                                    if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
+                                    if(countrydata!=null && countrydata.equalsIgnoreCase("australia"))
+                                    {
+                                        et_bankUserName.setError("Please BSB name");
+                                    }else
+                                    {
                                         if (selectedBank.equalsIgnoreCase("bank")) {
                                             et_bankUserName.setError("Please Enter Name");
                                         }else
                                         {
                                             et_bankUserName.setError("Please Enter GCash Name");
                                         }
-                                    }else {
-                                        et_bankUserName.setError("Please BSB name");
                                     }
                                     et_bankUserName.requestFocus();
                                 } else if (selectedBank.equalsIgnoreCase("")) {
                                     Toast.makeText(getApplicationContext(), "Please Select Bank or E-remittance", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    if (selectedBank.equalsIgnoreCase("bank")) {
-
+                                    if (selectedBank.equalsIgnoreCase("bank"))
+                                    {
                                         if (AccountNo.equalsIgnoreCase("")) {
                                             Toast.makeText(getApplicationContext(), "Please Enter Account Number", Toast.LENGTH_SHORT).show();
-                                        } else
+                                        }/* else if (bankbranchname.equalsIgnoreCase("")) {
+                                            Toast.makeText(getApplicationContext(), "Please Enter Branch Name", Toast.LENGTH_SHORT).show();
+                                        } else if (branchcityname.equalsIgnoreCase("")) {
+                                            Toast.makeText(getApplicationContext(), "Please Enter Branch City Name", Toast.LENGTH_SHORT).show();
+                                        } */else
                                         {
+
                                             if (AccountNo.length() <= 20)
                                             {
                                                 acctivityGsonbody(dialog);
@@ -255,6 +269,13 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                         et_bankUserName.setVisibility(View.GONE);
                         et_AccountNo.setVisibility(View.GONE);
                         et_GCashNo.setVisibility(View.GONE);
+                        //........
+                        et_branchcityname= dialog.findViewById(R.id.et_branchcityname);
+                        et_bankbrachname = dialog.findViewById(R.id.et_bankbrachname);
+                        et_bankbrachname.setVisibility(View.GONE);
+                        et_branchcityname.setVisibility(View.GONE);
+
+                        //..........
                         btn_save=dialog.findViewById(R.id.btn_saveBank);
                         btn_save.setVisibility(View.GONE);
                         Log.d("country",countrydata);
@@ -275,15 +296,17 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                                 {
                                     String countrydata=userData.getUser().country.get(0).country;
                                     Log.d("country",countrydata);
-                                    if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
+                                    if(countrydata!=null && countrydata.equalsIgnoreCase("australia"))
+                                    {
+                                        et_bankUserName.setError("Please BSB name");
+                                    }else
+                                    {
                                         if (selectedBank.equalsIgnoreCase("bank")) {
                                             et_bankUserName.setError("Please Enter Name");
                                         }else
                                         {
                                             et_bankUserName.setError("Please Enter GCash Name");
                                         }
-                                    }else {
-                                        et_bankUserName.setError("Please BSB name");
                                     }
                                     et_bankUserName.requestFocus();
                                 } else if (selectedBank.equalsIgnoreCase("")) {
@@ -293,7 +316,8 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
 
                                         if (AccountNo.equalsIgnoreCase("")) {
                                             Toast.makeText(getApplicationContext(), "Please Enter Account No", Toast.LENGTH_SHORT).show();
-                                        } else {
+                                        } else
+                                        {
                                             if (AccountNo.length() <= 20)
                                             {
                                                 acctivityGsonbody(dialog);
@@ -462,6 +486,9 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                      hm.put("account_no", et_AccountNo.getText().toString());
                      hm.put("bank_id", ""+selectedBankId);
                      hm.put("bank_type",selectedBank);
+                     hm.put("bank_branch_name",et_bankbrachname.getText().toString());
+                     hm.put("bank_branch_city_name",et_branchcityname.getText().toString());
+
                 }else {
                      hm.put("gcash_no", et_GCashNo.getText().toString());
                      hm.put("bank_id",""+selectedBankId);
@@ -537,10 +564,17 @@ public class CashoutFragmenAdapter extends RecyclerView.Adapter<CashoutFragmenAd
                     et_GCashNo.setVisibility(View.GONE);
                     String countrydata=userData.getUser().country.get(0).country;
                     Log.d("country",countrydata);
-                    if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
-                        et_bankUserName.setHint("Enter Account Name");
-                    }else {
+                    if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia")){
+                        et_bankbrachname.setVisibility(View.GONE);
+                        et_branchcityname.setVisibility(View.GONE);
+                    }
+                    Log.d("country",countrydata);
+                    if(countrydata!=null && countrydata.equalsIgnoreCase("australia"))
+                    {
                         et_bankUserName.setHint("Enter BSB Name");
+                    }else
+                    {
+                        et_bankUserName.setHint("Enter Account Name");
                     }
 
                 }else {

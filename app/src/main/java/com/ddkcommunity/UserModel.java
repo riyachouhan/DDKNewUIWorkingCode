@@ -91,6 +91,10 @@ public class UserModel {
                             JSONObject sell_transaction_fees=jsonObject.getJSONObject("sell_transaction_fees");
                             String sell_sam_transaction_fees=sell_transaction_fees.getString("sam_transaction_fees");
                             AppConfig.setStringPreferences(App.getInstance(), Constant.sellsam_transaction_fees,""+sell_sam_transaction_fees);
+                            //for kpay
+                            JSONObject kpay_transaction_feeobj=jsonObject.getJSONObject("kpay_transaction_fee");
+                            String fee_amount_forKpay=kpay_transaction_feeobj.getString("fee_amount");
+                            AppConfig.setStringPreferences(App.getInstance(), Constant.sellsam_transaction_feeskpay,""+fee_amount_forKpay);
                             //...........
                             AppConfig.setStringPreferences(App.getInstance(), Constant.transaction_fees_mode_eth,""+transaction_fees_mode_eth);
                             AppConfig.setStringPreferences(App.getInstance(), Constant.transaction_fees_mode_usdt,""+transaction_fees_mode_usdt);
@@ -449,11 +453,13 @@ public class UserModel {
     }
 
     //.............get api setting status
-    public void getSettignSatusView(final Activity activity,final String functionName,final GegtSettingStatusinterface settingResponse)
+    public void getSettignSatusView(final Activity activity,final String functionName,final String checkAccountLimit,final GegtSettingStatusinterface settingResponse)
     {
         //getGeneralFunctionality
         final HashMap<String, String> hm = new HashMap<>();
         hm.put("functionality",functionName);
+        hm.put("checkAccountLimit",checkAccountLimit);
+      //  Toast.makeText(activity, ""+hm.toString(), Toast.LENGTH_SHORT).show();
         Call<getSettingModel> call = AppConfig.getLoadInterface().getGeneralFunctionality(AppConfig.getStringPreferences(activity, Constant.JWTToken), hm);
         call.enqueue(new Callback<getSettingModel>()
         {

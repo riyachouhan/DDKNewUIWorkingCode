@@ -8,9 +8,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,14 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ddkcommunity.R;
+import com.ddkcommunity.fragment.GogoleAuthFragment;
+import com.ddkcommunity.fragment.GogolePasswordFragment;
+import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.model.CountryResponse;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.App;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.utilies.AppConfig;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -46,9 +58,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -80,6 +96,8 @@ public class SignupActivity extends AppCompatActivity {
     TextView birthdate_edt;
     String userage="";
     ImageView img_first_front_pic;
+    private Uri uri;
+    int imgseletcoption=0;
 
     @Override
 
@@ -115,8 +133,11 @@ public class SignupActivity extends AppCompatActivity {
 
         findViewById(R.id.profile_img).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
+            public void onClick(View view)
+            {
+                imgseletcoption=2;
+                selectImage();
+             /*   final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
                     public void onCancelClick() {
@@ -130,6 +151,7 @@ public class SignupActivity extends AppCompatActivity {
                         profile_img.setImageBitmap(r.getBitmap());
                     }
                 }).show(getSupportFragmentManager());
+*/
             }
         });
 
@@ -144,25 +166,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //for pic img
-                final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
-                dialognew.setOnPickCancel(new IPickCancel()
-                {
-                    @Override
-                    public void onCancelClick() {
-                        dialognew.dismiss();
-                    }
-                }).setOnPickResult(new IPickResult()
-                {
-                    @Override
-                    public void onPickResult(PickResult r)
-                    {
-                        //TODO: do what you have to...
-                        idpreefpath = r.getPath();
-                        idproofbitmap=r.getBitmap();
-                        img_first_front_pic.setImageBitmap(r.getBitmap());
-                    }
-                }).show(getSupportFragmentManager());
-
+                imgseletcoption=3;
+                selectImage();
             }
         });
 
@@ -256,6 +261,182 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    //..........for
+    //for password
+    public void selectImage()
+    {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(SignupActivity.this, android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getPackageManager()) != null) {
+                                        startActivityForResult(intent, 1);
+                                    }
+                                } else {
+                                    Toast.makeText(SignupActivity.this, "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 2);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(SignupActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(SignupActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode) {
+
+                case 1:
+                    setImage();
+                    break;
+
+                case 2:
+                    Uri select = data.getData();
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), select);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    FileOutputStream fOut;
+                   try {
+                        String photoname="profilepic.png";
+                        File f = new File(getFilesDir(), photoname);
+                        fOut = new FileOutputStream(f);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                        fOut.flush();
+                        fOut.close();
+                        if(imgseletcoption==3)
+                        {
+                            idpreefpath = f.getAbsolutePath();
+                            idproofbitmap = bitmap;
+                            img_first_front_pic.setImageBitmap(bitmap);
+                        }
+
+                        if(imgseletcoption==2)
+                        {
+                            imagePath= f.getAbsolutePath();
+                            profile_img.setImageBitmap(bitmap);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void setImage()
+    {
+        if(imgseletcoption==3)
+        {
+            idpreefpath = Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(idpreefpath);
+            FileOutputStream fOut;
+            try {
+                File f = new File(idpreefpath);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+                idpreefpath= f.getAbsolutePath();
+                idproofbitmap=bitmap;
+                img_first_front_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+
+        if(imgseletcoption==2)
+        {
+            imagePath = Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            FileOutputStream fOut;
+            try {
+                File f = new File(imagePath);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+                imagePath= f.getAbsolutePath();
+                profile_img.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+      }
+    //.............
+
     public void itemClicked(View v) {
         //code to check if this checkbox is checked!
 
@@ -300,8 +481,18 @@ public class SignupActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-            RequestBody requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), filefirstfinal);
-            MultipartBody.Part body1 = MultipartBody.Part.createFormData("user_photo_id", filefirstfinal.getName(), requestFile1);
+            RequestBody requestFile1 = null;
+            MultipartBody.Part body1;
+            String imagenew;
+            if (AppConfig.isStringNullOrBlank(idpreefpath))
+            {
+                imagenew = "";
+                fbody = RequestBody.create(MediaType.parse("image/*"), imagenew);
+                body1 = MultipartBody.Part.createFormData("user_photo_id", imagenew, fbody);
+            } else {
+                requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), filefirstfinal);
+                body1 = MultipartBody.Part.createFormData("user_photo_id", filefirstfinal.getName(), requestFile1);
+            }
 
                 Call<ResponseBody> call = AppConfig.getLoadInterface().signUpCall(
                     AppConfig.setRequestBody(dateofbirthv),
@@ -328,7 +519,7 @@ public class SignupActivity extends AppCompatActivity {
                             JSONObject object = new JSONObject(responseData);
                             if (object.getString(Constant.STATUS).equals("1") || object.getString(Constant.STATUS).equals("2"))
                             {
-                                AppConfig.showToast("Registered Successfully.");
+                 //               AppConfig.showToast("Registered Successfully.");
 //                              ResisterResponse data = new Gson().fromJson(responseData, ResisterResponse.class);
                                 nameET.setText("");
                                 emailET.setText("");
@@ -548,12 +739,10 @@ public class SignupActivity extends AppCompatActivity {
         App.editor.putString("email", user.getUser().getEmail());
         App.editor.putString("signUp", "yes");
         App.editor.putString("switchUser", "no");
-//        App.editor.putString(Constant.USER_ID, user.getUser().getId().toString());
         App.editor.putString(Constant.USER_EMAIL, user.getUser().getEmail());
         App.editor.putString(Constant.USER_NAME, user.getUser().getName());
         App.editor.putString(Constant.USER_MOBILE, user.getUser().getMobile());
         App.editor.commit();
-
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

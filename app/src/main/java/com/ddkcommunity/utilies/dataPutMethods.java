@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,6 +72,7 @@ import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.model.verifcationFundSource;
 import com.ddkcommunity.model.wallet.WalletResponse;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -306,6 +308,9 @@ public class dataPutMethods
             }else if(id_proof_2_verification_status.equalsIgnoreCase("rejected") || id_proof_1_verification_status.equalsIgnoreCase("rejected"))
             {
                 App.editor.putString(Constant.IDENTITY_VERIFIED_STATUS,"rejected");
+            }else if(id_proof_2_verification_status.equalsIgnoreCase("reject") || id_proof_1_verification_status.equalsIgnoreCase("reject"))
+            {
+                App.editor.putString(Constant.IDENTITY_VERIFIED_STATUS,"rejected");
             }else if(id_proof_2_verification_status.equalsIgnoreCase("not") || id_proof_1_verification_status.equalsIgnoreCase("not"))
             {
                 App.editor.putString(Constant.IDENTITY_VERIFIED_STATUS,"no");
@@ -383,10 +388,77 @@ public class dataPutMethods
         });
     }
 
+    public static void ShowInfoAlert(Context activity)
+    {
+//api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.idproofinfo, null);
+        ImageView btnGoHome =customView.findViewById(R.id.cloase_icon);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        final AlertDialog dialog = alert.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.setCancelable(false);
+        btnGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    //...........
+    public static void ShowbasicValiationView(Context activity,String msg)
+    {
+        //api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.basiclimitationlayout, null);
+        TextView btnGoHome =customView.findViewById(R.id.btnGoHome);
+        TextView titile=customView.findViewById(R.id.titile);
+        TextView fourview=customView.findViewById(R.id.fourview);
+        TextView fiveview=customView.findViewById(R.id.fiveview);
+        TextView thirdview=customView.findViewById(R.id.thirdview);
+        TextView secondview=customView.findViewById(R.id.secondview);
+        TextView firstview=customView.findViewById(R.id.firstview);
+        if(msg.equalsIgnoreCase("basic"))
+        {
+            titile.setText("Basic Verification");
+            firstview.setVisibility(View.VISIBLE);
+           secondview.setVisibility(View.VISIBLE);
+           thirdview.setVisibility(View.VISIBLE);
+           fourview.setVisibility(View.GONE);
+           fiveview.setVisibility(View.GONE);
+        }else
+        {
+            titile.setText("Fully Verification");
+            firstview.setVisibility(View.VISIBLE);
+            secondview.setVisibility(View.VISIBLE);
+            thirdview.setVisibility(View.VISIBLE);
+            fourview.setVisibility(View.VISIBLE);
+            fiveview.setVisibility(View.VISIBLE);
+        }
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        final AlertDialog dialog = alert.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.setCancelable(false);
+        btnGoHome.setText("Ok");
+        btnGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
+    }
+
     //fundtinalituy
     public static void ShowFunctionalityAlert(Context activity,String msg)
     {
-//api_error
+        //api_error
         LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = layoutInflater.inflate(R.layout.alert_dialog_error, null);
         TextView btnGoHome =customView.findViewById(R.id.btnGoHome);
@@ -394,10 +466,9 @@ public class dataPutMethods
         tvOrderStatus.setText(msg);
         TextView titile=customView.findViewById(R.id.titile);
         titile.setText("Alert");
-        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(activity);
         alert.setView(customView);
         final AlertDialog dialog = alert.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         dialog.setCancelable(false);
         btnGoHome.setText("Ok");
@@ -684,9 +755,9 @@ public class dataPutMethods
 
     public static void getSettingServerDataSt(Activity activity, final String functionname)
     {
-        String func=functionname;
+        String func=functionname,checkAccountLimit="0";
         func=functionname;
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
@@ -978,7 +1049,7 @@ public class dataPutMethods
     public static void showDialogBankTrnsfer(final String id,final String conversionrate,final String secrate,final String phpamount,final String ddkamount,final String ddkaddress,final View mview, final Activity mContext, String imagePath, final UserBankList userBankList, final String amountentervalue, final CashOutFragmentNew cashOutFragmentNew)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View dialogView = layoutInflater.inflate(R.layout.popup_banktransfer, null);
+        final View dialogView = layoutInflater.inflate(R.layout.popup_banktransfer, null);
         final BottomSheetDialog dialog = new BottomSheetDialog(mContext, R.style.DialogStyle);
         dialog.setContentView(dialogView);
         TextView tvSendMoney = dialogView.findViewById(R.id.tvSendMoney);
@@ -986,6 +1057,8 @@ public class dataPutMethods
         TextView tv_CountryId = dialogView.findViewById(R.id.tv_CountryId);
         TextView tv_ConMaxTransfer = dialogView.findViewById(R.id.tv_ConMaxTransfer);
         TextView tvBankNameDDk = dialogView.findViewById(R.id.tvBankNameDDk);
+        final EditText etBranchcityName=dialogView.findViewById(R.id.etBranchcityName);
+        final EditText etBranchName=dialogView.findViewById(R.id.etBranchName);
         EditText etAmountSend = dialogView.findViewById(R.id.etAmountSend);
         EditText etAccountNumber = dialogView.findViewById(R.id.etAccountNumber);
         EditText etAccountName = dialogView.findViewById(R.id.etAccountName);
@@ -997,12 +1070,18 @@ public class dataPutMethods
         etAccountNumber.setText(userBankList.getAccountNo().toString());
         etAccountName.setText(userBankList.getName().toString());
         UserResponse userData = AppConfig.getUserData(mContext);
-        String countrydata=userData.getUser().country.get(0).country;
+        final String countrydata=userData.getUser().country.get(0).country;
         Log.d("country",countrydata);
-        if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
+        if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines"))
+        {
             tv_CountryId.setText("PHP");
             ivBankLogo.setVisibility(View.VISIBLE);
             tv_ConMaxTransfer.setText("Maximum of PHP 50,000");
+            etAccountName.setHint("Enter Account Name");
+        }else if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia")){
+            tv_CountryId.setText("IDR");
+            ivBankLogo.setVisibility(View.VISIBLE);
+            tv_ConMaxTransfer.setText("Maximum of IDR 50,000");
             etAccountName.setHint("Enter Account Name");
         }else {
             tv_CountryId.setText("AUD");
@@ -1030,11 +1109,44 @@ public class dataPutMethods
                 {
                     ShowSameWalletDialog(mContext,msgbank,"1");
                 }else {
-
-                    //Bigde
-                    BigDecimal countamoutn = new BigDecimal("50");
-                    BigDecimal btccondition = new BigDecimal(phpamount);
-                    int comare = btccondition.compareTo(countamoutn);
+                    String etBranchcityNamevalue=etBranchcityName.getText().toString();
+                    String etBranchNamevalue=etBranchName.getText().toString();
+                    Log.d("country",countrydata);
+                    if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia")) {
+                        if (etBranchNamevalue.equalsIgnoreCase("")) {
+                            Toast.makeText(mContext, "Please enter Bank Branch Name", Toast.LENGTH_SHORT).show();
+                        } else if (etBranchcityNamevalue.equalsIgnoreCase("")) {
+                            Toast.makeText(mContext, "Please enter Bank City Name", Toast.LENGTH_SHORT).show();
+                        } else
+                        {
+                            BigDecimal countamoutn = new BigDecimal("50");
+                            BigDecimal btccondition = new BigDecimal(phpamount);
+                            int comare = btccondition.compareTo(countamoutn);
+                    /*if (comare == 1) {
+                        Toast.makeText(mContext, "Amount Should be less then 50.0", Toast.LENGTH_SHORT).show();
+                    } else*/ {
+                            dialog.dismiss();
+                            //for send money call
+                            String bank_type = userBankList.getBankType();
+                            String holder_name = userBankList.getName();
+                            String gcash_no = "", account_no = "";
+                            if (userBankList.getBankType().toString().equalsIgnoreCase("bank")) {
+                                account_no = userBankList.getAccountNo().toString();
+                                gcash_no = "";
+                            } else {
+                                account_no = "";
+                                gcash_no = userBankList.getGcashNo();
+                            }
+                            String email = etEmailReceipt.getText().toString();
+                            String bank_id = userBankList.getBank().getId() + "";
+                            sendOtp(etBranchNamevalue,etBranchcityNamevalue,id,bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                        }
+                        }
+                    }else
+                    {
+                        BigDecimal countamoutn = new BigDecimal("50");
+                        BigDecimal btccondition = new BigDecimal(phpamount);
+                        int comare = btccondition.compareTo(countamoutn);
                     /*if (comare == 1) {
                         Toast.makeText(mContext, "Amount Should be less then 50.0", Toast.LENGTH_SHORT).show();
                     } else*/ {
@@ -1052,8 +1164,10 @@ public class dataPutMethods
                         }
                         String email = etEmailReceipt.getText().toString();
                         String bank_id = userBankList.getBank().getId() + "";
-                        sendOtp(id,bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                        sendOtp(etBranchNamevalue,etBranchcityNamevalue,id,bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                     }
+                    }
+                            //Bigde
                 }
             }
         });
@@ -1068,7 +1182,7 @@ public class dataPutMethods
 
     }
 
-    public static void sendOtp(final String id,final String bank_type, final String holder_name, final String account_no, final String gcash_no, final String email, final String bank_id, final String conversionrate, final String secrate, final String phpamount, final String ddkamount, final String ddkaddress, final Activity mContext)
+    public static void sendOtp(final String branch_name,final String branch_city_name,final String id,final String bank_type, final String holder_name, final String account_no, final String gcash_no, final String email, final String bank_id, final String conversionrate, final String secrate, final String phpamount, final String ddkamount, final String ddkaddress, final Activity mContext)
     {
         HashMap<String, String> hm = new HashMap<>();
         hm.put("email", App.pref.getString(Constant.USER_EMAIL, ""));
@@ -1084,7 +1198,7 @@ public class dataPutMethods
                 if (response.isSuccessful() && response.body().status == 1) {
                     String otp = response.body().data;
                     Log.d("otp",otp);
-                    initOtpVerifiaction(id,bank_type,holder_name,account_no,gcash_no,email,bank_id,conversionrate,secrate,phpamount,ddkamount,ddkaddress,otp,mContext);
+                    initOtpVerifiaction(branch_name,branch_city_name,id,bank_type,holder_name,account_no,gcash_no,email,bank_id,conversionrate,secrate,phpamount,ddkamount,ddkaddress,otp,mContext);
                 } else if (response.isSuccessful() && response.body() != null && response.body().status == 3) {
                     AppConfig.showToast(response.body().msg);
                 } else if (response.isSuccessful() && response.body() != null && response.body().status == 0) {
@@ -1102,7 +1216,7 @@ public class dataPutMethods
         });
     }
 
-    private static void initOtpVerifiaction(final String id,final String bank_type,final String holder_name,final String account_no,final String gcash_no,final String email,final String bank_id,final String conversionrate,final String secrate,final String phpamount,final String ddkamount,final String ddkaddress,final String otp,final Activity mContext)
+    private static void initOtpVerifiaction(final String branch_name,final String branch_city_name,final String id,final String bank_type,final String holder_name,final String account_no,final String gcash_no,final String email,final String bank_id,final String conversionrate,final String secrate,final String phpamount,final String ddkamount,final String ddkaddress,final String otp,final Activity mContext)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View dialogView;
@@ -1110,6 +1224,8 @@ public class dataPutMethods
             final BottomSheetDialog dialog = new BottomSheetDialog(mContext, R.style.DialogStyle);
             dialog.setContentView(dialogView);
             ImageView logo1=dialogView.findViewById(R.id.logo1);
+        Toolbar totolher=dialogView.findViewById(R.id.totolher);
+        totolher.setVisibility(View.GONE);
             final LinearLayout otherview=dialogView.findViewById(R.id.otherview);
             otherview.setVisibility(View.VISIBLE);
             logo1.setVisibility(View.GONE);
@@ -1137,7 +1253,7 @@ public class dataPutMethods
                                     sendPaymentDDk(id,bank_type,holder_name,account_no,gcash_no,email,bank_id,conversionrate,secrate,phpamount,ddkamount,ddkaddress,mContext);
                                 }else
                                 {
-                                    sendPayment(id,bank_type,holder_name,account_no,gcash_no,email,bank_id,conversionrate,secrate,phpamount,ddkamount,ddkaddress,mContext);
+                                    sendPayment(branch_name,branch_city_name,id,bank_type,holder_name,account_no,gcash_no,email,bank_id,conversionrate,secrate,phpamount,ddkamount,ddkaddress,mContext);
                                 }
                             } else {
                                 AppConfig.showToast("Otp is expired or incorrect");
@@ -1279,87 +1395,173 @@ public class dataPutMethods
         dialog.show();
     }
 
-    private static void sendPayment(final String id,final String bank_type,final String holder_name,final String account_no,final String gcash_no,final String email,final String bank_id,final String conversionrate,final String secrate,final String phpamount,final String ddkamount,final String ddkaddress,final Activity mContext) {
+    private static void sendPayment(final String branch_name,final String branch_city_name,final String id,final String bank_type,final String holder_name,final String account_no,final String gcash_no,final String email,final String bank_id,final String conversionrate,final String secrate,final String phpamount,final String ddkamount,final String ddkaddress,final Activity mContext) {
 
         String conversionratevalue=conversionrate.replace("Conversion rate :","");
         String conversionratesub=conversionratevalue.replace(" USDT","");
         String substeing=conversionratesub;
-        HashMap<String, String> hm = new HashMap<>();
-        String koinadd=App.pref.getString(Constant.SAMKOIN_ADD, "");
-        hm.put("sender_address", ""+koinadd);
-        hm.put("conversion_rate", ""+substeing);
-        hm.put("total_amount", phpamount);
-        hm.put("input_amount", ddkamount);
-        String trascationfeev=CashOutFragmentNew.transaction_fees.getText().toString().replace("Transaction Fees : ","");
-        hm.put("fee", trascationfeev);
-        if(CashOutFragmentNew.countrydata.equalsIgnoreCase("philippines"))
-        {
-            hm.put("transaction_for", "php");
-        }else
-        {
-            hm.put("transaction_for", "aud");
-        }
-        hm.put("input_amount",ddkamount);
-        hm.put("secret",App.pref.getString(Constant.SAMKOIN_Secaret, ""));
-        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
-        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
-        //for bank
-        hm.put("bank_type", bank_type);
-        hm.put("holder_name",holder_name);
-        hm.put("account_no", account_no);
-        hm.put("gcash_no",gcash_no);
-        hm.put("email", email);
-        hm.put("bank_id", bank_id);
-        hm.put("user_bank_id", id);
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Confirm Payment....");
         String tokenvalue=AppConfig.getStringPreferences(mContext, Constant.JWTToken);
-        Log.d("param",hm.toString());
-        AppConfig.getLoadInterface().sendCashOutSamKoin(AppConfig.getStringPreferences(mContext, Constant.JWTToken), hm).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                AppConfig.hideLoading(dialog);
-                try {
+        if(CashOutFragmentNew.countrydata.equalsIgnoreCase("indonesia"))
+        {
+            HashMap<String, String> hm = new HashMap<>();
+            String koinadd=App.pref.getString(Constant.SAMKOIN_ADD, "");
+            hm.put("sender_address", ""+koinadd);
+            hm.put("device_token", App.RegPref.getString(Constant.FIREBASE_TOKEN, ""));
+            hm.put("conversion_rate", ""+substeing);
+            hm.put("total_amount", phpamount);
+            hm.put("branch_name", branch_name);
+            hm.put("branch_city_name", branch_city_name);
+            hm.put("input_amount", ddkamount);
+            String trascationfeev=CashOutFragmentNew.transaction_fees.getText().toString().replace("Transaction Fees : ","");
+            hm.put("fee", trascationfeev);
+            hm.put("transaction_for", "idr");
+            hm.put("input_amount",ddkamount);
+            hm.put("secret",App.pref.getString(Constant.SAMKOIN_Secaret, ""));
+            hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+            hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+            //for bank
+            hm.put("bank_type", bank_type);
+            hm.put("holder_name",holder_name);
+            hm.put("account_no", account_no);
+            hm.put("gcash_no",gcash_no);
+            hm.put("email", email);
+            hm.put("bank_id", bank_id);
+            hm.put("user_bank_id", id);
+            hm.put("device_type", "android");
+            Log.d("cahsoutfor",hm.toString());
+            //for indo
+            AppConfig.getLoadInterface().sendCashOutSamKoinIndonesia(AppConfig.getStringPreferences(mContext, Constant.JWTToken), hm).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    AppConfig.hideLoading(dialog);
+                    try {
 
-                    if (response.isSuccessful() && response.body() != null) {
-                        String responseData = response.body().string();
-                        JSONObject object = new JSONObject(responseData);
-                        Log.d("responsse",""+object);
-                        if (object.getInt(Constant.STATUS) == 1) {
-                            try {
-                                final JSONObject dataObject = object.getJSONObject("data");
-                                transactionStatus(mContext,dataObject.getString("txt_id"));
-                            } catch (JSONException e) {
-                                AppConfig.showToast("Server error");
-                                e.printStackTrace();
+                        if (response.isSuccessful() && response.body() != null) {
+                            String responseData = response.body().string();
+                            JSONObject object = new JSONObject(responseData);
+                            Log.d("responsse",""+object);
+                            if (object.getInt(Constant.STATUS) == 1) {
+                                try {
+                                    final JSONObject dataObject = object.getJSONObject("data");
+                                    transactionStatus(mContext,dataObject.getString("txt_id"));
+                                } catch (JSONException e) {
+                                    AppConfig.showToast("Server error");
+                                    e.printStackTrace();
+                                }
+                            }else if (object.getInt(Constant.STATUS) == 4)
+                            {
+                                ShowServerPost((Activity)mContext,"ddk server error cashout");
+                            } else {
+                                AppConfig.hideLoading(dialog);
+                                AppConfig.showToast(object.getString("msg"));
                             }
-                        }else if (object.getInt(Constant.STATUS) == 4)
-                        {
-                            ShowServerPost((Activity)mContext,"ddk server error cashout");
                         } else {
-                            AppConfig.hideLoading(dialog);
-                            AppConfig.showToast(object.getString("msg"));
+                            AppConfig.showToast("Server error");
                         }
-                    } else {
+                    } catch (IOException e) {
+                        AppConfig.hideLoading(dialog);
                         AppConfig.showToast("Server error");
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        AppConfig.hideLoading(dialog);
+                        AppConfig.showToast("Server error");
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    AppConfig.hideLoading(dialog);
-                    AppConfig.showToast("Server error");
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    AppConfig.hideLoading(dialog);
-                    AppConfig.showToast("Server error");
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t)
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t)
+                {
+                    AppConfig.hideLoading(dialog);
+                }
+            });
+            //...........
+        }else
+        {
+            HashMap<String, String> hm = new HashMap<>();
+            String koinadd=App.pref.getString(Constant.SAMKOIN_ADD, "");
+            hm.put("sender_address", ""+koinadd);
+            hm.put("conversion_rate", ""+substeing);
+            hm.put("total_amount", phpamount);
+            hm.put("input_amount", ddkamount);
+            String trascationfeev=CashOutFragmentNew.transaction_fees.getText().toString().replace("Transaction Fees : ","");
+            hm.put("fee", trascationfeev);
+            if(CashOutFragmentNew.countrydata.equalsIgnoreCase("philippines"))
             {
-                AppConfig.hideLoading(dialog);
+                hm.put("transaction_for", "php");
+            }else if(CashOutFragmentNew.countrydata.equalsIgnoreCase("indonesia"))
+            {
+                hm.put("transaction_for", "idr");
+            }else
+            {
+                hm.put("transaction_for", "aud");
             }
-        });
+            hm.put("input_amount",ddkamount);
+            hm.put("secret",App.pref.getString(Constant.SAMKOIN_Secaret, ""));
+            hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+            hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+            //for bank
+            hm.put("bank_type", bank_type);
+            hm.put("holder_name",holder_name);
+            hm.put("account_no", account_no);
+            hm.put("gcash_no",gcash_no);
+            hm.put("email", email);
+            hm.put("bank_id", bank_id);
+            hm.put("user_bank_id", id);
+            Log.d("cahsoutfor",hm.toString());
+
+            AppConfig.getLoadInterface().sendCashOutSamKoin(AppConfig.getStringPreferences(mContext, Constant.JWTToken), hm).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    AppConfig.hideLoading(dialog);
+                    try {
+                        if (response.isSuccessful() && response.body() != null)
+                        {
+                            String responseData = response.body().string();
+                            JSONObject object = new JSONObject(responseData);
+                            Log.d("responsse",""+object);
+                            if (object.getInt(Constant.STATUS) == 1)
+                            {
+                                try {
+                                    final JSONObject dataObject = object.getJSONObject("data");
+                                    transactionStatus(mContext,dataObject.getString("txt_id"));
+                                } catch (JSONException e)
+                                {
+                                    AppConfig.showToast("Server error");
+                                    e.printStackTrace();
+                                }
+                            }else if (object.getInt(Constant.STATUS) == 4)
+                            {
+                                ShowServerPost((Activity)mContext,"ddk server error cashout");
+                            } else
+                            {
+                                AppConfig.hideLoading(dialog);
+                                AppConfig.showToast(object.getString("msg"));
+                            }
+                        } else {
+                            AppConfig.showToast("Server error");
+                        }
+                    } catch (IOException e) {
+                        AppConfig.hideLoading(dialog);
+                        AppConfig.showToast("Server error");
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        AppConfig.hideLoading(dialog);
+                        AppConfig.showToast("Server error");
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t)
+                {
+                    AppConfig.hideLoading(dialog);
+                }
+            });
+        }
+
     }
 
     //..........
@@ -1513,6 +1715,9 @@ public class dataPutMethods
         if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
             tv_CountryId.setText("PHP");
             tv_ConMaxTransfer.setText("Maximum of PHP 50,000");
+        }else if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia")){
+            tv_CountryId.setText("IDR");
+            tv_ConMaxTransfer.setText("Maximum of IDR 50,000");
         }else {
             tv_CountryId.setText("AUD");
             tv_ConMaxTransfer.setText("Maximum of AUD 50,000");
@@ -1556,7 +1761,7 @@ public class dataPutMethods
                             }
                             String email = "";
                             String bank_id = bankid + "";
-                            sendOtp(id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                            sendOtp("","",id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                         }
                     }else
                     {

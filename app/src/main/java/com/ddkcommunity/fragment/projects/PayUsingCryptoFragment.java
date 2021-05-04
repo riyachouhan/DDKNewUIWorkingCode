@@ -258,7 +258,8 @@ public class PayUsingCryptoFragment extends Fragment {
                     {
                     }else {
                         try {
-                            BigDecimal etAmountvalue = new BigDecimal(editable.toString());
+                            String enterddk =etDDK.getText().toString();
+                            BigDecimal etAmountvalue = new BigDecimal(enterddk);
                             if (etAmountvalue.compareTo(BigDecimal.ZERO) == 0)
                             {
                                 tvEstimatedFees.setText("0");
@@ -477,7 +478,6 @@ public class PayUsingCryptoFragment extends Fragment {
                 try {
                     if (response.isSuccessful())
                      {
-                        toatsmsg.setVisibility(View.INVISIBLE);
                         slide_custom_icon.setLocked(false);
                         JSONObject jsonObject = new JSONObject(response.body().string());
                         if(jsonObject.getString("status").equalsIgnoreCase("1"))
@@ -553,8 +553,10 @@ public class PayUsingCryptoFragment extends Fragment {
                                 total = new BigDecimal(0);
 
                             }
-                            }
+                             }
                         }
+                         toatsmsg.setVisibility(View.INVISIBLE);
+
                      } else
                      {
                          toatsmsg.setVisibility(View.INVISIBLE);

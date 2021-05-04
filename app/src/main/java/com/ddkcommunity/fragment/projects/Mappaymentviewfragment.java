@@ -144,7 +144,7 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
     {
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
-        String func="";
+        String func="",checkAccountLimit="0";
         if(functionname.equalsIgnoreCase("eth"))
         {
             func="map_send_eth";
@@ -166,7 +166,7 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
             func="map_send_sam_koin";
         }
 
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)

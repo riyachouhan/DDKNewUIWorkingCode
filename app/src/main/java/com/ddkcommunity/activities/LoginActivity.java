@@ -325,6 +325,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void loginCall(String email, String pass, String fcmToken, String deviceType) {
         String token = App.RegPref.getString(Constant.FIREBASE_TOKEN, "");
+        String urlapp= App.RegPref.getString(Constant.AllURllive,"");
         fcmToken = token;
         Log.d("Token===>>>", token);
         if (AppConfig.isInternetOn())
@@ -349,7 +350,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.d("login app",responseData);
                             JSONObject object = new JSONObject(responseData);
                             if (object.getInt(Constant.STATUS) == 1) {
-                                AppConfig.showToast("Login Successfully.");
+                               // AppConfig.showToast("Login Successfully.");
                                 App.editor.putString("signUp", "no");
                                 App.editor.apply();
                                 UserResponse data = new Gson().fromJson(responseData, UserResponse.class);

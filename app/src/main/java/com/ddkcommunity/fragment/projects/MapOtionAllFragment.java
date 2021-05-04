@@ -29,6 +29,7 @@ import com.ddkcommunity.adapters.AllTypeCashoutFragmentAdapter;
 import com.ddkcommunity.adapters.CashoutFragmenAdapter;
 import com.ddkcommunity.adapters.mapoptionadapter;
 import com.ddkcommunity.fragment.CashOutFragmentNew;
+import com.ddkcommunity.fragment.send.SendLinkFragment;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
 import com.ddkcommunity.model.UserBankList;
 import com.ddkcommunity.model.UserBankListDetails;
@@ -60,7 +61,7 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
     LinearLayout submenuiteam,headerinactiviteview;
     ArrayList<mapoptionmodel> mapoptionList;
     String activeStatus;
-    ImageView copyview;
+    ImageView copyview,browseview;
 
     public MapOtionAllFragment()
     {
@@ -74,6 +75,7 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.mapoptionallfragment, container, false);
         mContext = getActivity();
+        browseview=view.findViewById(R.id.browseview);
         mapoptiontext=view.findViewById(R.id.mapoptiontext);
         if (getArguments().getString("activeStatus") != null) {
             activeStatus= getArguments().getString("activeStatus");
@@ -118,6 +120,26 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 AppConfig.copyPass(Portal.getText().toString().trim(), "Copy Address", getActivity());
+            }
+        });
+        browseview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                String mapurl= App.pref.getString(Constant.MApLoginURl,"");
+                String linkvalue=mapurl;
+                if(linkvalue!=null) {
+                    //send view
+                    Fragment fragment = new SendLinkFragment();
+                    Bundle arg = new Bundle();
+                    arg.putString("link", linkvalue);
+                    fragment.setArguments(arg);
+                    MainActivity.addFragment(fragment, true);
+                }else
+                {
+                    Toast.makeText(mContext, "Link not available ", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         return view;

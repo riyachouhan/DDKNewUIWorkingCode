@@ -85,7 +85,7 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        if (usercountryselect==1)
+        if (usercountryselect==1 || usercountryselect==3)
         {
             holder.tvBankNameDDk.setText(data.get(position).bank_name);
             Glide.with(mContext).load(SLIDERIMG+ data.get(position).image).into(holder.ivBankIconDDK);
@@ -227,7 +227,7 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
                             }
                             String email = "";
                             String bank_id = bankid + "";
-                            sendOtp(id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                            sendOtp("","",id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                         }
                     }else
                     {
@@ -263,6 +263,8 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
         final EditText etAccountNumber = dialogView.findViewById(R.id.etAccountNumber);
         final EditText etEmailReceipt = dialogView.findViewById(R.id.etEmailReceipt);
         EditText etAmountSend = dialogView.findViewById(R.id.etAmountSend);
+        final EditText etBranchcityName=dialogView.findViewById(R.id.etBranchcityName);
+        final EditText etBranchName=dialogView.findViewById(R.id.etBranchName);
         final EditText etAccountName = dialogView.findViewById(R.id.etAccountName);
         View view = dialogView.findViewById(R.id.view);
         dialog.show();
@@ -275,7 +277,14 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
             ivBankLogo.setVisibility(View.VISIBLE);
             tv_ConMaxTransfer.setText("Maximum of PHP 50,000");
             etAccountName.setHint("Enter Account Name");
-        }else {
+        }else if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia"))
+        {
+            tv_CountryId.setText("IDR");
+            ivBankLogo.setVisibility(View.VISIBLE);
+            tv_ConMaxTransfer.setText("Maximum of IDR 50,000");
+            etAccountName.setHint("Enter Account Name");
+        }
+        else {
             tv_CountryId.setText("AUD");
             ivBankLogo.setVisibility(View.INVISIBLE);
             etAccountName.setHint("Enter BSB Name");
@@ -304,6 +313,9 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
 
                     String holder_name = etAccountName.getText().toString();
                     String etAccountNumbervalue = etAccountNumber.getText().toString();
+                    String etBranchcityNamevalue=etBranchcityName.getText().toString();
+                    String etBranchNamevalue=etBranchName.getText().toString();
+
                     if (holder_name.equalsIgnoreCase(""))
                     {
                         if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
@@ -315,31 +327,68 @@ public class BankCashoutFragment extends RecyclerView.Adapter<BankCashoutFragmen
                         Toast.makeText(mContext, "Please enter Account Number", Toast.LENGTH_SHORT).show();
                     } else {
                         //Bigde
-                        if (etAccountNumber.getText().toString().length() <= 20)
+                        String countrydata=userData.getUser().country.get(0).country;
+                        Log.d("country",countrydata);
+                        if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia"))
                         {
+                            if (etBranchNamevalue.equalsIgnoreCase("")) {
+                                Toast.makeText(mContext, "Please enter Bank Branch Name", Toast.LENGTH_SHORT).show();
+                            }else if (etBranchcityNamevalue.equalsIgnoreCase("")) {
+                                Toast.makeText(mContext, "Please enter Bank City Name", Toast.LENGTH_SHORT).show();
+                            }else {
 
-                            BigDecimal countamoutn = new BigDecimal("50");
-                            BigDecimal btccondition = new BigDecimal(phpamount);
-                            int comare = btccondition.compareTo(countamoutn);
-                            {
-                                dialog.dismiss();
-                                //for send money call
-                                String bank_type = banktype;
-                                String gcash_no = "", account_no = "";
-                                if (bank_type.toString().equalsIgnoreCase("bank")) {
-                                    account_no = etAccountNumber.getText().toString();
-                                    gcash_no = "";
+                                if (etAccountNumber.getText().toString().length() <= 20) {
+
+                                    BigDecimal countamoutn = new BigDecimal("50");
+                                    BigDecimal btccondition = new BigDecimal(phpamount);
+                                    int comare = btccondition.compareTo(countamoutn);
+                                    {
+                                        dialog.dismiss();
+                                        //for send money call
+                                        String bank_type = banktype;
+                                        String gcash_no = "", account_no = "";
+                                        if (bank_type.toString().equalsIgnoreCase("bank")) {
+                                            account_no = etAccountNumber.getText().toString();
+                                            gcash_no = "";
+                                        } else {
+                                            account_no = "";
+                                            gcash_no = gcash_no;
+                                        }
+                                        String email = etEmailReceipt.getText().toString();
+                                        String bank_id = bankid + "";
+                                        sendOtp(etBranchNamevalue, etBranchcityNamevalue, id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                                    }
                                 } else {
-                                    account_no = "";
-                                    gcash_no = gcash_no;
+                                    Toast.makeText(mContext, "Invalid Account Number", Toast.LENGTH_SHORT).show();
                                 }
-                                String email = etEmailReceipt.getText().toString();
-                                String bank_id = bankid + "";
-                                sendOtp(id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                             }
-                        } else
+                        }else
                         {
-                            Toast.makeText(mContext, "Invalid Account Number", Toast.LENGTH_SHORT).show();
+                            if (etAccountNumber.getText().toString().length() <= 20)
+                            {
+                                BigDecimal countamoutn = new BigDecimal("50");
+                                BigDecimal btccondition = new BigDecimal(phpamount);
+                                int comare = btccondition.compareTo(countamoutn);
+                                {
+                                    dialog.dismiss();
+                                    //for send money call
+                                    String bank_type = banktype;
+                                    String gcash_no = "", account_no = "";
+                                    if (bank_type.toString().equalsIgnoreCase("bank")) {
+                                        account_no = etAccountNumber.getText().toString();
+                                        gcash_no = "";
+                                    } else {
+                                        account_no = "";
+                                        gcash_no = gcash_no;
+                                    }
+                                    String email = etEmailReceipt.getText().toString();
+                                    String bank_id = bankid + "";
+                                    sendOtp(etBranchNamevalue,etBranchcityNamevalue,id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                                }
+                            } else
+                            {
+                                Toast.makeText(mContext, "Invalid Account Number", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }

@@ -55,9 +55,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         try {
-
             holder.tvDateTime.setText(data.get(position).transactionDate);
-
             if(data.get(position).outgoing_asset_type!=null)
             {
                 if(data.get(position).created_at!=null)
@@ -240,7 +238,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                             if(data.get(position).transaction_for.equalsIgnoreCase("aud"))
                             {
                                holder.tvAmount.setText(data.get(position).php_amount + " AUD");
-                            }else {
+                            }else if(data.get(position).transaction_for.equalsIgnoreCase("idr"))
+                            {
+                                holder.tvAmount.setText(data.get(position).php_amount + " IDR");
+                            }else{
                                holder.tvAmount.setText(data.get(position).php_amount + " PHP");
                             }
                         }else
@@ -257,7 +258,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                         String valueamount=data.get(position).ddk.toString();
                         if(valueamount!=null)
                         {
-                            if(paymentcurrent.equalsIgnoreCase("sam_koin"))
+                            if(paymentcurrent.equalsIgnoreCase("sam_koin") || paymentcurrent.equalsIgnoreCase("sam koin"))
                             {
                                 holder.tvddkamount.setText(valueamount + " SAM Koin");
                             }else

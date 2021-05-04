@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import com.ddkcommunity.UserModel;
 import com.ddkcommunity.interfaces.GetUSDAndBTCCallback;
 import com.ddkcommunity.model.Country;
 import com.ddkcommunity.model.CountryResponse;
+import com.ddkcommunity.model.baseUrlModel;
+import com.ddkcommunity.model.buyCryptoModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.model.versionModel;
 import com.ddkcommunity.utilies.AppConfig;
@@ -61,6 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ddkcommunity.Constant.BASE_URL_versionName;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowVersionError;
 import static com.ddkcommunity.utilies.dataPutMethods.generateEncyTab;
@@ -79,6 +83,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private boolean isComeFromUpdate = false;
     private Context mContext;
     public static List<Country> countryList;
+    public static String finalcall,baseurl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +103,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         //...........
         spinner1.start();
         //proceed();
-        getVersionApp();
-
+        getUserAppApi();
         appUpdateManager.registerListener(this);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new com.google.android.gms.tasks.OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -127,7 +131,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                proceed();
+                getUserAppApi();
+               // proceed();
             }
         }
     }
@@ -269,21 +274,21 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                             {
                                 String imgview = response.body().getData().getAndroidVersion();
                                 String versionName = BuildConfig.VERSION_NAME;
-                                if(imgview.equalsIgnoreCase(versionName))
+                                //if(imgview.equalsIgnoreCase(versionName))
                                 {
                                     proceed();
-                                }else
+                                }/*else
                                 {
                                     ShowVersionError(SplashActivity.this);
-                                }
+                                }*/
                             }
                         } catch (Exception e)
                         {
-                            ShowApiError(activity,"exception in ninethface/social-media-share");
+                            ShowApiError(activity,"exception in commondetails/get-app-version");
                             e.printStackTrace();
                         }
                     } else {
-                        ShowApiError(activity,"server error in ninethface/social-media-share");
+                        ShowApiError(activity,"server error in commondetails/get-app-version");
                     }
                 }
 
@@ -296,6 +301,51 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
             AppConfig.showToast("No internet.");
         }
     }
+
+    //for sererchangeurl
+    private void getUserAppApi()
+    {
+        String tok="";
+        AppConfig.getSingleLoadInterface().getConstantUrl(AppConfig.getStringPreferences(SplashActivity.this, Constant.JWTToken)).enqueue(new Callback<baseUrlModel>() {
+            @Override
+            public void onResponse(Call<baseUrlModel> call, Response<baseUrlModel> response) {
+                try {
+                    Log.d("sam erro par currency",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus() == 1)
+                        {
+                            try {
+                                baseurl=response.body().getData().getUrl();
+                                finalcall=baseurl+BASE_URL_versionName;
+                                App.editor.putString(Constant.AllURllive,finalcall);
+                                App.editor.putString( Constant.apiserver,baseurl);
+                                App.editor.commit();
+                                getVersionApp();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            AppConfig.showToast(response.body().getMsg());
+                        }
+                    } else {
+                        ShowApiError(mContext,"server error commondetails/get-constant-url");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<baseUrlModel> call, Throwable t) {
+//                dialog.dismiss();
+            }
+        });
+    }
+    //.................
 
     private void checkLogin()
     {
@@ -311,8 +361,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                             AppConfig.ShowAlertDialog(activity, "Please Connect to internet");
                         }
                     } else {
-                        if (AppConfig.isInternetOn()) {
-
+                        if (AppConfig.isInternetOn())
+                        {
                             SharedPreferences sharedPrefs = mContext.getSharedPreferences(
                                     AppConfig.PREF_UNIQUE_ID, Context.MODE_PRIVATE);
                             String uniqueID = sharedPrefs.getString(AppConfig.PREF_UNIQUE_ID, null);

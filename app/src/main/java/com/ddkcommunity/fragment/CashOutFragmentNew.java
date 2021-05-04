@@ -156,6 +156,7 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
     View view;
     public static String countrydata;
     AppCompatButton transfersamwallet;
+    BigDecimal roundhaldv = null;
 
     public CashOutFragmentNew() {
 
@@ -165,11 +166,11 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
     {
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
-        String func=functionname;
+        String func=functionname,checkAccountLimit="0";
         {
             func=functionname;
         }
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
@@ -280,7 +281,6 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
             {
                // getSettingServerOnTab(getActivity(),"php_buy_from_sam_koin");
                 BigDecimal currentbalance;
-                BigDecimal roundhaldv = null;
                 String samkoinvalue=App.pref.getString(Constant.SAMKOIN_Balance, "");
                 if(samkoinvalue!=null)
                 {
@@ -291,6 +291,29 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
             }
             tvAvailableDDK.setText(Html.fromHtml(styledTextddk), TextView.BufferType.SPANNABLE);
             styledText1 = "<font color='black'>Minimum Sell : </font>" + amountminim + " PHP";
+        }else if(countrydata.equalsIgnoreCase("indonesia"))
+        {
+            usercountryselect=3;
+            totleinhint.setText("Total in IDR");
+            String styledTextddk="";
+            if(userselctionopt.equalsIgnoreCase("DDK"))
+            {
+                styledTextddk= "<font color='black'>Available DDK : </font>"+aviabelcashoutamount+"";
+            }else
+            {
+                // getSettingServerOnTab(getActivity(),"php_buy_from_sam_koin");
+                BigDecimal currentbalance;
+                String samkoinvalue=App.pref.getString(Constant.SAMKOIN_Balance, "");
+                if(samkoinvalue!=null)
+                {
+                    currentbalance = new BigDecimal(samkoinvalue);
+                    roundhaldv = currentbalance.setScale(4, BigDecimal.ROUND_FLOOR);
+                }
+                styledTextddk= "<font color='black'>SAM Koin : </font>"+roundhaldv+"";
+            }
+            tvAvailableDDK.setText(Html.fromHtml(styledTextddk), TextView.BufferType.SPANNABLE);
+            amountminim="10000";
+            styledText1 = "<font color='black'>Minimum Sell : </font>" + amountminim + " IDR";
         }else
         {
             usercountryselect=2;
@@ -303,7 +326,6 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
             }else
             {
                 BigDecimal currentbalance;
-                BigDecimal roundhaldv = null;
                 String samkoinvalue=App.pref.getString(Constant.SAMKOIN_Balance, "");
                 if(samkoinvalue!=null)
                 {
@@ -322,7 +344,7 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
 
         Log.d("country",countrydata);
         String curkjnew= App.pref.getString(Constant.PHP_Functionality_View, "");
-        if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") || countrydata.equalsIgnoreCase("australia")))
+        if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") || countrydata.equalsIgnoreCase("australia") || countrydata.equalsIgnoreCase("indonesia")))
         {
             lytPhpPayment.setVisibility(View.VISIBLE);
             lytSelectBank.setVisibility(View.GONE);
@@ -410,7 +432,14 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
 
                                } else
                                {
-                                   String transcationfee=App.pref.getString(Constant.sellsam_transaction_fees, "");
+                                   String transcationfee;
+                                   if(countrydata!=null && (countrydata.equalsIgnoreCase("indonesia")))
+                                   {
+                                       transcationfee=App.pref.getString(Constant.sellsam_transaction_feeskpay, "");
+                                   }else
+                                   {
+                                       transcationfee=App.pref.getString(Constant.sellsam_transaction_fees, "");
+                                   }
                                    BigDecimal transcationfeeserver=new BigDecimal(transcationfee);
                                    BigDecimal transactionfeeam = etDDKValue.multiply(transcationfeeserver);
                                    BigDecimal transactionfeemain = transactionfeeam.divide(BigDecimal.valueOf(100));
@@ -453,7 +482,6 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
         getUserBankList();
         allTypeCashoutFragmentAdapter = new AllTypeCashoutFragmentAdapter(usercountryselect,bankList, getActivity(),CashOutFragmentNew.this);
         recyclerviewGridView.setAdapter(allTypeCashoutFragmentAdapter);
-
         transfersamwallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -782,6 +810,8 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
     {
         String status = "complete";
         String addre="";
+        BigDecimal maxamountHundred = new BigDecimal("25000000");
+
         if(userselctionopt.equalsIgnoreCase("DDK"))
         {
             addre = tvSelectDdkAddress.getText().toString();
@@ -800,12 +830,17 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
                 status = "Minimum amount";
                 if(usercountryselect==1)
                 {
-                    DataNotFound(getActivity(),"Minimum amount will be php "+cashoutamount);
+                    DataNotFound(getActivity(),"Minimum amount will be PHP "+cashoutamount);
 
-                }else
+                }else if(usercountryselect==2)
                 {
-                    DataNotFound(getActivity(),"Minimum amount will be Aud "+cashoutamount);
+                    DataNotFound(getActivity(),"Minimum amount will be AUD "+cashoutamount);
+
+                }else if(usercountryselect==3)
+                {
+                    DataNotFound(getActivity(),"Minimum amount will be IDR "+cashoutamount);
                 }
+
             }else {
                 status = "complete";
             }
@@ -813,23 +848,49 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
         {
             String ddkamount = etDDK.getText().toString();
             String totoalphpvale=tvTotalInPhp.getText().toString();
-            String cashoutamount=AppConfig.getStringPreferences(mContext, Constant.MINIMUM_CASHOUT);
+            BigDecimal entersamkoin = null;
+            String cashoutamount = "";
+            if(usercountryselect==3)
+            {
+                cashoutamount = "10000";
+            }else {
+               cashoutamount = AppConfig.getStringPreferences(mContext, Constant.MINIMUM_CASHOUT);
+            }
             BigDecimal fiveHundred = new BigDecimal(cashoutamount);
             if (ddkamount.equals("")|| ddkamount.equals(null)){
                 status = "Enter Amount";
                 DataNotFound(getActivity(),"Please Enter SAM Koin Amount");
-            }else if (fiveHundred.compareTo(new BigDecimal(totoalphpvale)) == 1)
+            }else if ((new BigDecimal(etDDK.getText().toString())).compareTo(roundhaldv) == 1)
+            {
+                status = "Enter Valid Amount";
+                DataNotFound(getActivity(),"Sam koin is not enough for Sell");
+            } else
+            if (fiveHundred.compareTo(new BigDecimal(totoalphpvale)) == 1)
             {
                 status = "Minimum amount";
                 if(usercountryselect==1)
                 {
-                    DataNotFound(getActivity(),"Minimum amount will be php "+cashoutamount);
+                    DataNotFound(getActivity(),"Minimum amount will be PHP "+cashoutamount);
 
-                }else
+                }else if(usercountryselect==2)
                 {
-                    DataNotFound(getActivity(),"Minimum amount will be Aud "+cashoutamount);
+                    DataNotFound(getActivity(),"Minimum amount will be AUD "+cashoutamount);
+
+                }else if(usercountryselect==3)
+                {
+                    DataNotFound(getActivity(),"Minimum amount more than IDR "+cashoutamount);
                 }
-            }else {
+            }else if (maxamountHundred.compareTo(new BigDecimal(totoalphpvale)) == -1)
+            {
+            status = "Maximum amount";
+             if(usercountryselect==3)
+            {
+                DataNotFound(getActivity(),"Maximum amount limit is IDR "+maxamountHundred);
+            }else
+             {
+                 status = "complete";
+             }
+           }else {
                 status = "complete";
             }
         }
@@ -1026,6 +1087,9 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
         if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines"))) {
             hm.put("to","php");
 
+        }else if(countrydata!=null && (countrydata.equalsIgnoreCase("indonesia"))) {
+            hm.put("to","idr");
+
         }else {
             hm.put("to","aud");
         }
@@ -1040,8 +1104,9 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
                         JSONObject object = new JSONObject(responseData);
                         if (object.getBoolean("success"))
                         {
-                            tvTotalInPhp.setText("" + object.getString("result"));
-                            totalPhpValue = object.getString("result");
+                            totalPhpValue = object.getString("result").toString();
+                            BigDecimal totalfinal=new BigDecimal(totalPhpValue);
+                            tvTotalInPhp.setText("" + totalfinal.toPlainString());
                             if(etDDK.getText().toString().equalsIgnoreCase(""))
                             {
                                 tvTotalInPhp.setText("");
@@ -1118,7 +1183,7 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
 
                     } else {
                         userBankLists = new ArrayList<UserBankList>();
-                        AppConfig.showToast(response.body().getMsg());
+                       // AppConfig.showToast(response.body().getMsg());
                         UserBankList userBankList = new UserBankList();
                         UserBankListDetails userBankListDetails = new UserBankListDetails();
                         userBankListDetails.setBankName("Addoption");
@@ -1266,7 +1331,6 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
     private void filter(String newText) {
     }
 
-
     private void getBankList(String country_id) {
         HashMap<String, String> hm = new HashMap<>();
         hm.put("country_id", country_id);
@@ -1287,8 +1351,20 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
                         int sizedata=bankList.size();
                         bankListAdapter.updateData(bankList, response.body().image_path);
                         //for list
-                        if(bankList.size()>8) {
-                            bankList.subList(0, 8).clear();
+                        if(bankList.size()>8)
+                        {
+                            bankListnewli.addAll(bankList);
+                            bankList.clear();
+                            for(int i=0;i<bankListnewli.size();i++)
+                            {
+                                if(bankList.size()==8)
+                                {
+                                    break;
+                                }else
+                                {
+                                    bankList.add(bankListnewli.get(i));
+                                }
+                            }
                         }
                         BankList.BankData bankData4 = new BankList.BankData();
                         bankData4.setBank_name("All");
@@ -1302,7 +1378,7 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
                     } else if (response.body() != null && response.body().status == 3) {
                         //AppConfig.showToast(response.body().msg);
                     }else {
-                       // AppConfig.showToast(response.body().msg);
+                        // AppConfig.showToast(response.body().msg);
                     }
                 } else {
                     AppConfig.showToast("Server Error");
@@ -1319,27 +1395,6 @@ public class CashOutFragmentNew extends Fragment implements View.OnClickListener
     private void hideKeyBoard() {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    }
-
-    private void openOkDialog() {
-        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = layoutInflater.inflate(R.layout.popup, null);
-
-        TextView closePopupBtn = (TextView) customView.findViewById(R.id.btnClose);
-        TextView tvMsg = (TextView) customView.findViewById(R.id.tvMsg);
-        closePopupBtn.setText("Okay");
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setView(customView);
-        tvMsg.setText("This feature is temporarily for demo purposes only");
-        final AlertDialog dialog = alert.create();
-        dialog.show();
-        dialog.setCancelable(false);
-        closePopupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
     }
 
     @Override

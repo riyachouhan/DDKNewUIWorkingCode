@@ -21,8 +21,8 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +33,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup"
-        android:requestLegacyExternalStorage="true">
+        >
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -45,7 +45,6 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

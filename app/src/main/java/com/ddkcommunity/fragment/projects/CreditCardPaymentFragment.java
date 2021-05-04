@@ -552,13 +552,28 @@ public class CreditCardPaymentFragment extends Fragment {
                     Log.d("sam erro par invi",response.body().toString());
                     if (response.isSuccessful() && response.body() != null)
                     {
+                        pd.dismiss();
                         if (response.body().getStatus()==1)
                         {
                             String text_id=response.body().getData().getTxtId();
-                            registerAmountOnMap(dialog,text_id,input_amount,pd);
+                            final String emailid=userData.getUser().getEmail();
+                            if(action.equalsIgnoreCase("mapwithreferral"))
+                            {
+                                dialog.dismiss();
+                                Fragment fragment = new SuccessFragmentScan();
+                                Bundle arg = new Bundle();
+                                arg.putString("action", "map");
+                                arg.putString("email", emailid);
+                                fragment.setArguments(arg);
+                                MainActivity.addFragment(fragment, true);
+                            }else
+                            {
+                                dialog.dismiss();
+                                CommonMethodFunction.transactionStatus("Completed",getActivity(),text_id,"");
+                            }
+                           // registerAmountOnMap(dialog,text_id,input_amount,pd);
                         }else
                         {
-                            pd.dismiss();
                             Toast.makeText(activity, ""+response.body().getMsg(), Toast.LENGTH_SHORT).show();
                         }
 

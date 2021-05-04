@@ -3,13 +3,17 @@ package com.ddkcommunity.fragment;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +33,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -37,14 +44,21 @@ import com.ddkcommunity.Constant;
 import com.ddkcommunity.LoadInterface;
 import com.ddkcommunity.MyBounceInterpolator;
 import com.ddkcommunity.R;
+import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.model.SAMPDModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.model.verifcationFundSource;
 import com.ddkcommunity.utilies.AppConfig;
+import com.ddkcommunity.utilies.CommonMethodFunction;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -58,9 +72,14 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -74,6 +93,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowSAMPDDialog;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowSameWalletDialog;
+import static com.ddkcommunity.utilies.dataPutMethods.ShowbasicValiationView;
 import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.setVerificationdata;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -99,6 +119,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     public int progrescount=0;
     TextView hintprogree;
     private UserResponse userData;
+    Bitmap changespasswordbitmap;
+    String changespasswordimgpath;
     String videostatusvalue,identitystayuvalue,addressstavalue,emailstatusvalue,mobilestatevalue,fundsttusvalue;
     private BottomSheetDialog dialog;
     private static String billingImagePath,imagePathFirstFront = "",imagePathFirstBack = "",imagePathSecondFront = "",imagePathSecondBak = "";
@@ -116,6 +138,10 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     TextView corporatehint,corporatedailylimit,corporatemonthlylimit,
     basichintlimit,basicdailylimit,basicmonthlylimit,
     fullverifiedhintlimit,fullyvarifieddailylimit,fullyvarifiedmonthlylimit,contactus_view;
+    TextView  basicinforlayout,fullyforlayout,basiclevelstaus,fullyveririefstatus;
+    private Uri uri;
+    int selecetdimgtype=0;
+    ImageView img_first_front_pic;
 
     public AccoutnverficationFregament() {
         // Required empty public constructor
@@ -149,8 +175,11 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
     public void getAllViewIds()
     {
+        basiclevelstaus=rootView.findViewById(R.id.basiclevelstaus);
+        fullyveririefstatus=rootView.findViewById(R.id.fullyveririefstatus);
+        basicinforlayout=rootView.findViewById(R.id.basicinforlayout);
+        fullyforlayout=rootView.findViewById(R.id.fullyforlayout);
         contactus_view=rootView.findViewById(R.id.contactus_view);
-        corporatehint=rootView.findViewById(R.id.corporatehint);
         corporatedailylimit=rootView.findViewById(R.id.corporatedailylimit);
         corporatemonthlylimit=rootView.findViewById(R.id.corporatemonthlylimit);
         basichintlimit=rootView.findViewById(R.id.basichintlimit);
@@ -196,6 +225,20 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         getGovermentList();
         getVerificationStatus();
         getKycRules();
+        basicinforlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowbasicValiationView(getActivity(),"basic");
+            }
+        });
+
+        fullyforlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowbasicValiationView(getActivity(),"fully");
+            }
+        });
+
     }
 
     @Override
@@ -213,6 +256,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
     public void setProgressBar()
     {
+        int emailfirst=0,fundfirst=0,addressfirst=0,ideneitiy=0,videofirst=0;
         progrescount=0;
         emailstatusvalue=App.pref.getString(Constant.EMAIL_VERIFIED_STATUS,"");
         mobilestatevalue=App.pref.getString(Constant.MOBILE_VERIFIED_STATUS,"");
@@ -222,6 +266,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         videostatusvalue=App.pref.getString(Constant.VIDEO_VERIFIED_STATUS,"");
         if(emailstatusvalue.equalsIgnoreCase("yes") || emailstatusvalue.equalsIgnoreCase("verified"))
         {
+            emailfirst=1;
             email_icon_img.setImageResource(R.drawable.complete_icon);
             email_text_status.setText("Verified");
             progrescount=progrescount+10;
@@ -260,6 +305,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
         if(fundsttusvalue.equalsIgnoreCase("yes") || fundsttusvalue.equalsIgnoreCase("verified"))
         {
+            fundfirst=1;
             fund_text_status.setText("Verified");
             fund_icon_img.setImageResource(R.drawable.complete_icon);
             progrescount=progrescount+10;
@@ -279,6 +325,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
         if(addressstavalue.equalsIgnoreCase("yes") || addressstavalue.equalsIgnoreCase("verified"))
         {
+            addressfirst=1;
             address_text_status.setText("Verified");
             address_icon_img.setImageResource(R.drawable.complete_icon);
             progrescount=progrescount+30;
@@ -298,6 +345,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
         if(identitystayuvalue.equalsIgnoreCase("yes") || identitystayuvalue.equalsIgnoreCase("verified"))
         {
+            ideneitiy=1;
             identity_text_status.setText("Verified");
             identity_icon_img.setImageResource(R.drawable.complete_icon);
             progrescount=progrescount+30;
@@ -317,6 +365,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
         if(videostatusvalue.equalsIgnoreCase("yes") || videostatusvalue.equalsIgnoreCase("verified"))
         {
+            videofirst=1;
             video_text_status.setText("Verified");
             video_icon_img.setImageResource(R.drawable.complete_icon);
             progrescount=progrescount+10;
@@ -335,6 +384,22 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         }
         hintprogree.setText("Your account is "+progrescount+"% Verified");
         circularProgressBar2.setProgress(progrescount);
+
+        if(emailfirst==1 && ideneitiy==1 && fundfirst==1)
+        {
+            basiclevelstaus.setVisibility(View.VISIBLE);
+        }else
+        {
+            basiclevelstaus.setVisibility(View.GONE);
+        }
+
+        if(emailfirst==1 && ideneitiy==1 && fundfirst==1 && addressfirst==1 && videofirst==1)
+        {
+            fullyveririefstatus.setVisibility(View.VISIBLE);
+        }else
+        {
+            fullyveririefstatus.setVisibility(View.GONE);
+        }
     }
 
     private void getFundSources() {
@@ -557,11 +622,187 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                     sendMobileVerfication(getActivity());
 
                 }else{
-                    initEmailVerification(buttonclick);
+                    if(buttonclick==4)
+                    {
+                        String emailvalue=App.pref.getString(Constant.USER_EMAIL, "");
+                        initEmailVerificationSingleimg(emailvalue);
+                    }else {
+                        initEmailVerification(buttonclick);
+                    }
                 }
             }
         }, 300);
     }
+
+    //for new
+    private void  initEmailVerificationSingleimg(final String emailid)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        final View dialogViewp;
+        dialogViewp = layoutInflater.inflate(R.layout.loginchangepasswordlayout, null);
+        final BottomSheetDialog dialogp = new BottomSheetDialog(getActivity(), R.style.DialogStyle);
+        dialogp.setContentView(dialogViewp);
+        img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
+        TextView btnnext=dialogp.findViewById(R.id.btnnext);
+        TextView infoicon=dialogp.findViewById(R.id.infoicon);
+        infoicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataPutMethods.ShowInfoAlert(getActivity());
+            }
+        });
+        changespasswordimgpath ="";
+        changespasswordbitmap=null;
+        img_first_front_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //for pic img
+                final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                dialognew.setOnPickCancel(new IPickCancel()
+                {
+                    @Override
+                    public void onCancelClick() {
+                        dialognew.dismiss();
+                    }
+                }).setOnPickResult(new IPickResult()
+                {
+                    @Override
+                    public void onPickResult(PickResult r)
+                    {
+                        //TODO: do what you have to...
+                        changespasswordimgpath = r.getPath();
+                        changespasswordbitmap=r.getBitmap();
+                        img_first_front_pic.setImageBitmap(r.getBitmap());
+                    }
+                }).show(getActivity().getSupportFragmentManager());
+
+            }
+        });
+        btnnext.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(changespasswordimgpath.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getActivity(), "Please upload ID proof with image", Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    updateIdProof(dialogp,emailid);
+                }
+            }
+        });
+        dialogp.show();
+    }
+    //...
+    private void updateIdProof(final BottomSheetDialog dialogp,final String email) {
+
+        if (AppConfig.isInternetOn())
+        {
+            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            AppConfig.showLoading(dialog, "Please wait..........");
+            File file = null;
+            try {
+                if (changespasswordimgpath != null) {
+                    file = new File(changespasswordimgpath);
+                }
+
+                try {
+                    File userimg=new File(changespasswordimgpath);
+                    FileOutputStream out = new FileOutputStream(userimg);
+                    changespasswordbitmap.compress(Bitmap.CompressFormat.PNG, 100, out); //100-best quality
+                    out.close();
+                    file = new File(changespasswordimgpath);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("user_photo_id", file.getName(), requestFile);
+
+                Call<ResponseBody> call = AppConfig.getLoadInterface().loginUserIdUpdate(
+                        AppConfig.getStringPreferences(getActivity(), Constant.JWTToken),
+                        body
+                );
+
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful())
+                        {
+                            dialog.dismiss();
+                            try {
+                                String responseData = response.body().string();
+                                JSONObject object = new JSONObject(responseData);
+                                if (object.getInt(Constant.STATUS) == 1)
+                                {
+                                    getVerificationStatus();
+                                    PasswordChangesSuccessfully();
+                                    dialogp.dismiss();
+
+                                } else if (object.getInt(Constant.STATUS) == 3) {
+                                    AppConfig.showToast(object.getString("msg"));
+                                    AppConfig.openSplashActivity(getActivity());
+                                } else {
+                                    AppConfig.showToast(object.getString("msg"));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            dialog.dismiss();
+                            ShowApiError(getActivity(),"server error in edit-user-profile");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        AppConfig.hideLoading(dialog);
+                        errordurigApiCalling(getActivity(),t.getMessage());
+                    }
+                });
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(getContext(),"error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            AppConfig.showToast("No internet.");
+        }
+    }
+
+    private void PasswordChangesSuccessfully()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        final View dialogView;
+        dialogView = layoutInflater.inflate(R.layout.passwordchangesuccesslayout, null);
+        final BottomSheetDialog dialogs = new BottomSheetDialog(getActivity(), R.style.DialogStyle);
+        dialogs.setContentView(dialogView);
+        Toolbar container=dialogs.findViewById(R.id.tootlbarheadr);
+        container.setVisibility(View.INVISIBLE);
+        LinearLayout back_view=dialogs.findViewById(R.id.back_view);
+        TextView btnnext=dialogs.findViewById(R.id.btnnext);
+        btnnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialogs.dismiss();
+            }
+        });
+        back_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogs.dismiss();
+            }
+        });
+        dialogs.show();
+    }
+    //...........
 
     public void sendMobileVerfication(Context mContext) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -795,7 +1036,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
             etFundValue.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     dataPutMethods.showDialogVerificationView(view,getContext(),fundslist,etFundValue);
                 }
             });
@@ -1232,7 +1474,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         String responseData = response.body().string();
-                        Toast.makeText(mContext, "response "+responseData+" mobilbe"+mobilenumber, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(mContext, "response "+responseData+" mobilbe"+mobilenumber, Toast.LENGTH_SHORT).show();
                         Log.d("get verification status", responseData);
                         JSONObject object = new JSONObject(responseData);
                         if (object.getInt(Constant.STATUS) == 1)
@@ -1470,48 +1712,48 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                                                 monthlylimit3=accoutnobj.getString("monthly_limit");
                                             }
                                         }
-                                        corporatehint.setText(cororpratehint);
+                                        //corporatehint.setText(cororpratehint);
                                         if(dailylimit3.equalsIgnoreCase(""))
                                         {
-                                            corporatedailylimit.setText(" ---- \n Flat and Crypto");
+                                            corporatedailylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            corporatedailylimit.setText(dailylimit3 + " USD \n Flat and Crypto");
+                                            corporatedailylimit.setText(dailylimit3 + " USD \n Fiat and Crypto");
                                         }
                                         if(monthlylimit3.equalsIgnoreCase(""))
                                         {
-                                            corporatemonthlylimit.setText(" ---- \n Flat and Crypto");
+                                            corporatemonthlylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            corporatemonthlylimit.setText(monthlylimit3 + " USD \n Flat and Crypto");
+                                            corporatemonthlylimit.setText(monthlylimit3 + " USD \n Fiat and Crypto");
                                         }
 
                                         basichintlimit.setText(basichint);
                                         if(dailylimit1.equalsIgnoreCase(""))
                                         {
-                                            basicdailylimit.setText(" ---- \n Flat and Crypto");
+                                            basicdailylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            basicdailylimit.setText(dailylimit1 + " USD \n Flat and Crypto");
+                                            basicdailylimit.setText(dailylimit1 + " USD \n Fiat and Crypto");
                                         }
 
                                         if(monthlylimit1.equalsIgnoreCase(""))
                                         {
-                                            basicmonthlylimit.setText(" ---- \n Flat and Crypto");
+                                            basicmonthlylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            basicmonthlylimit.setText(monthlylimit1+ " USD \n Flat and Crypto");
+                                            basicmonthlylimit.setText(monthlylimit1+ " USD \n Fiat and Crypto");
                                         }
 
                                         fullverifiedhintlimit.setText(fulylverifiedhint);
                                         if(dailylimit2.equalsIgnoreCase(""))
                                         {
-                                            fullyvarifieddailylimit.setText(" ---- \n Flat and Crypto");
+                                            fullyvarifieddailylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            fullyvarifieddailylimit.setText(dailylimit2+ " USD \n Flat and Crypto");
+                                            fullyvarifieddailylimit.setText(dailylimit2+ " USD \n Fiat and Crypto");
                                         }
 
                                         if(monthlylimit2.equalsIgnoreCase(""))
                                         {
-                                            fullyvarifiedmonthlylimit.setText(" ---- \n Flat and Crypto");
+                                            fullyvarifiedmonthlylimit.setText(" ---- \n Fiat and Crypto");
                                         }else {
-                                            fullyvarifiedmonthlylimit.setText(monthlylimit2+ " USD \n Flat and Crypto");
+                                            fullyvarifiedmonthlylimit.setText(monthlylimit2+ " USD \n Fiat and Crypto");
                                         }
                                     }
                                    } catch (JSONException e) {
@@ -1619,6 +1861,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                                     {
                                         showNoteSection("0","",videoveirifcationote);
                                     }
+
 
                                 } catch (JSONException e) {
                                     AppConfig.showToast("Server error");
@@ -1809,10 +2052,39 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if( resultCode == RESULT_OK) {
 
             try {
+                if (requestCode == 1) {
+                    setImage();
+                }
+
+                if (requestCode == 2) {
+                    Uri select = data.getData();
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), select);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    FileOutputStream fOut;
+                    try {
+                        String photoname="profilepic.png";
+                        File f = new File(getActivity().getFilesDir(), photoname);
+                        fOut = new FileOutputStream(f);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                        fOut.flush();
+                        fOut.close();
+                        changespasswordimgpath = f.getAbsolutePath();
+                        changespasswordbitmap=bitmap;
+                        img_first_front_pic.setImageBitmap(bitmap);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
                 if(requestCode == SELECT_VIDEO_REQUEST && resultCode == RESULT_OK)
                 {
                     if(data.getData()!=null)
@@ -1993,6 +2265,105 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    //for password
+    public void selectImage()
+    {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                        getActivity().startActivityForResult(intent, 1);
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                getActivity().startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 2);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    private void setImage() {
+        changespasswordimgpath = Utility.getFile().getAbsolutePath();
+        Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
+        FileOutputStream fOut;
+        try {
+            File f = new File(changespasswordimgpath);
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+            fOut.flush();
+            fOut.close();
+            changespasswordimgpath = f.getAbsolutePath();
+            changespasswordbitmap=bitmap;
+            img_first_front_pic.setImageBitmap(bitmap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+            e.printStackTrace(new PrintWriter(stackTrace));
+        }
     }
 
     public String getImageFilePath(Uri uri) {

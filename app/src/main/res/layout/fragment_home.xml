@@ -935,6 +935,52 @@
                     app:cardPreventCornerOverlap="false"
                     app:cardUseCompatPadding="true">
 
+                    <RelativeLayout
+                        android:id="@+id/whyusemap"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@drawable/joinamnoew"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_120sdp"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentBottom="true"
+                            android:id="@+id/whyapp_using"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:background="@drawable/button_accent_round"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/_12sdp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingEnd="@dimen/_12sdp"
+                            android:layout_marginLeft="@dimen/_35sdp"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:text="Click Here"
+                            android:textColor="@color/white"
+                            style="@style/MyCustomTabText_small"
+                            />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:orientation="vertical"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="0dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1349,6 +1395,7 @@
 
 
                             <LinearLayout
+                                android:visibility="gone"
                                 android:id="@+id/btnImport_2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -1373,16 +1420,6 @@
                                     />
 
                             </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:weightSum="4"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_height="match_parent">
 
                             <LinearLayout
                                 android:id="@+id/btnHistory_2"
@@ -1409,6 +1446,16 @@
                                     />
 
                             </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="4"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_height="match_parent">
 
                             <LinearLayout
                                 android:id="@+id/btnOurTeam"
@@ -1488,17 +1535,6 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
-
-
                             <LinearLayout
                                 android:id="@+id/btnCredential"
                                 android:layout_width="0dp"
@@ -1524,6 +1560,16 @@
                                     />
 
                             </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="4">
 
                             <LinearLayout
                                 android:id="@+id/btnTutorials"

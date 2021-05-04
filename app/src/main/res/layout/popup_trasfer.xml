@@ -106,6 +106,33 @@
             android:id="@+id/et_AccountNo"
             android:textSize="14dp"/>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:inputType="number"
+            android:layout_marginTop="15dp"
+            android:hint="Enter Bank Branch Name "
+            android:id="@+id/et_bankbrachname"
+            android:textSize="14dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:inputType="number"
+            android:layout_marginTop="15dp"
+            android:hint="Enter Branch City Name"
+            android:id="@+id/et_branchcityname"
+            android:textSize="14dp"/>
+
+
         <TextView
             android:id="@+id/btn_saveBank"
             android:layout_width="160dp"

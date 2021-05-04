@@ -76,7 +76,7 @@ public class CredentialAdapter extends RecyclerView.Adapter<CredentialAdapter.My
         if (data.get(position).wallet_type != null && data.get(position).wallet_type.equalsIgnoreCase("default")) {
             holder.ivMoreMenu.setVisibility(View.GONE);
         } else {
-            holder.ivMoreMenu.setVisibility(View.VISIBLE);
+            holder.ivMoreMenu.setVisibility(View.GONE);
         }
 
         holder.title.setText(data.get(position).getName().toUpperCase().charAt(0) + data.get(position).getName().substring(1));

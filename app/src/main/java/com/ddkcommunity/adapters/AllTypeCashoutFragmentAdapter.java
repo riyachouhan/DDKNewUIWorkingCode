@@ -79,7 +79,7 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         try {
-            if(usercountryselect==1)
+            if(usercountryselect==1 || usercountryselect==3)
             {
                 //for php
                 if (createCancellationRequestlist.get(position).getBank_name().equalsIgnoreCase("All"))
@@ -242,9 +242,14 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
         UserResponse userData = AppConfig.getUserData(mContext);
         String countrydata=userData.getUser().country.get(0).country;
         Log.d("country",countrydata);
-        if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
+        if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines"))
+        {
             tv_CountryId.setText("PHP");
             tv_ConMaxTransfer.setText("Maximum of PHP 50,000");
+        }else if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia"))
+        {
+            tv_CountryId.setText("IDR");
+            tv_ConMaxTransfer.setText("Maximum of IDR 50,000");
         }else {
             tv_CountryId.setText("AUD");
             tv_ConMaxTransfer.setText("Maximum of AUD 50,000");
@@ -295,7 +300,7 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
                             }
                             String email = "";
                             String bank_id = bankid + "";
-                            sendOtp(id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                            sendOtp("","",id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                         }
                     }else
                     {
@@ -318,6 +323,8 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
         TextView tv_ConMaxTransfer = dialogView.findViewById(R.id.tv_ConMaxTransfer);
         TextView tvBankNameDDk = dialogView.findViewById(R.id.tvBankNameDDk);
         ImageView ivBankLogo = dialogView.findViewById(R.id.ivBankLogo);
+        final EditText etBranchcityName=dialogView.findViewById(R.id.etBranchcityName);
+        final EditText etBranchName=dialogView.findViewById(R.id.etBranchName);
         final EditText etAccountNumber = dialogView.findViewById(R.id.etAccountNumber);
         final EditText etEmailReceipt = dialogView.findViewById(R.id.etEmailReceipt);
         EditText etAmountSend = dialogView.findViewById(R.id.etAmountSend);
@@ -332,11 +339,15 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
             tv_CountryId.setText("PHP");
             ivBankLogo.setVisibility(View.VISIBLE);
             etAccountName.setHint("Enter Account Name");
+        }else if(countrydata!=null && countrydata.equalsIgnoreCase("indonesia")){
+            tv_CountryId.setText("IDR");
+            ivBankLogo.setVisibility(View.VISIBLE);
+            etAccountName.setHint("Enter Account Name");
         }else {
             ivBankLogo.setVisibility(View.INVISIBLE);
             tv_CountryId.setText("AUD");
             etAccountName.setHint("Enter BSB Name");
-           }
+        }
         tv_ConMaxTransfer.setVisibility(View.GONE);
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -360,12 +371,17 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
 
                     String holder_name = etAccountName.getText().toString();
                     String etAccountNumbervalue = etAccountNumber.getText().toString();
+                    String etBranchcityNamevalue=etBranchcityName.getText().toString();
+                    String etBranchNamevalue=etBranchName.getText().toString();
+
                     if (holder_name.equalsIgnoreCase(""))
                     {
-                        if(countrydata!=null && countrydata.equalsIgnoreCase("Philippines")){
-                            Toast.makeText(mContext, "Please enter Account Name", Toast.LENGTH_SHORT).show();
-                        }else {
+                        if(countrydata!=null && countrydata.equalsIgnoreCase("australia"))
+                        {
                             Toast.makeText(mContext, "Please enter BSB Name", Toast.LENGTH_SHORT).show();
+                        }else
+                        {
+                            Toast.makeText(mContext, "Please enter Account Name", Toast.LENGTH_SHORT).show();
                         }
                     } else if (etAccountNumbervalue.equalsIgnoreCase("")) {
                         Toast.makeText(mContext, "Please enter Account Number", Toast.LENGTH_SHORT).show();
@@ -390,7 +406,7 @@ public class AllTypeCashoutFragmentAdapter extends RecyclerView.Adapter<AllTypeC
                                 }
                                 String email = etEmailReceipt.getText().toString();
                                 String bank_id = bankid + "";
-                                sendOtp(id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
+                                sendOtp(etBranchNamevalue,etBranchcityNamevalue,id, bank_type, holder_name, account_no, gcash_no, email, bank_id, conversionrate, secrate, phpamount, ddkamount, ddkaddress, mContext);
                             }
 
                         } else {

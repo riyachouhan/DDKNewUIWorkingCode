@@ -508,6 +508,7 @@ public class ReferralPayoutFragment extends Fragment {
         HashMap<String, String> hm = new HashMap<>();
         hm.put("transaction_id", selectedId);
         hm.put("report_type", typepayout);
+        Log.d("referal payout",hm.toString());
             AppConfig.getLoadInterface().getPayoutList(AppConfig.getStringPreferences(mContext, Constant.JWTToken), hm).enqueue(new Callback<ReferralPayoutModel>() {
                 @Override
                 public void onResponse(Call<ReferralPayoutModel> call, Response<ReferralPayoutModel> response) {

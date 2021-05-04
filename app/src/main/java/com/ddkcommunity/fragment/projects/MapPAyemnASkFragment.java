@@ -866,8 +866,24 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         {
                             if (response.body().getStatus()==1)
                             {
+                                dialogNew.dismiss();
                                 String text_id=response.body().getData().getTxtId();
-                                registerAmountOnMap(dialogNewbottom,text_id,input_amount,dialogNew);
+                                if(action.equalsIgnoreCase("mapwithreferral"))
+                                {
+                                    dialogNewbottom.dismiss();
+                                    final String emailid=userData.getUser().getEmail();
+                                    Fragment fragment = new SuccessFragmentScan();
+                                    Bundle arg = new Bundle();
+                                    arg.putString("action", action);
+                                    arg.putString("email", emailid);
+                                    fragment.setArguments(arg);
+                                    MainActivity.addFragment(fragment, false);
+                                }else
+                                {
+                                    dialogNewbottom.dismiss();
+                                    CommonMethodFunction.transactionStatus("Completed",getActivity(),text_id,"");
+                                }
+                                // registerAmountOnMap(dialogNewbottom,text_id,input_amount,dialogNew);
                             }else
                             {
                                dialogNew.dismiss();

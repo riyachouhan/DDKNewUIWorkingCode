@@ -15,7 +15,9 @@ public class Constant
 //    public static final String BASE_URL = "http://157.245.52.206/api/";
    //public static final String sbuurlcheil="http://128.199.182.16/new_api/api/";
    // public static final String SLIDERIMG="http://157.245.52.206/public/";
-    public static final String SLIDERIMG="http://128.199.182.16/public/";
+    //public static final String SLIDERIMG="http://128.199.182.16/public/";
+   // public static final String SLIDERIMG="http://107.20.12.68/public/";
+    public static final String SLIDERIMG="";
     //public static final String BASE_URL = "http://157.245.52.206/new_api/api/v2.4/";
     //public static final String BASE_URL = "http://157.245.52.206/new_api/api/v2.4/v2.4.13/";
    // public static final String BASE_URL = "http://157.245.52.206/new_api/api/v2.4/v2.4.14/";
@@ -23,11 +25,14 @@ public class Constant
    // public static final String BASE_URL= "http://157.245.52.206/new_api/api/v2.4/v2.4.15/";
    // public static final String BASE_URL= "http://157.245.52.206/new_api/api/v2.4/v2.4.17/";
    // public static final String BASE_URL= "http://157.245.52.206/new_api/api/v2.4/v2.4.17/";
-    public static final String BASE_URL= "http://128.199.182.16/new_api/api/v2.4/v2.4.20/";
-   // public static final String BASE_URL_MAP="http://159.89.206.213/Files/api/";
-    public static String BASE_URL_MAP="";
-    //public static final String bankimgurl="http://157.245.52.206/new_api/public/uploads/bankLogo/";
-    public static final String IS_LOGIN = "isLogin";
+   // public static final String BASE_URL= "http://128.199.182.16/new_api/api/v2.4/v2.4.20/";
+   // public static final String BASE_URL= "http://107.20.12.68/new_api/api/v2.4/v2.4.20/";
+   // public static final String BASE_URL= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
+    public static final String BASE_URL_versionName= "new_api/api/v2.4/v2.4.20/";
+    public static final String BASE_URL= "";
+    public static final String TERMS_CONDITION_URL= "http://54.198.160.25/";
+    public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
+     public static final String IS_LOGIN = "isLogin";
     public static final String STATUS = "status";
     public static final String ANDROID = "android";
     public static final String USER_ID = "user_id";
@@ -72,9 +77,12 @@ public class Constant
     public static final String INVITE_CONTENT = "invite_content";
     public static final String SAM_CONVERSION = "SamConversion";
     public static final String Strip_Payment_Key = "STRIPEKEY";
+    public static final String MApLoginURl = "MAPLoginURL";
     public static final String MApURl = "MAPURLData";
     public static final String MApURllive = "MAPURLDatalive";
-    //for verificaytion
+    public static final String AllURllive = "AllURllive";
+    public static final String apiserver = "";
+ //for verificaytion
     public static final String MOBILE_VERIFIED_STATUS="mobileverified";
     public static final String EMAIL_VERIFIED_STATUS="emailverified";
     public static final String FUND_VERIFIED_STATUS="fundverified";
@@ -131,6 +139,7 @@ public class Constant
     public static String APP_NAME = "DDK_COMMUNITY";
     public  static String REG_NAME = "DDK_COMMUNITY_REG";
     public static String sellsam_transaction_fees="sellsam_transaction_fees";
+    public static String sellsam_transaction_feeskpay="sellsam_transaction_feeskpay";
     public static String sendsam_transaction_fees="sendsam_transaction_fees";
     public static String sendphp_transaction_fees="sendphp_transaction_fees";
     public static String sendbtc_transaction_fees="sendbtc_transaction_fees";

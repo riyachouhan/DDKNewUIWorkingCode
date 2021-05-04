@@ -1,86 +1,23 @@
 package com.ddkcommunity.fragment.send;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.ddkcommunity.App;
-import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
-import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
-import com.ddkcommunity.adapters.CredentialListAdapter;
-import com.ddkcommunity.fragment.HomeFragment;
-import com.ddkcommunity.interfaces.GetAllCredential;
-import com.ddkcommunity.interfaces.GetAvailableValue;
-import com.ddkcommunity.model.OtpResponse;
-import com.ddkcommunity.model.credential.Credential;
-import com.ddkcommunity.model.credential.CredentialsResponse;
-import com.ddkcommunity.model.wallet.WalletResponse;
-import com.ddkcommunity.utilies.AppConfig;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ncorti.slidetoact.SlideToActView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static android.content.Context.CLIPBOARD_SERVICE;
 import static com.ddkcommunity.fragment.wallet.FragmentCreatePassphrase.TAG;
 
 /**

@@ -65,12 +65,20 @@
                             android:textColor="@color/black" />
 
                         <ImageView
-                            android:layout_width="@dimen/_12sdp"
-                            android:layout_height="@dimen/_12sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:tint="@color/black"
                             android:id="@+id/copyview"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_copy_24" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:id="@+id/browseview"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/browser" />
 
                 </LinearLayout>
 

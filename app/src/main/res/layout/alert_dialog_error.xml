@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:layout_marginLeft="@dimen/_25sdp"
-    android:layout_marginRight="@dimen/_25sdp"
     android:orientation="vertical"
-    android:background="@drawable/rounded_white_view"
+    android:background="@drawable/text_card_bg"
     >
 
     <TextView
         android:id="@+id/titile"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
@@ -21,11 +19,12 @@
         style="@style/homeheader" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
         android:gravity="center"
+        android:visibility="gone"
         android:id="@+id/apierrorname"
         android:textColor="@color/colorAccent"
         android:text="Message"
@@ -38,31 +37,26 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:lineSpacingExtra="2dp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_12sdp"
         android:layout_marginLeft="@dimen/_12sdp"
         android:text="@string/api_error"
        android:textColor="@color/colorBlackText"
-        style="@style/MyCustomTabText"
+        style="@style/subhintdataSize"
         />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@color/dark_gray"/>
 
     <TextView
         android:id="@+id/btnGoHome"
-        android:layout_marginTop="-10dp"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/button_accent_round"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
         android:text="OK"
-        style="@style/homeheader"
-        android:textColor="@color/colorAccent"
-        />
+        android:textColor="@color/white" />
 
 </LinearLayout>

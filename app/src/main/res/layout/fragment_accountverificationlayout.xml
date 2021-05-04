@@ -592,14 +592,13 @@
             android:gravity="center_vertical"
             style="@style/subhintdataSize" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:layout_toRightOf="@+id/emailicon"
-                android:layout_centerInParent="true"
+                android:id="@+id/heifi"
                 android:paddingLeft="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
@@ -612,8 +611,10 @@
                 style="@style/submitButtontextSize" />
 
             <LinearLayout
+                android:layout_below="@+id/heifi"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
+                android:id="@+id/firstlviewde"
                 android:background="@drawable/text_card_bg"
                 android:layout_margin="@dimen/_10sdp"
                 android:layout_height="wrap_content">
@@ -626,15 +627,27 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="Basic [Check]"
-                    style="@style/secondhintview"
-                    />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/basicinforlayout"
+                            android:layout_width="wrap_content"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Basic"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableRight="@drawable/info"
+                            android:drawableTint="@color/black"
+                            style="@style/secondhintview"
+                            />
+
+                    </LinearLayout>
 
                 <TextView
                     android:layout_height="wrap_content"
@@ -658,7 +671,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+                <LinearLayout
                 android:weightSum="3"
                 android:paddingBottom="@dimen/_10sdp"
                 android:layout_width="match_parent"
@@ -672,7 +685,6 @@
                     android:id="@+id/basichintlimit"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:text="Out Going "
                     style="@style/subhintdataSize"
                     />
 
@@ -682,7 +694,6 @@
                     android:layout_weight="1"
                     android:id="@+id/basicdailylimit"
                     android:gravity="center"
-                    android:text="100 USD \n Fiat and Crypto"
                     android:textColor="@color/black"
                     style="@style/subhintdataSize" />
 
@@ -691,7 +702,6 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:id="@+id/basicmonthlylimit"
-                    android:text="10000 USD \n Fiat and Crypto"
                     android:textColor="@color/black"
                     android:gravity="center"
                     style="@style/subhintdataSize" />
@@ -700,9 +710,27 @@
 
             </LinearLayout>
 
+            <TextView
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_below="@+id/heifi"
+                android:layout_marginTop="-5dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:id="@+id/basiclevelstaus"
+                android:text=" Completed "
+                android:background="@drawable/light_green_back"
+                android:textColor="@color/colorGreen"
+                style="@style/secondhintview"
+                />
+
             <LinearLayout
+                android:layout_below="@+id/firstlviewde"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
+                android:id="@+id/secondwkwk"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/text_card_bg"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -717,15 +745,27 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="Fully Verified"
-                        style="@style/secondhintview"
-                        />
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fullyforlayout"
+                            android:layout_width="wrap_content"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="Fully Verified"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableRight="@drawable/info"
+                            android:drawableTint="@color/black"
+                            style="@style/secondhintview"
+                            />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_height="wrap_content"
@@ -763,7 +803,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:id="@+id/fullverifiedhintlimit"
-                        android:text="Out Going "
                         style="@style/subhintdataSize"
                         />
 
@@ -773,7 +812,6 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:id="@+id/fullyvarifieddailylimit"
-                        android:text="100 USD \n Fiat and Crypto"
                         android:textColor="@color/black"
                         style="@style/subhintdataSize" />
 
@@ -782,7 +820,6 @@
                         android:layout_width="0dp"
                         android:id="@+id/fullyvarifiedmonthlylimit"
                         android:layout_weight="1"
-                        android:text="---- \n Fiat and Crypto"
                         android:textColor="@color/black"
                         android:gravity="center"
                         style="@style/subhintdataSize" />
@@ -791,7 +828,23 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_below="@+id/firstlviewde"
+                android:layout_marginTop="-5dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:id="@+id/fullyveririefstatus"
+                android:text=" Completed "
+                android:visibility="gone"
+                android:background="@drawable/light_green_back"
+                android:textColor="@color/colorGreen"
+                style="@style/secondhintview"
+                />
+
             <LinearLayout
+                android:layout_below="@+id/secondwkwk"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:background="@drawable/text_card_bg"
@@ -847,16 +900,27 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text=" "
-                        android:id="@+id/corporatehint"
-                        style="@style/subhintdataSize"
-                        />
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:background="@drawable/text_card_bg_purple"
+                            android:layout_width="wrap_content"
+                            android:gravity="center"
+                            android:layout_height="@dimen/_30sdp"
+                            android:textColor="@color/white"
+                            android:text="Contact Us"
+                            android:id="@+id/contactus_view"
+                            style="@style/subhintdataSize"
+                            />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_height="wrap_content"
@@ -864,7 +928,6 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:id="@+id/corporatedailylimit"
-                        android:text="---- \n Fiat and Crypto"
                         android:textColor="@color/black"
                         style="@style/subhintdataSize" />
 
@@ -873,7 +936,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:id="@+id/corporatemonthlylimit"
-                        android:text="---- \n Fiat and Crypto"
                         android:textColor="@color/black"
                         android:gravity="center"
                         style="@style/subhintdataSize" />
@@ -882,21 +944,7 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="@dimen/_100sdp"
-                android:gravity="center"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:background="@drawable/text_card_bg"
-                android:layout_height="@dimen/_30sdp"
-                android:textColor="@color/black"
-                android:text="Contact Us"
-                android:id="@+id/contactus_view"
-                android:layout_marginBottom="@dimen/_5sdp"
-                style="@style/secondhintview"
-                />
-
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>

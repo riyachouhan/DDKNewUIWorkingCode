@@ -1,19 +1,28 @@
 package com.ddkcommunity.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ddkcommunity.R;
 import com.ddkcommunity.UserModel;
@@ -32,6 +44,8 @@ import com.ddkcommunity.Constant;
 import com.ddkcommunity.model.userInviteModel;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.CommonMethodFunction;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
@@ -50,11 +64,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -87,6 +106,8 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     ImageView image;
     Bitmap changespasswordbitmap;
     String changespasswordimgpath;
+    ImageView img_first_front_pic;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,7 +350,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                                 App.editor.apply();
                                 finish();
                             } else {
-                                AppConfig.showToast("Login successfully.");
+                               // AppConfig.showToast("Login successfully.");
                                 getInviteFriend();
                                 getProfileCall(AppConfig.getStringPreferences(context, Constant.JWTToken));
                                 getSettingServerDataSt(OTPActivity.this,"php");
@@ -391,9 +412,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                             LockManager<CustomPinActivity> lockManager = LockManager.getInstance();
                             lockManager.enableAppLock(OTPActivity.this, CustomPinActivity.class);
                             //for
-                            String userphotoidvalue=data.getUser().getUser_photo_id().toString().toLowerCase();
+                            String userphotoidvalue=data.getUser().getUser_photo_id().toString();
                             String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString().toLowerCase();
-                            if(userphotoidvalue!=null && userphotoidvalue!="")
+                            if(userphotoidvalue!=null && !userphotoidvalue.equalsIgnoreCase(""))
                             {
                                 if(userPhotoisVerified.equalsIgnoreCase("pending") || userPhotoisVerified.equalsIgnoreCase("verified"))
                                 {
@@ -464,33 +485,35 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         final BottomSheetDialog dialogp = new BottomSheetDialog(OTPActivity.this, R.style.DialogStyle);
         dialogp.setContentView(dialogViewp);
         CommonMethodFunction.setupFullHeight(OTPActivity.this,dialogp);
-        final ImageView img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
+        img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
         TextView btnnext=dialogp.findViewById(R.id.btnnext);
+        TextView infoicon=dialogp.findViewById(R.id.infoicon);
+        infoicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataPutMethods.ShowInfoAlert(OTPActivity.this);
+            }
+        });
         changespasswordimgpath ="";
         changespasswordbitmap=null;
         img_first_front_pic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //for pic img
-                final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
-                dialognew.setOnPickCancel(new IPickCancel()
-                {
-                    @Override
-                    public void onCancelClick() {
-                        dialognew.dismiss();
-                    }
-                }).setOnPickResult(new IPickResult()
-                {
-                    @Override
-                    public void onPickResult(PickResult r)
-                    {
-                        //TODO: do what you have to...
-                        changespasswordimgpath = r.getPath();
-                        changespasswordbitmap=r.getBitmap();
-                        img_first_front_pic.setImageBitmap(r.getBitmap());
-                    }
-                }).show(getSupportFragmentManager());
+                if (ContextCompat.checkSelfPermission(OTPActivity.this, Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(OTPActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(OTPActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
 
+                    selectImage();
+
+                } else {
+                    ActivityCompat.requestPermissions(OTPActivity.this,
+                            new String[]{Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
+                }
             }
         });
         btnnext.setOnClickListener(new View.OnClickListener()
@@ -590,6 +613,150 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    //for password
+    public void selectImage()
+    {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(OTPActivity.this);
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(OTPActivity.this, android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getPackageManager()) != null) {
+                                        startActivityForResult(intent, 1);
+                                    }
+                                } else {
+                                    Toast.makeText(OTPActivity.this, "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 2);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(OTPActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(OTPActivity.this, Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == 1) {
+                setImage();
+            }
+
+            if (requestCode == 2) {
+                Uri select = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), select);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream fOut;
+                try {
+                    String photoname="profilepic.png";
+                    File f = new File(getFilesDir(), photoname);
+                    fOut = new FileOutputStream(f);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    changespasswordimgpath = f.getAbsolutePath();
+                    changespasswordbitmap=bitmap;
+                    img_first_front_pic.setImageBitmap(bitmap);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if (requestCode == MainActivity.REQUEST_CODE_ENABLE) {
+                App.editor.putBoolean(AppConfig.isPin, true);
+                App.editor.commit();
+                openHomeActivity();
+            }
+        }
+    }
+
+    private void setImage() {
+        changespasswordimgpath = Utility.getFile().getAbsolutePath();
+        Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
+        FileOutputStream fOut;
+        try {
+            File f = new File(changespasswordimgpath);
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+            fOut.flush();
+            fOut.close();
+            changespasswordimgpath = f.getAbsolutePath();
+            changespasswordbitmap=bitmap;
+            img_first_front_pic.setImageBitmap(bitmap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+            e.printStackTrace(new PrintWriter(stackTrace));
+        }
+    }
+    //................
+
     private void PasswordChangesSuccessfully(final BottomSheetDialog dialogq)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(OTPActivity.this);
@@ -660,17 +827,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             public void onFailure(Call<userInviteModel> call, Throwable t) {
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == MainActivity.REQUEST_CODE_ENABLE) {
-            App.editor.putBoolean(AppConfig.isPin, true);
-            App.editor.commit();
-            openHomeActivity();
-        }
     }
 
     private void openHomeActivity() {

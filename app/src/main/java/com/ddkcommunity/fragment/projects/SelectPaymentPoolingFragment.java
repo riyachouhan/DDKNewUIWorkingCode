@@ -116,7 +116,7 @@ public class SelectPaymentPoolingFragment extends Fragment implements View.OnCli
     {
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
-        String func="";
+        String func="",checkAccountLimit="0";
         if(functionname.equalsIgnoreCase("eth"))
         {
             func="subscription_using_eth";
@@ -146,7 +146,7 @@ public class SelectPaymentPoolingFragment extends Fragment implements View.OnCli
             func="subscription_using_coin";
         }
 
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)

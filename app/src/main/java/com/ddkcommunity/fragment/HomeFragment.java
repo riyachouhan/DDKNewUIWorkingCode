@@ -1,20 +1,26 @@
 package com.ddkcommunity.fragment;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -24,16 +30,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -48,7 +59,6 @@ import com.ddkcommunity.R;
 import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.CreateWalletActivity;
 import com.ddkcommunity.activities.CustomPinActivity;
-import com.ddkcommunity.activities.LoginActivity;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.MapsActivity;
 import com.ddkcommunity.activities.OTPActivity;
@@ -56,25 +66,20 @@ import com.ddkcommunity.activities.ReceivedActivity;
 import com.ddkcommunity.activities.ReferralChainPayoutActivity;
 import com.ddkcommunity.adapters.AnnouncementAdapter;
 import com.ddkcommunity.adapters.HomeBannerPagerAdapter;
-import com.ddkcommunity.adapters.OurTeamAdapter;
 import com.ddkcommunity.adapters.WalletPopupAdapter;
 import com.ddkcommunity.fragment.buy.BuyFragment;
 import com.ddkcommunity.fragment.credential.AddCredentialsFragment;
 import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.fragment.history.HistoryFragment;
-import com.ddkcommunity.fragment.projects.SelectPaymentPoolingFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
-import com.ddkcommunity.fragment.send.SendDDkFragment;
 import com.ddkcommunity.fragment.send.SendFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.interfaces.GetAvailableValue;
 import com.ddkcommunity.interfaces.GetBTCUSDTETHPriceCallback;
-import com.ddkcommunity.interfaces.GetCryptoSubscriptionResponse;
 import com.ddkcommunity.model.Announcement;
 import com.ddkcommunity.model.EthModelBalance;
 import com.ddkcommunity.model.MapTransactionReceiverModel;
-import com.ddkcommunity.model.OurTeamData;
 import com.ddkcommunity.model.RedeemOptionModel;
 import com.ddkcommunity.model.SliderImg;
 import com.ddkcommunity.model.SliderImgResponse;
@@ -85,12 +90,12 @@ import com.ddkcommunity.model.credential.Credential;
 import com.ddkcommunity.model.credential.CredentialsResponse;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.samModel;
-import com.ddkcommunity.model.user.User;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.model.userInviteModel;
 import com.ddkcommunity.model.wallet.WalletResponse;
 import com.ddkcommunity.utilies.AppConfig;
-import com.ddkcommunity.utilies.CommonMethodFunction;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -114,19 +119,21 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickCancel;
 import com.vansuita.pickimage.listeners.IPickResult;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -136,6 +143,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+import static com.ddkcommunity.activities.SplashActivity.baseurl;
 import static com.ddkcommunity.utilies.dataPutMethods.ReplacecommaValue;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowCahsoutDialog;
@@ -143,7 +152,7 @@ import static com.ddkcommunity.utilies.dataPutMethods.ShowFunctionalityAlert;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowServerPost;
 import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.getSettingServerDataSt;
-import static com.ddkcommunity.utilies.dataPutMethods.putGoogleAuthStatus;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -181,6 +190,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView tvSelectDdkAddress,facebook_invite,share_app;
     public static ArrayList listdata;
     ImageView userimg;
+    private Uri uri;
     //for loging
     ShareDialog shareDialog;
     CallbackManager callbackManager;
@@ -189,6 +199,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ArrayList<RedeemOptionModel.Datum> Redeemoptionlist;
     public static String userselctionopt="";
     public static int profileupdatesta=0;
+    RelativeLayout whyusemap;
+    ImageView img_first_front_pic;
 
     public HomeFragment() {
     }
@@ -284,6 +296,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             userData = AppConfig.getUserData(mContext);
             getSettingServerDataSt(getActivity(),"php");
             //.........
+            whyusemap=view.findViewById(R.id.whyusemap);
             callbackManager = CallbackManager.Factory.create();
             tabLayout = view.findViewById(R.id.tabs);
             setTablayoutview();
@@ -416,12 +429,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             });
 
-        getSamToken("not");
+        //getSamToken("not");
         setCredentialPopup(inflater);
         openAnnouncementPopup();
         getEthBtcUsdtSellBuyy("");
         progressBar.setVisibility(View.GONE);
         getVerificationStatus();
+        getMaploginurl();
         getDATAStatusKey();
         //getCurrentBalance(1);
         getRedeemOptions();
@@ -430,6 +444,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getMapreceiverAddress();
         getInviteFriend();
         getCryptoCurrencyList();
+        getSamToken("not");
         }
         getFacebookShare();
         btnReceive_1.setOnClickListener(new View.OnClickListener() {
@@ -460,6 +475,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 //ShareWithFacebook();
+            }
+        });
+        whyusemap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String urlapp= App.pref.getString(Constant.apiserver,"");
+                String linkvalue=baseurl+"new_api/api/why-use-map";
+                if(linkvalue!=null) {
+                    //send view
+                    Fragment fragment = new SendLinkFragment();
+                    Bundle arg = new Bundle();
+                    arg.putString("link", linkvalue);
+                    fragment.setArguments(arg);
+                    MainActivity.addFragment(fragment, true);
+                }else
+                {
+                    Toast.makeText(mContext, "Link not available ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         // this part is optional
@@ -850,7 +883,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                         App.editor.putString(Constant.PHP_Balance, walletbalance);
                                         App.editor.apply();
 
-                                }else {
+                                }else
+                                    {
                                     App.editor.putString(Constant.PHP_Balance,"0.000000");
                                     App.editor.apply();
                                     AppConfig.showToast(response.body().getMsg());
@@ -888,7 +922,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         try {
             final ProgressDialog pd = new ProgressDialog(getContext());
-            if(tabclick!="tab") {
+            if(tabclick!="tab" && tabclick!="not") {
                 pd.setMessage("Please wait..........");
                 pd.setCanceledOnTouchOutside(false);
                 pd.show();
@@ -957,7 +991,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void getUSDTBalance(String tabclick,String usdtAddressId)
     {
         final ProgressDialog pd = new ProgressDialog(getContext());
-        if(tabclick!="tab") {
+        if(tabclick!="tab" && tabclick!="not") {
             pd.setMessage("Please wait..........");
             pd.setCanceledOnTouchOutside(false);
             pd.show();
@@ -1024,7 +1058,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void getTRONBalance(String tabclick,String usdtAddressId)
     {
         final ProgressDialog pd = new ProgressDialog(getContext());
-        if(tabclick!="tab") {
+        if(tabclick!="tab" && tabclick!="not") {
             pd.setMessage("Please wait..........");
             pd.setCanceledOnTouchOutside(false);
             pd.show();
@@ -1090,8 +1124,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void getBTCBalance(String tabclick,String btcAddressId) {
         try {
             final ProgressDialog pd = new ProgressDialog(getContext());
-            if(tabclick!="tab") {
-                pd.setMessage("Please wait..........");
+            if(tabclick!="tab" && tabclick!="not") {
+                pd.setMessage("Please wait.........");
                 pd.setCanceledOnTouchOutside(false);
                 pd.show();
             }
@@ -1158,7 +1192,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         try {
             final ProgressDialog pd = new ProgressDialog(getContext());
-            if(tabclick!="tab") {
+            if(tabclick!="tab" && tabclick!="not") {
                 pd.setMessage("Please wait..........");
                 pd.setCanceledOnTouchOutside(false);
                 pd.show();
@@ -1376,7 +1410,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         final ProgressDialog pd = new ProgressDialog(getContext());
         if(tabclick!="tab") {
-            pd.setMessage("Please wait..........");
+            pd.setMessage("Please wait.........");
             pd.setCanceledOnTouchOutside(false);
             pd.show();
         }
@@ -1441,6 +1475,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+    //for url key
+    private void getMaploginurl()
+    {
+        try {
+            AppConfig.getLoadInterface().getMapLoginUrl(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        if (response.isSuccessful() && response.body() != null)
+                        {
+                            String responseData = response.body().string();
+                            JSONObject object = new JSONObject(responseData);
+                            if (object.getInt(Constant.STATUS) == 1)
+                            {
+                                JSONObject dataobj=object.getJSONObject("data");
+                                String maploginurl = dataobj.getString("url");
+                                App.editor.putString(Constant.MApLoginURl,maploginurl);
+                                App.editor.apply();
+                            } else {
+                                AppConfig.showToast(object.getString("msg"));
+                            }
+                        } else {
+                            ShowApiError(mContext,"server error in commondetails/api-constant-key");
+                        }
+                    }catch (Exception e)
+                    {
+                        ShowApiError(mContext,"exception in commondetails/api-constant-key");
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t)
+                {
+//                dialog.dismiss();
+                }
+            });
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     //for get liost
     private void getDATAStatusKey()
@@ -1466,11 +1542,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 AppConfig.showToast(object.getString("msg"));
                             }
                         } else {
-                            ShowApiError(mContext,"server error in apiconstantkey/api-constant-key");
+                            ShowApiError(mContext,"server error in commondetails/api-constant-key");
                         }
                     }catch (Exception e)
                     {
-                        ShowApiError(mContext,"exception in apiconstantkey/api-constant-key");
+                        ShowApiError(mContext,"exception in commondetails/api-constant-key");
                         e.printStackTrace();
                     }
                 }
@@ -1511,7 +1587,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     String address_verification_status= dataobj.getString("address_verification_status");
                                     String single_video_verification_status=dataobj.getString("single_video_verification_status");
                                     dataPutMethods.putUserVerification(emailverifcation,moibleverifcation,id_proof_1_verification_status,id_proof_2_verification_status,fund_source_verification_status,address_verification_status,single_video_verification_status);
-
                             } else {
                                 AppConfig.showToast(object.getString("msg"));
                             }
@@ -1881,12 +1956,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public void getSettingServerOnTab(String loaderstaus,final TabLayout.Tab tab, Activity activity, final String functionname)
     {
-          AppConfig.showLoading("please wait ..", activity);
-        String func=functionname;
+        AppConfig.showLoading("please wait ..", activity);
+        String func=functionname,checkAccountLimit="0";
         {
             func=functionname;
         }
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
@@ -1934,63 +2010,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if(!functionname.equalsIgnoreCase("php")) {
             AppConfig.showLoading("please wait ..", activity);
         }
-        String func=functionname;
-        if(func.equalsIgnoreCase("send"))
+        String func=functionname,checkAccountLimit="0";
         {
-            String curkj=App.pref.getString(Constant.PHP_Functionality_View, "");
-            String countrydata=userData.getUser().country.get(0).country;
-            if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") && curkj.equalsIgnoreCase("true")))
-            {
-                if (HomeFragment.tabclickevent == 1) {
-                    func = "send_wallet_currency";
-
-                } else if (HomeFragment.tabclickevent == 2) {
-                    func = "send_sam_koin";
-
-                } else if (HomeFragment.tabclickevent == 6) {
-                    func = "send_ddk ";
-
-                } else if (HomeFragment.tabclickevent == 3) {
-                    func = "send_btc";
-
-                } /*else if (HomeFragment.tabclickevent == 4) {
-                    func = "send_tron";
-
-                } */else if (HomeFragment.tabclickevent == 4) {
-                    func = "send_eth";
-
-                } else if (HomeFragment.tabclickevent == 5) {
-                    func = "send_usdt";
-                }
-            }else {
-                if (HomeFragment.tabclickevent == 1) {
-                    func = "send_sam_koin";
-
-                } else if (HomeFragment.tabclickevent == 5) {
-                    func = "send_ddk ";
-
-                } else if (HomeFragment.tabclickevent == 2) {
-                    func = "send_btc";
-
-                }/* else if (HomeFragment.tabclickevent == 3) {
-                    func = "send_tron";
-
-                }*/ else if (HomeFragment.tabclickevent == 3) {
-                    func = "send_eth";
-
-                } else if (HomeFragment.tabclickevent == 4) {
-                    func = "send_usdt";
-                }
-            }
-        }else
-        {
+            checkAccountLimit="0";
             func=functionname;
         }
-        UserModel.getInstance().getSettignSatusView(activity,func,new GegtSettingStatusinterface()
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)
             {
+
                 if(!functionname.equalsIgnoreCase("php")) {
                     AppConfig.hideLoader();
                 }
@@ -1998,7 +2028,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 {
                     if (response.body().getStatus() == 1)
                     {
-
+                        if(functionname.equalsIgnoreCase("referral"))
+                        {
+                            startActivity(new Intent(getActivity(), ReferralChainPayoutActivity.class));
+                        }else
                         if(functionname.equalsIgnoreCase("subscription"))
                         {
                             isCallWallet = false;
@@ -2019,18 +2052,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }else if(functionname.equalsIgnoreCase("buy"))
                         {
                             MainActivity.addFragment(new BuyFragment(), true);
-                        }else if(functionname.equalsIgnoreCase("sell"))
-                        {
-                            String countrydata=userData.getUser().country.get(0).country;
-                            if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") || countrydata.equalsIgnoreCase("australia")))
-                            {
-                                //for now hide below code for show dilaog
-                                //dataPutMethods.showRedeemDialog(mContext,Redeemoptionlist,"sell");
-                                MainActivity.addFragment(new CashOutFragmentNew(), true);
-                            }else
-                            {
-                                ShowCahsoutDialog(getActivity());
-                            }
                         }else if(functionname.equalsIgnoreCase("map"))
                         {
                             try {
@@ -2042,10 +2063,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             {
                                 e.printStackTrace();
                             }
-
-                        }else if(functionname.equalsIgnoreCase("send"))
-                        {
-                            MainActivity.addFragment(new SendFragment(), true);
 
                         }else if(functionname.equalsIgnoreCase("php"))
                         {
@@ -2094,26 +2111,195 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public void checkUserValidatedNot(String actioname)
+    public void getProfileCallnew(final String actioname,final Activity activity, final String statusdialog, String token) {
+        final ProgressDialog dialog = new ProgressDialog(activity);
+        dialog.setMessage("Please wait ...");
+        dialog.setCanceledOnTouchOutside(false);
+        if(statusdialog.equalsIgnoreCase("1")) {
+            dialog.show();
+        }
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+        Call<ResponseBody> call = AppConfig.getLoadInterface().getProfileCall(token,hm);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+            {
+                if (response.isSuccessful())
+                {
+                    try {
+                        String responseData = response.body().string();
+                        JSONObject object = new JSONObject(responseData);
+                        if (object.getInt(AppConfig.STATUS) == 1)
+                        {
+                            UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
+                            AppConfig.setUserData(activity, data);
+                            String user_idvalue=data.getUser().getId().toString();
+                            String emailidv=data.getUser().getEmail().toString();
+                            App.editor.putString(Constant.USER_ID,user_idvalue);
+                            //...........
+                            String userphotoidvalue=data.getUser().getUser_photo_id().toString();
+                            String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString();
+                            //....for new
+                            if(userphotoidvalue!=null && !userphotoidvalue.equalsIgnoreCase(""))
+                            {
+
+                                if(userPhotoisVerified.equalsIgnoreCase("pending"))
+                                {
+                                    if(dialog!=null)
+                                        dialog.dismiss();
+                                    AppConfig.openOkDialogDemo(mContext,"You need to full fill the 'Basic' account verification before using this functionality.");
+                                }else
+                                if(userPhotoisVerified.equalsIgnoreCase("verified"))
+                                {
+                                    getSettingServerOther(dialog,getActivity(),actioname);
+                                }else
+                                {
+                                    if(dialog!=null)
+                                        dialog.dismiss();
+                                    initEmailVerification(emailidv);
+                                }
+                            }else
+                            {
+                                if(dialog!=null)
+                                    dialog.dismiss();
+                            }
+
+                        }else
+                        {
+                            if(dialog!=null)
+                                dialog.dismiss();
+                        }
+                    } catch (Exception e)
+                    {
+                        if(dialog!=null)
+                            dialog.dismiss();
+                        e.printStackTrace();
+                    }
+                } else
+                {
+                    if(dialog!=null)
+                        dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t)
+            {
+                if(dialog!=null)
+                    dialog.dismiss();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getSettingServerOther(final ProgressDialog dialog,Activity activity, final String functionname)
     {
-        String emailvalue=userData.getUser().getEmail().toString();
-        String userphotoidvalue=userData.getUser().getUser_photo_id().toString();
-        String userPhotoisVerified=userData.getUser().getIs_user_photo_id_verified().toString();
-        if(userphotoidvalue!=null && userphotoidvalue!="")
+        String func=functionname,checkAccountLimit="0";
+        if(func.equalsIgnoreCase("send"))
         {
-            if(userPhotoisVerified.equalsIgnoreCase("pending"))
+            checkAccountLimit="1";
+            String curkj=App.pref.getString(Constant.PHP_Functionality_View, "");
+            String countrydata=userData.getUser().country.get(0).country;
+            if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") && curkj.equalsIgnoreCase("true")))
             {
-                Toast.makeText(mContext, "Your Id proof verification is pending after apporved by admin you can performed these functionality .", Toast.LENGTH_SHORT).show();
-            }else
-            if(userPhotoisVerified.equalsIgnoreCase("verified"))
-            {
-                getSettingServerData(getActivity(),actioname);
-            }else
-            {
-                initEmailVerification(emailvalue);
+                if (HomeFragment.tabclickevent == 1) {
+                    func = "send_wallet_currency";
+
+                } else if (HomeFragment.tabclickevent == 2) {
+                    func = "send_sam_koin";
+
+                } else if (HomeFragment.tabclickevent == 6) {
+                    func = "send_ddk ";
+
+                } else if (HomeFragment.tabclickevent == 3) {
+                    func = "send_btc";
+
+                } /*else if (HomeFragment.tabclickevent == 4) {
+                    func = "send_tron";
+
+                } */else if (HomeFragment.tabclickevent == 4) {
+                    func = "send_eth";
+
+                } else if (HomeFragment.tabclickevent == 5) {
+                    func = "send_usdt";
+                }
+            }else {
+                if (HomeFragment.tabclickevent == 1) {
+                    func = "send_sam_koin";
+
+                } else if (HomeFragment.tabclickevent == 5) {
+                    func = "send_ddk ";
+
+                } else if (HomeFragment.tabclickevent == 2) {
+                    func = "send_btc";
+
+                }/* else if (HomeFragment.tabclickevent == 3) {
+                    func = "send_tron";
+
+                }*/ else if (HomeFragment.tabclickevent == 3) {
+                    func = "send_eth";
+
+                } else if (HomeFragment.tabclickevent == 4) {
+                    func = "send_usdt";
+                }
             }
         }else
         {
+            checkAccountLimit="0";
+            func=functionname;
+        }
+
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
+        {
+            @Override
+            public void getResponse(Response<getSettingModel> response)
+            {
+                try
+                {
+                    if (response.body().getStatus() == 1)
+                    {
+                        AppConfig.hideLoading(dialog);
+                        if(functionname.equalsIgnoreCase("sell"))
+                        {
+                            String countrydata=userData.getUser().country.get(0).country;
+                            if(countrydata!=null && (countrydata.equalsIgnoreCase("philippines") || countrydata.equalsIgnoreCase("australia") || countrydata.equalsIgnoreCase("indonesia")))
+                            {
+                                //for now hide below code for show dilaog
+                                //dataPutMethods.showRedeemDialog(mContext,Redeemoptionlist,"sell");
+                                MainActivity.addFragment(new CashOutFragmentNew(), true);
+                            }else
+                            {
+                                ShowCahsoutDialog(getActivity());
+                            }
+                        }else  if(functionname.equalsIgnoreCase("send"))
+                        {
+                            MainActivity.addFragment(new SendFragment(), true);
+                        }
+                    } else
+                    {
+                        AppConfig.hideLoading(dialog);
+                        ShowFunctionalityAlert(getActivity(), response.body().getMsg());
+                    }
+
+                } catch (Exception e)
+                {
+                    AppConfig.hideLoading(dialog);
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void checkUserValidatedNot(String actioname)
+    {
+        if(actioname.equalsIgnoreCase("send") || actioname.equalsIgnoreCase("sell"))
+        {
+            getProfileCallnew(actioname,getActivity(),"1",AppConfig.getStringPreferences(getActivity(), Constant.JWTToken));
+        }else
+        {
+            getSettingServerData(getActivity(),actioname);
         }
     }
 
@@ -2124,34 +2310,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         dialogViewp = layoutInflater.inflate(R.layout.loginchangepasswordlayout, null);
         final BottomSheetDialog dialogp = new BottomSheetDialog(getActivity(), R.style.DialogStyle);
         dialogp.setContentView(dialogViewp);
-        CommonMethodFunction.setupFullHeight(getActivity(),dialogp);
-        final ImageView img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
+        //CommonMethodFunction.setupFullHeight(getActivity(),dialogp);
+        img_first_front_pic=dialogp.findViewById(R.id.img_first_front_pic);
         TextView btnnext=dialogp.findViewById(R.id.btnnext);
+        TextView infoicon=dialogp.findViewById(R.id.infoicon);
+        infoicon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataPutMethods.ShowInfoAlert(getActivity());
+            }
+        });
         changespasswordimgpath ="";
         changespasswordbitmap=null;
         img_first_front_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //for pic img
-                final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
-                dialognew.setOnPickCancel(new IPickCancel()
-                {
-                    @Override
-                    public void onCancelClick() {
-                        dialognew.dismiss();
-                    }
-                }).setOnPickResult(new IPickResult()
-                {
-                    @Override
-                    public void onPickResult(PickResult r)
-                    {
-                        //TODO: do what you have to...
-                        changespasswordimgpath = r.getPath();
-                        changespasswordbitmap=r.getBitmap();
-                        img_first_front_pic.setImageBitmap(r.getBitmap());
-                    }
-                }).show(getActivity().getSupportFragmentManager());
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
 
+                    selectImage();
+
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
+                }
             }
         });
         btnnext.setOnClickListener(new View.OnClickListener()
@@ -2170,6 +2357,106 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
         dialogp.show();
     }
+
+    //for password
+    public void selectImage()
+    {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                        startActivityForResult(intent, 7);
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 8);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    private void setImage() {
+        changespasswordimgpath = Utility.getFile().getAbsolutePath();
+        Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
+        FileOutputStream fOut;
+        try {
+            File f = new File(changespasswordimgpath);
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+            fOut.flush();
+            fOut.close();
+            changespasswordimgpath = f.getAbsolutePath();
+            changespasswordbitmap=bitmap;
+            img_first_front_pic.setImageBitmap(bitmap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+            e.printStackTrace(new PrintWriter(stackTrace));
+        }
+    }
+
     //...
     private void updateIdProof(final BottomSheetDialog dialogp,final String email) {
 
@@ -2258,7 +2545,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         dialogView = layoutInflater.inflate(R.layout.passwordchangesuccesslayout, null);
         final BottomSheetDialog dialogs = new BottomSheetDialog(getActivity(), R.style.DialogStyle);
         dialogs.setContentView(dialogView);
-        CommonMethodFunction.setupFullHeight(getActivity(),dialogs);
+        //CommonMethodFunction.setupFullHeight(getActivity(),dialogs);
+        Toolbar container=dialogs.findViewById(R.id.tootlbarheadr);
+        container.setVisibility(View.INVISIBLE);
         LinearLayout back_view=dialogs.findViewById(R.id.back_view);
         TextView btnnext=dialogs.findViewById(R.id.btnnext);
         btnnext.setOnClickListener(new View.OnClickListener() {
@@ -2275,6 +2564,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
         dialogs.show();
+      //  UserModel.getProfileCallnew(getActivity(),"1",AppConfig.getStringPreferences(getActivity(), Constant.JWTToken));
     }
 
     @Override
@@ -2405,7 +2695,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.btnReferralList_2:
             case R.id.btnReferralList:
 //                startActivity(new Intent(getActivity(), ReferralListActivity.class));
-                startActivity(new Intent(getActivity(), ReferralChainPayoutActivity.class));
+                checkUserValidatedNot("referral");
+                //startActivity(new Intent(getActivity(), ReferralChainPayoutActivity.class));
                 break;
 
             case R.id.btnIncome:
@@ -2453,8 +2744,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
     //
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
             case MainActivity.REQUEST_CODE_ENABLE:
                 App.editor.putBoolean(AppConfig.isPin, true);
                 App.editor.commit();
@@ -2496,6 +2790,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     MainActivity.addFragment(new CredentialsFragment(), true);
                 }
                 break;
+            case 7:
+                setImage();
+                break;
+
+            case 8:
+                Uri select = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), select);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream fOut;
+                try {
+                    String photoname="profilepic.png";
+                    File f = new File(getActivity().getFilesDir(), photoname);
+                    fOut = new FileOutputStream(f);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    changespasswordimgpath = f.getAbsolutePath();
+                    changespasswordbitmap=bitmap;
+                    img_first_front_pic.setImageBitmap(bitmap);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
             default:
                 callbackManager.onActivityResult(requestCode, resultCode, data);
                 break;

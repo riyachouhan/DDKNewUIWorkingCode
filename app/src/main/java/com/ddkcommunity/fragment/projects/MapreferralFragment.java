@@ -109,8 +109,8 @@ public class MapreferralFragment extends Fragment implements View.OnClickListene
     {
         dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
-        String func=functionname;
-        UserModel.getInstance().getSettignSatusView(activity,func, new GegtSettingStatusinterface()
+        String func=functionname,checkAccountLimit="0";
+        UserModel.getInstance().getSettignSatusView(activity,func,checkAccountLimit,new GegtSettingStatusinterface()
         {
             @Override
             public void getResponse(Response<getSettingModel> response)

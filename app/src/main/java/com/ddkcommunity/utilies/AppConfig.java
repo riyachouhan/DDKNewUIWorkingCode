@@ -90,15 +90,18 @@ public class AppConfig {
   public static String USER_ID = "user_id";
   public static String STATUS = "status";
   public static String isPin = "isPin";
-  private static Retrofit retrofit = null,retrofitmap=null;
-  private static LoadInterface loadInterface = null,loadInterfacemap=null;
+  private static Retrofit retrofit = null,retrofitmap=null,retrofitsingle=null;
+  private static LoadInterface loadInterface = null,loadInterfacemap=null,LoadInterfaceSingle=null;
 //    private static String PREF_UNIQUE_ID="UUID_ID";
 
-  public static Retrofit getClient() {
-    if (retrofit == null)
+  public static Retrofit getClient()
+  {
+    //if (retrofit == null)
     {
+      //String urlapp= App.pref.getString(Constant.AllURllive,"");
+      String urlapp= SplashActivity.finalcall;
       retrofit = new Retrofit.Builder()
-              .baseUrl(Constant.BASE_URL)
+              .baseUrl(urlapp)
               .client(getSafeClient())
               .addConverterFactory(GsonConverterFactory.create())
               .build();
@@ -106,7 +109,19 @@ public class AppConfig {
     return retrofit;
   }
 
-    public static Retrofit getClientpayout() {
+  public static Retrofit getClientSingle() {
+    //if (retrofitsingle == null)
+    {
+      retrofitsingle = new Retrofit.Builder()
+              .baseUrl(Constant.BASE_URLserv)
+              .client(getSafeClient())
+              .addConverterFactory(GsonConverterFactory.create())
+              .build();
+    }
+    return retrofitsingle;
+  }
+
+  public static Retrofit getClientpayout() {
        // if (retrofitmap == null)
         {
           String mapurl= App.pref.getString(Constant.MApURllive,"");
@@ -154,10 +169,18 @@ public class AppConfig {
     }
   }
 
-  public static LoadInterface getLoadInterface() {
-    if (loadInterface == null) {
-      loadInterface = AppConfig.getClient().create(LoadInterface.class);
+  public static LoadInterface getSingleLoadInterface() {
+    if (LoadInterfaceSingle == null)
+    {
+      LoadInterfaceSingle = AppConfig.getClientSingle().create(LoadInterface.class);
     }
+    return LoadInterfaceSingle;
+  }
+
+  public static LoadInterface getLoadInterface() {
+   // if (loadInterface == null) {
+      loadInterface = AppConfig.getClient().create(LoadInterface.class);
+    //}
     return loadInterface;
   }
 
@@ -597,6 +620,28 @@ public class AppConfig {
 
     in.close();
     out.close();
+  }
+
+  public static void openOkDialogDemo(Context mContext,String msg) {
+    LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View customView = layoutInflater.inflate(R.layout.popup, null);
+
+    TextView closePopupBtn = (TextView) customView.findViewById(R.id.btnClose);
+    TextView tvMsg = (TextView) customView.findViewById(R.id.tvMsg);
+    closePopupBtn.setText("Okay");
+    MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(mContext);
+    alert.setView(customView);
+
+    tvMsg.setText(msg+"");
+    final AlertDialog dialog = alert.create();
+    dialog.show();
+    dialog.setCancelable(false);
+    closePopupBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        dialog.dismiss();
+      }
+    });
   }
 
   public static void openOkDialog1(Context mContext) {
