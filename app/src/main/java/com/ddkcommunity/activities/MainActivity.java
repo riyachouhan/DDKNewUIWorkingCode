@@ -60,6 +60,8 @@ import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.fragment.projects.MapOtionAllFragment;
 import com.ddkcommunity.fragment.projects.MapreferralFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
+import com.ddkcommunity.fragment.send.BcardFragment;
+import com.ddkcommunity.fragment.send.QrScanFragmentScan;
 import com.ddkcommunity.fragment.send.SendFragment;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.interfaces.GetUSDAndBTCCallback;
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String changespasswordimgpath;
     private Uri uri;
     ImageView img_first_front_pic;
+    public static int bcardscan=0;
 
     public static void addFragment(Fragment fragment, boolean addToBackStack)
     {
@@ -861,7 +864,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public static void enableBackViews(boolean enable) {
+    public static void enableBackViews(boolean enable)
+    {
         if (enable) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back_white);
             actionBar.setDisplayHomeAsUpEnabled(false);
@@ -956,12 +960,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.stake:
 //                    startActivity(new Intent(getApplicationContext(), StakeActivity.class));
                 break;
+
             case R.id.send:
                 MainActivity.addFragment(new SendFragment(), true);
                 break;
+
             case R.id.receive:
                 startActivity(new Intent(getApplicationContext(), ReceivedActivity.class));
                 break;
+
+            case R.id.bcard:
+                bcardscan=9;
+                MainActivity.addFragment(new BcardFragment(), true);
+                break;
+
             case R.id.send_message:
 //                MainActivity.addFragment(ComingSoonFragment.getInstance("Send us a message"), true);
                 break;

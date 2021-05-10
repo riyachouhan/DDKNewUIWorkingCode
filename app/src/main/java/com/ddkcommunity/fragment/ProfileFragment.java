@@ -2,7 +2,6 @@ package com.ddkcommunity.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -17,6 +16,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -70,6 +71,8 @@ import com.ddkcommunity.model.samModel;
 import com.ddkcommunity.model.user.User;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
+import com.ddkcommunity.utilies.ScalingUtilities;
+import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.facebook.login.LoginManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -90,6 +93,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -112,6 +118,7 @@ import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowServerPost;
 import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.getSettingServerDataSt;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,7 +130,7 @@ public class ProfileFragment extends Fragment {
     LinearLayout dateorbirthview,gendermainview;
     EditText dateofbirth_ET;
     private static TextView countryET, phoneCodeET, addAnotherAccountTV, image_view_TV;
-    private static ImageView imageView, ddkCodeIV,image_view;
+    private static ImageView ddkCodeIV,image_view;
     private static String imagePath = "";
     public static String country;
     public static String mCountryId = "";
@@ -138,6 +145,7 @@ public class ProfileFragment extends Fragment {
     int year;
     int month;
     int day;
+    private Uri uri;
     String userage="";
     EditText gender_value_ET,zip_ET,province_ET,city_ET,address_ET;
     RadioButton radioother,radiofemale,radiomale;
@@ -145,6 +153,7 @@ public class ProfileFragment extends Fragment {
     private RadioButton radioButton;
     String gendervalue="";
     RadioButton rmale,rfemale,rtoher;
+    View view;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -248,7 +257,7 @@ public class ProfileFragment extends Fragment {
                                         .into(new SimpleTarget<Bitmap>() {
                                             @Override
                                             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                                imageView.setImageBitmap(resource);
+                                                image_view.setImageBitmap(resource);
                                                 image_view_TV.setText("Remove Photo");
                                                 image_view_TV.setEnabled(true);
                                                 image_view_TV.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +273,7 @@ public class ProfileFragment extends Fragment {
                                                 super.onLoadFailed(errorDrawable);
                                                 image_view_TV.setText("Upload Photo");
                                                 image_view_TV.setEnabled(false);
-                                                imageView.setImageResource(R.drawable.defalut_profile);
+                                                image_view.setImageResource(R.drawable.defalut_profile);
                                             }
                                         });
                                 imagePath = "";
@@ -356,7 +365,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
         mContext = getActivity();
         alt_contactnumber_ET=view.findViewById(R.id.alt_contactnumber_ET);
         alt_email_ET=view.findViewById(R.id.alt_email_ET);
@@ -388,7 +397,6 @@ public class ProfileFragment extends Fragment {
         countryET = view.findViewById(R.id.country_ET);
         phoneCodeET = view.findViewById(R.id.phone_code_ET);
         designationET = view.findViewById(R.id.designation_ET);
-        imageView = view.findViewById(R.id.image_view);
         addAnotherAccountTV = view.findViewById(R.id.add_another_account_TV);
         rvUserList = view.findViewById(R.id.recycler_view);
 
@@ -451,11 +459,24 @@ public class ProfileFragment extends Fragment {
 
         getCountryCall();
 
-        view.findViewById(R.id.image_view).setOnClickListener(new View.OnClickListener() {
+        image_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v)
             {
-                final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    selectImage();
+
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
+                }
+                /*final PickImageDialog dialog = PickImageDialog.build(new PickSetup());
                 dialog.setOnPickCancel(new IPickCancel() {
                     @Override
                     public void onCancelClick() {
@@ -470,7 +491,7 @@ public class ProfileFragment extends Fragment {
                         ((ImageView) view.findViewById(R.id.image_view)).setImageBitmap(r.getBitmap());
                     }
                 }).show(getActivity().getSupportFragmentManager());
-
+*/
             }
         });
 
@@ -639,6 +660,143 @@ public class ProfileFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    //for password
+    public void selectImage()
+    {
+        try {
+            androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select Image");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
+            adapter.add("Take Picture");
+            adapter.add("Choose from gallery");
+            adapter.add("Cancel");
+
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            try{
+                                if (Utility.isExternalStorageAvailable()) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
+                                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                        startActivityForResult(intent, 7);
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 1:
+                            try {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 8);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(),
+                                        e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                                //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                            }
+                            break;
+
+                        case 2:
+                            dialog.cancel();
+                            break;
+                    }
+                }
+            });
+            builder.show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private Uri getPhotoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photo.jpg";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
+
+        String APP_TAG = "ImageFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        }
+        return uri;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == 7) {
+                setImage();
+            }
+
+            if (requestCode == 8) {
+                Uri select = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), select);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream fOut;
+                try {
+                    String photoname="profilepic.png";
+                    File f = new File(getActivity().getFilesDir(), photoname);
+                    fOut = new FileOutputStream(f);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                    imagePath = f.getAbsolutePath();
+                    userbitmap=bitmap;
+                    image_view.setImageBitmap(bitmap);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private void setImage() {
+        imagePath= Utility.getFile().getAbsolutePath();
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        FileOutputStream fOut;
+        try {
+            File f = new File(imagePath);
+            fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+            fOut.flush();
+            fOut.close();
+            imagePath = f.getAbsolutePath();
+            userbitmap=bitmap;
+            image_view.setImageBitmap(bitmap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+            e.printStackTrace(new PrintWriter(stackTrace));
+        }
     }
 
     public void checkStatus(String othervalue)
@@ -1101,7 +1259,8 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public String getDeviceID() {
+    public String getDeviceID()
+    {
         String deviceId = "";
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             AppConfig.showToast("Allow to read phone state permission.");

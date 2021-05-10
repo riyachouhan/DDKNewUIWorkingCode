@@ -46,6 +46,7 @@ import com.ddkcommunity.MyBounceInterpolator;
 import com.ddkcommunity.R;
 import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.activities.OTPActivity;
 import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.model.SAMPDModel;
 import com.ddkcommunity.model.user.UserResponse;
@@ -142,6 +143,10 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     private Uri uri;
     int selecetdimgtype=0;
     ImageView img_first_front_pic;
+    ImageView img_first_back_pic,img_second_front_pic,img_second_back_pic;
+    ImageView billingview;
+    TextView submitview;
+    TextView submitimgbilling;
 
     public AccoutnverficationFregament() {
         // Required empty public constructor
@@ -657,7 +662,9 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
             @Override
             public void onClick(View v) {
                 //for pic img
-                final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                selecetdimgtype=3;
+                selectImg();
+                /*final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                 dialognew.setOnPickCancel(new IPickCancel()
                 {
                     @Override
@@ -674,7 +681,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                         changespasswordbitmap=r.getBitmap();
                         img_first_front_pic.setImageBitmap(r.getBitmap());
                     }
-                }).show(getActivity().getSupportFragmentManager());
+                }).show(getActivity().getSupportFragmentManager());*/
 
             }
         });
@@ -1017,9 +1024,9 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
             submitvideo=dialog.findViewById(R.id.submitvideo);
             secondview=dialog.findViewById(R.id.secondview);
             firstview=dialog.findViewById(R.id.firstview);
-            final TextView submitimgbilling=dialog.findViewById(R.id.submitimgbilling);
-            final ImageView billingview=dialog.findViewById(R.id.billingview);
-            final TextView submitview=dialog.findViewById(R.id.submitview);
+            submitimgbilling=dialog.findViewById(R.id.submitimgbilling);
+            billingview=dialog.findViewById(R.id.billingview);
+            submitview=dialog.findViewById(R.id.submitview);
             final TextView govermentid=dialog.findViewById(R.id.govermentid);
             final TextView govermentid2=dialog.findViewById(R.id.govermentid2);
             LinearLayout fund_layout=dialog.findViewById(R.id.fund_layout);
@@ -1029,9 +1036,9 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
             TextView btnGoHome=dialog.findViewById(R.id.btnGoHome);
             TextView upload=dialog.findViewById(R.id.upload);
             final ImageView img_first_front_pic=dialog.findViewById(R.id.img_first_front_pic);
-            final ImageView img_first_back_pic=dialog.findViewById(R.id.img_first_back_pic);
-            final ImageView img_second_front_pic=dialog.findViewById(R.id.img_second_front_pic);
-            final ImageView img_second_back_pic=dialog.findViewById(R.id.img_second_back_pic);
+            img_first_back_pic=dialog.findViewById(R.id.img_first_back_pic);
+            img_second_front_pic=dialog.findViewById(R.id.img_second_front_pic);
+            img_second_back_pic=dialog.findViewById(R.id.img_second_back_pic);
             final TextView etFundValue=dialog.findViewById(R.id.etFundValue);
 
             etFundValue.setOnClickListener(new View.OnClickListener() {
@@ -1096,8 +1103,12 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
             img_first_front_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     //for pic img
+                    selecetdimgtype=4;
+                    selectImg();
+                    /*
                     final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                     dialognew.setOnPickCancel(new IPickCancel()
                     {
@@ -1117,6 +1128,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             //changeImageCall(DataHolder.getUser().getId(),imagePath);
                         }
                     }).show(getActivity().getSupportFragmentManager());
+                    */
                     //........
                 }
             });
@@ -1124,9 +1136,12 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
             img_first_back_pic.setOnClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
+                    selecetdimgtype=5;
+                    selectImg();
                     //for pic img
-                    final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                  /*  final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                     dialognew.setOnPickCancel(new IPickCancel()
                     {
                         @Override
@@ -1145,15 +1160,18 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             //changeImageCall(DataHolder.getUser().getId(),imagePath);
                         }
                     }).show(getActivity().getSupportFragmentManager());
-                    //........
+                  */  //........
                 }
             });
 
             img_second_front_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     //for pic img
-                    final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                    selecetdimgtype=6;
+                    selectImg();
+                   /* final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                     dialognew.setOnPickCancel(new IPickCancel()
                     {
                         @Override
@@ -1171,16 +1189,20 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             img_second_front_pic.setImageBitmap(r.getBitmap());
                             //changeImageCall(DataHolder.getUser().getId(),imagePath);
                         }
-                    }).show(getActivity().getSupportFragmentManager());
+                    }).show(getActivity().getSupportFragmentManager());*/
                     //........
                 }
             });
 
             img_second_back_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
+                    selecetdimgtype=7;
+                    selectImg();
+
                     //for pic img
-                    final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                   /* final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                     dialognew.setOnPickCancel(new IPickCancel()
                     {
                         @Override
@@ -1198,7 +1220,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             img_second_back_pic.setImageBitmap(r.getBitmap());
                             //changeImageCall(DataHolder.getUser().getId(),imagePath);
                         }
-                    }).show(getActivity().getSupportFragmentManager());
+                    }).show(getActivity().getSupportFragmentManager());*/
                     //........
                 }
             });
@@ -1217,8 +1239,10 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                 @Override
                 public void onClick(View v)
                 {
+                    selecetdimgtype=8;
+                    selectImg();
                     //for pic img
-                    final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
+                    /*final PickImageDialog dialognew = PickImageDialog.build(new PickSetup());
                     dialognew.setOnPickCancel(new IPickCancel()
                     {
                         @Override
@@ -1239,7 +1263,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             //changeImageCall(DataHolder.getUser().getId(),imagePath);
                         }
                     }).show(getActivity().getSupportFragmentManager());
-
+*/
                 }
             });
 
@@ -1256,8 +1280,14 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                 public void onClick(View v) {
                     try {
                         // In my case I've put the 'checkAndRequestPermissions' method in a separate class named 'PermissionUtils'
-                        Intent captureVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                        startActivityForResult(captureVideoIntent,2);
+                        Intent captureVideoIntent = new Intent();
+                        captureVideoIntent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
+                        captureVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, getVideoFileURI());
+                        if (captureVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            startActivityForResult(captureVideoIntent, 2);
+                        }
+                        //startActivityForResult(captureVideoIntent,2);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -2055,11 +2085,11 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         if( resultCode == RESULT_OK) {
 
             try {
-                if (requestCode == 1) {
+                if (requestCode == 10) {
                     setImage();
-                }
-
-                if (requestCode == 2) {
+                }else
+                if (requestCode ==11)
+                {
                     Uri select = data.getData();
                     Bitmap bitmap = null;
                     try {
@@ -2075,16 +2105,53 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
                         fOut.flush();
                         fOut.close();
-                        changespasswordimgpath = f.getAbsolutePath();
-                        changespasswordbitmap=bitmap;
-                        img_first_front_pic.setImageBitmap(bitmap);
+                        if(selecetdimgtype==3)
+                        {
+                            changespasswordimgpath = f.getAbsolutePath();
+                            changespasswordbitmap = bitmap;
+                            img_first_front_pic.setImageBitmap(bitmap);
+                        }
 
+                        if(selecetdimgtype==4)
+                        {
+                            imagePathFirstFront = f.getAbsolutePath();
+                            frontimgfirstbitmap=bitmap;
+                            img_first_front_pic.setImageBitmap(bitmap);
+                        }
+
+                        if(selecetdimgtype==5)
+                        {
+                            imagePathFirstBack = f.getAbsolutePath();
+                            backimgfirstbitmap=bitmap;
+                            img_first_back_pic.setImageBitmap(bitmap);
+                        }
+
+                        if(selecetdimgtype==6)
+                        {
+                            imagePathSecondFront = f.getAbsolutePath();
+                            frontimgsecondbitmap=bitmap;
+                            img_second_front_pic.setImageBitmap(bitmap);
+                        }
+
+                        if(selecetdimgtype==7)
+                        {
+                            imagePathSecondBak = f.getAbsolutePath();
+                            backimgsecondbitmap=bitmap;
+                            img_second_back_pic.setImageBitmap(bitmap);
+                        }
+
+                        if(selecetdimgtype==8)
+                        {
+                            billingImagePath = f.getAbsolutePath();
+                            billingBitmap=bitmap;
+                            billingview.setImageBitmap(bitmap);
+                            submitview.setVisibility(View.GONE);
+                            submitimgbilling.setVisibility(View.VISIBLE);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                }
-
+                }else
                 if(requestCode == SELECT_VIDEO_REQUEST && resultCode == RESULT_OK)
                 {
                     if(data.getData()!=null)
@@ -2146,10 +2213,11 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                     File file = null;
                     final String mediaFilePath;
 
-                    Uri vid = data.getData();
-                    mediaFilePath = getRealPathFromURI(vid);
+                    //Uri vid = data.getData();
+                    //mediaFilePath = getRealPathFromURI(vid);
+                    selectedImagePath= Utility.getFile().getAbsolutePath();
 
-                    selectedImagePath = mediaFilePath;
+                    //selectedImagePath = mediaFilePath;
                     final File neewds=new File(selectedImagePath);
 
                     if(neewds.length()==0)
@@ -2158,7 +2226,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                     }else
                     {
                         final Double videofile= Double.valueOf(filesize_in_megaBytes(neewds));
-                        if(videofile<=10.0000000000)
+                        if(videofile<=15.0000000000)
                         {
                             mediaFile1 = neewds;
                             videoPath1 = selectedImagePath;
@@ -2281,17 +2349,20 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
             builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
+                    switch (which)
+                    {
                         case 0:
                             try{
-                                if (Utility.isExternalStorageAvailable()) {
+                                if (Utility.isExternalStorageAvailable())
+                                {
                                     Intent intent = new Intent();
                                     intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURI());
                                     if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                                        getActivity().startActivityForResult(intent, 1);
+                                        startActivityForResult(intent, 10);
                                     }
-                                } else {
+                                } else
+                                {
                                     Toast.makeText(getActivity(), "Need permission for access external directory", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -2302,12 +2373,13 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                             break;
 
                         case 1:
-                            try {
+                            try
+                            {
                                 Intent intent = new Intent();
                                 intent.setType("image/*");
                                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                                getActivity().startActivityForResult(Intent.createChooser(intent,
-                                        "Select Picture"), 2);
+                                startActivityForResult(Intent.createChooser(intent,
+                                        "Select Picture"), 11);
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(),
                                         e.getMessage(),
@@ -2344,27 +2416,164 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         return uri;
     }
 
-    private void setImage() {
-        changespasswordimgpath = Utility.getFile().getAbsolutePath();
-        Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
-        FileOutputStream fOut;
-        try {
-            File f = new File(changespasswordimgpath);
-            fOut = new FileOutputStream(f);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
-            fOut.flush();
-            fOut.close();
-            changespasswordimgpath = f.getAbsolutePath();
-            changespasswordbitmap=bitmap;
-            img_first_front_pic.setImageBitmap(bitmap);
+    private Uri getVideoFileURI() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddHHmmssZ", Locale.ENGLISH);
+        Date currentDate = new Date();
+        String photoFileName = "photovideo.mp4";
+        String fileName = simpleDateFormat.format(currentDate) + "_" + photoFileName;
 
-        } catch (Exception e){
-            e.printStackTrace();
-            StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
-            e.printStackTrace(new PrintWriter(stackTrace));
+        String APP_TAG = "VideoFolder";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uri = Utility.getExternalFilesDirForVersion24Above(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
+        } else {
+            uri = Utility.getExternalFilesDirForVersion24Below(getActivity(), Environment.DIRECTORY_PICTURES, APP_TAG, fileName);
         }
+        return uri;
     }
+
+    private void setImage() {
+        if(selecetdimgtype==3)
+        {
+            changespasswordimgpath = Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(changespasswordimgpath);
+            FileOutputStream fOut;
+            try {
+                File f = new File(changespasswordimgpath);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+                changespasswordimgpath = f.getAbsolutePath();
+                changespasswordbitmap=bitmap;
+                img_first_front_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+        if(selecetdimgtype==4)
+        {
+            imagePathFirstFront= Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePathFirstFront);
+            FileOutputStream fOut;
+            try {
+                File f = new File(imagePathFirstFront);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+                imagePathFirstFront = f.getAbsolutePath();
+                frontimgfirstbitmap=bitmap;
+                img_first_front_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+        if(selecetdimgtype==5)
+        {
+            imagePathFirstBack= Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePathFirstBack);
+            FileOutputStream fOut;
+            try {
+                File f = new File( imagePathFirstBack);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+
+                imagePathFirstBack = f.getAbsolutePath();
+                backimgfirstbitmap=bitmap;
+                img_first_back_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+
+        if(selecetdimgtype==6)
+        {
+            imagePathSecondFront= Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePathSecondFront);
+            FileOutputStream fOut;
+            try {
+                File f = new File(imagePathSecondFront);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+
+                imagePathSecondFront = f.getAbsolutePath();
+                frontimgsecondbitmap=bitmap;
+                img_second_front_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+
+        if(selecetdimgtype==7)
+        {
+            imagePathSecondBak= Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePathSecondBak);
+            FileOutputStream fOut;
+            try {
+                File f = new File(imagePathSecondBak);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+
+                imagePathSecondBak = f.getAbsolutePath();
+                backimgsecondbitmap=bitmap;
+                img_second_back_pic.setImageBitmap(bitmap);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+
+        if(selecetdimgtype==8)
+        {
+            billingImagePath= Utility.getFile().getAbsolutePath();
+            Bitmap bitmap = BitmapFactory.decodeFile(billingImagePath);
+            FileOutputStream fOut;
+            try {
+                File f = new File(billingImagePath);
+                fOut = new FileOutputStream(f);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap = ScalingUtilities.scaleDown(bitmap, 500, true);
+                fOut.flush();
+                fOut.close();
+
+                billingImagePath = f.getAbsolutePath();
+                billingBitmap=bitmap;
+                billingview.setImageBitmap(bitmap);
+                submitview.setVisibility(View.GONE);
+                submitimgbilling.setVisibility(View.VISIBLE);
+
+            } catch (Exception e){
+                e.printStackTrace();
+                StringWriter stackTrace = new StringWriter(); // not all Android versions will print the stack trace automatically
+                e.printStackTrace(new PrintWriter(stackTrace));
+            }
+        }
+      }
 
     public String getImageFilePath(Uri uri) {
         String path = null, image_id = null;
@@ -2386,4 +2595,20 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         return path;
     }
 
+    public void selectImg()
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            selectImage();
+
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
+        }
+    }
 }

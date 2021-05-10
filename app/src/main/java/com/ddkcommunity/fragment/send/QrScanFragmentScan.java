@@ -81,6 +81,7 @@ public class QrScanFragmentScan extends Fragment {
             @Override
             public void onDetected(final String data)
             {
+
                     clickoptionv=clickoption;
                     String sendtype="";
                     if(clickoptionv.equalsIgnoreCase("usingphp"))
@@ -97,9 +98,7 @@ public class QrScanFragmentScan extends Fragment {
                             apicalling=1;
                             getUserValidDate(sendtype,data);
                         }
-
                     }
-
             }
         }).facing(QREader.BACK_CAM)
                 .enableAutofocus(true)

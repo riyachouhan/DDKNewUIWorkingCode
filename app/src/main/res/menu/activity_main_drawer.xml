@@ -34,6 +34,11 @@
             android:title="Send us a message" />
 
         <item
+            android:id="@+id/bcard"
+            android:icon="@drawable/browser"
+            android:title="B-Card" />
+
+        <item
             android:id="@+id/contact_set"
             android:icon="@drawable/ic_mail"
             android:title="Contact Us" />

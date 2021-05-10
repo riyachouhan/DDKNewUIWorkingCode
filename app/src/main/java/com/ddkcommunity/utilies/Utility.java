@@ -40,7 +40,6 @@ public class Utility {
         return uri;
     }
 
-
     public static Uri getExternalFilesDirForVersion24Below(@NonNull Context context, @NonNull String directoryPath, @NonNull String folderName, @NonNull String fileName) {
         Uri uri = null;
         File mediaStorageDir = null;
