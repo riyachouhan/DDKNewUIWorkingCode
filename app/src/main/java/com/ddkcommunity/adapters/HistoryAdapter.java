@@ -846,6 +846,33 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                         }
                     holder.tvFees.setVisibility(View.GONE);
 
+                }else if(data.get(position).transaction_type.toString().equalsIgnoreCase("MAP Reward"))
+                {
+                    if (data.get(position).conversion != null) {
+                        holder.tvConversion.setText(new DecimalFormat("##.####").format(data.get(position).conversion) + " DDK Conv.");
+                    }
+                    holder.tvOrderType.setText("Reward");
+                    holder.tvStatus.setVisibility(View.GONE);
+                    holder.tvConversion.setVisibility(View.GONE);
+                    holder.tvddkamount.setVisibility(View.VISIBLE);
+                    holder.tvAmount.setVisibility(View.VISIBLE);
+                    if(data.get(position).payment_type.toString().equalsIgnoreCase("map_reward"))
+                    {
+                        holder.tvOrderNumber.setText("MAP REWARD");
+                    }else
+                    {
+                        holder.tvOrderNumber.setText(data.get(position).transaction_type.toString());
+                    }
+                    holder.tvAmount.setText("" + data.get(position).receiver_address.toString());
+                    Double ddkvalue = Double.valueOf(data.get(position).amount.toString());
+                    holder.tvddkamount.setText(new DecimalFormat("##.####").format(ddkvalue) + " POINTS");
+                    holder.tvConversion.setTextColor(ContextCompat.getColor(activity, R.color.reward_color));
+                    holder.tvddkamount.setTextColor(ContextCompat.getColor(activity, R.color.reward_color));
+                    holder.ivHistoryIcon.setImageResource(R.drawable.rewards);
+                    holder.tvAmount.setTextColor(ContextCompat.getColor(activity, R.color.reward_color));
+                    holder.ivHistoryIcon.setBackground(ContextCompat.getDrawable(activity, R.drawable.card_reward));
+                    holder.tvFees.setVisibility(View.GONE);
+
                 }else if(data.get(position).transaction_type.toString().equalsIgnoreCase("SAM Reward"))
                 {
                     if (data.get(position).conversion != null) {
@@ -995,6 +1022,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                 if(data.get(position).transaction_type==null)
                 {
                     holder.tvOrderType.setText("Subscription");
+                }else
+                {
+                    holder.tvOrderType.setText(data.get(position).transaction_type.toString());
                 }
                 String amountvalue = String.valueOf(data.get(position).amount);
                 holder.tvOrderNumber.setText(data.get(position).sender_address);

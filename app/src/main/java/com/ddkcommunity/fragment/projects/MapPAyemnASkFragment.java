@@ -480,7 +480,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             public void onFailure(Call<ResponseBody> call, Throwable t)
             {
                 AppConfig.hideLoading(dialog);
-                errordurigApiCalling(getActivity(),t.getMessage());
+                 errordurigApiCalling(getActivity(),t.getMessage());
             }
         });
     }
@@ -786,7 +786,8 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             public void onFailure(Call<checkRefferalModel> call, Throwable t)
             {
                 pd.dismiss();
-                Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                String responseerror=t.getMessage();
+                errordurigApiCalling(getActivity(),t.getMessage());
             }
         });
     }
@@ -909,7 +910,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             public void onFailure(Call<mapSubscriptionModel> call, Throwable t)
             {
                dialogNew.dismiss();
-                Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "map subscription "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

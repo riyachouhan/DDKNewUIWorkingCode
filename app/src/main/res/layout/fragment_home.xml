@@ -1625,6 +1625,34 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:visibility="visible"
+                                android:id="@+id/btnPayBills"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_22sdp"
+                                    android:layout_height="@dimen/_22sdp"
+                                    android:layout_gravity="center"
+                                    android:tint="@color/colorPrimary"
+                                    android:src="@drawable/ic_pay_bills" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:text="Pay Bill"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlackText"
+                                    style="@style/myhometext"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:id="@+id/btntransaparet"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"

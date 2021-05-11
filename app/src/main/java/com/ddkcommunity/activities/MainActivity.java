@@ -650,6 +650,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             MainActivity.addFragment(new HomeFragment(), true);
                             return true;
                         case R.id.navigation_map:
+
+                            /*final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
+                            AppConfig.showLoading(dialog, "Please wait ....");
+                            CheckUserActiveStaus(dialog);
+*/
                             getSettingServerOnTab(MainActivity.this,"send_map");
                              return true;
 

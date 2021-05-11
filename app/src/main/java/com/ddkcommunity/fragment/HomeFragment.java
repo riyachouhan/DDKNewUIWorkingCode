@@ -71,6 +71,7 @@ import com.ddkcommunity.fragment.buy.BuyFragment;
 import com.ddkcommunity.fragment.credential.AddCredentialsFragment;
 import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.fragment.history.HistoryFragment;
+import com.ddkcommunity.fragment.projects.PayBillsFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
 import com.ddkcommunity.fragment.send.SendFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
@@ -186,7 +187,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private AnnouncementAdapter announcementAdapter;
     private String wallet_type = "";
     public static int tabclickevent=0;
-    public LinearLayout btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
+    public LinearLayout btnPayBills,btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
     TextView tvSelectDdkAddress,facebook_invite,share_app;
     public static ArrayList listdata;
     ImageView userimg;
@@ -299,6 +300,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             whyusemap=view.findViewById(R.id.whyusemap);
             callbackManager = CallbackManager.Factory.create();
             tabLayout = view.findViewById(R.id.tabs);
+            btnPayBills=view.findViewById(R.id.btnPayBills);
             setTablayoutview();
             //To hide the first tab
             samkoinlist=new ArrayList<>();
@@ -329,6 +331,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             btnReceive_1=view.findViewById(R.id.btnReceive_1);
             sam_wallet=view.findViewById(R.id.sam_wallet);
             tvAddressCode.setOnClickListener(this);
+            btnPayBills.setOnClickListener(this);
             view.findViewById(R.id.btnSAMPD_2).setOnClickListener(this);
             view.findViewById(R.id.btnsampd).setOnClickListener(this);
             view.findViewById(R.id.btnexchange).setOnClickListener(this);
@@ -2572,6 +2575,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         switch (v.getId())
         {
+            case R.id.btnPayBills:
+                MainActivity.addFragment(new PayBillsFragment(), true);
+                break;
+
             case R.id.btnMAp:
                 checkUserValidatedNot("map");
                 break;

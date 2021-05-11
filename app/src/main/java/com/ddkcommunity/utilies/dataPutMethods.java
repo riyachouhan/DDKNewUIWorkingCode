@@ -556,7 +556,7 @@ public class dataPutMethods
             public void onClick(View v)
             {
                 dialog.dismiss();
-                activity.finishAffinity();
+             //   activity.finishAffinity();
             }
         });
     }

@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/_10sdp"
         android:gravity="center"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/apierrorname"
         android:textColor="@color/colorAccent"
         android:text="Message"

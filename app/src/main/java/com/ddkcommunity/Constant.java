@@ -32,7 +32,7 @@ public class Constant
     public static final String BASE_URL= "";
     public static final String TERMS_CONDITION_URL= "http://54.198.160.25/";
     public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
-   // public static final String BASE_URLserv= "http://128.199.182.16/new_api/api/v2.4/v2.4.20/";
+   // public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.20/";
      public static final String IS_LOGIN = "isLogin";
     public static final String STATUS = "status";
     public static final String ANDROID = "android";

@@ -85,24 +85,25 @@ public class MapreferralFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v)
     {
-        if (v.getId() == R.id.submit_BT)
+        switch(v.getId())
         {
-            String email_ETvalue=email_ET.getText().toString();
-            if (email_ETvalue.equalsIgnoreCase(""))
-            {
-                Toast.makeText(getContext(), "Please Enter Referral Code", Toast.LENGTH_SHORT).show();
-            }else
-            {
-                CheckUserReferral(email_ETvalue);
+            case R.id.submit_BT:
+                String email_ETvalue=email_ET.getText().toString();
+                if (email_ETvalue.equalsIgnoreCase(""))
+                {
+                    Toast.makeText(getContext(), "Please Enter Referral Code", Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    CheckUserReferral(email_ETvalue);
 
-            }
+                }
+
+                break;
+
+            case R.id.skip:
+                CheckUserReferral("JOIN SAM NOW");
+                break;
         }
-
-        if(v.getId()==R.id.skip)
-        {
-            CheckUserReferral("JOIN SAM NOW");
-        }
-
     }
 
     public void getSettingServerOnTab(String functionname, Activity activity)
