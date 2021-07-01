@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_layout_text"
+    android:layout_width="@dimen/_50sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tablayout_item_normal"
+    android:gravity="center"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp"
+    android:paddingRight="@dimen/_6sdp"
+    android:paddingLeft="@dimen/_6sdp"
+    android:textColor="@color/colorBlackText"
+    style="@style/myhometext">
+
+</TextView>

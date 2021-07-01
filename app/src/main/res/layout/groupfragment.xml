@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/headerview"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_accent_gruop"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/leftside"
+            android:layout_width="@dimen/_20sdp"
+            android:tint="@color/white"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/left_arrow_si"
+            android:layout_height="@dimen/_20sdp"/>
+
+        <TextView
+            android:id="@+id/tvlevel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text=" Level 1 "
+            android:textColor="@color/white"
+            style="@style/viewerpagetext" />
+
+        <ImageView
+            android:tint="@color/white"
+            android:padding="@dimen/_4sdp"
+            android:id="@+id/rightsiede"
+            android:layout_width="@dimen/_20sdp"
+            android:src="@drawable/right_arrow_angle"
+            android:layout_height="@dimen/_20sdp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_height="@dimen/_30sdp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:id="@+id/leftuesr"
+            android:text="Left : 100"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingLeft="@dimen/_9sdp"
+            android:textColor="@color/black"
+            style="@style/myhometext" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/rightuser"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Right : 200"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingLeft="@dimen/_9sdp"
+            android:textColor="@color/black"
+            style="@style/myhometext" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_height="@dimen/_30sdp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:id="@+id/leftbalance"
+            android:text="Left : 100"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingLeft="@dimen/_9sdp"
+            android:textColor="@color/black"
+            style="@style/myhometext" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:id="@+id/rightbalance"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Right : 200"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingLeft="@dimen/_9sdp"
+            android:textColor="@color/black"
+            style="@style/myhometext" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecycleleft"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecycleRight"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:layout_marginRight="@dimen/_5sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+</LinearLayout>

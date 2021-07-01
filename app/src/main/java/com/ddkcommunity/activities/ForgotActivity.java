@@ -189,9 +189,11 @@ public class ForgotActivity extends AppCompatActivity {
 
         AppConfig.getLoadInterface().forgotPAssword(hm).enqueue(new Callback<OtpResponse>() {
             @Override
-            public void onResponse(Call<OtpResponse> call, Response<OtpResponse> response) {
+            public void onResponse(Call<OtpResponse> call, Response<OtpResponse> response)
+            {
                 dialog.dismiss();
-                if (response.isSuccessful() && response.body().status == 1) {
+                if (response.isSuccessful() && response.body().status == 1)
+                {
                     try {
                         String passwordchangetoken = response.body().forget_password;
                         initOtpVerifiaction(passwordchangetoken,email,ForgotActivity.this);

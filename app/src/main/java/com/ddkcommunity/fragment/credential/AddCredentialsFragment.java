@@ -210,6 +210,9 @@ public class AddCredentialsFragment extends Fragment {
         super.onResume();
         MainActivity.setTitle("Add Credential");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void hideKeyBoard() {

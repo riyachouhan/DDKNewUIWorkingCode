@@ -2573,5 +2573,8 @@ public class SendDDkFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         MainActivity.setTitle(clickAddressname);
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 }

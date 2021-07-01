@@ -179,6 +179,7 @@ public class ProfileFragment extends Fragment {
                                 UserResponse userResponse = new Gson().fromJson(responseData, UserResponse.class);
                                 AppConfig.setUserData(mContext, userResponse);
                                 userInfo = userResponse.getUser();
+                                MainActivity.userData=userResponse;
                                 ddkCodeET.setText(userResponse.getUser().unique_code);
                                 MainActivity.setUserDetail(userResponse.getUser());
                                 App.editor.putString(Constant.USER_NAME, userResponse.getUser().getName());
@@ -1288,6 +1289,9 @@ public class ProfileFragment extends Fragment {
         // HomeActivity.setHomeItem(getActivity(), R.id.profile);
         MainActivity.setTitle("Profile");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

@@ -655,5 +655,8 @@ public class PayUsingScanFragment extends Fragment implements View.OnClickListen
         MainActivity.setTitle("Scan QR");
         MainActivity.enableBackViews(true);
         MainActivity.scanview.setVisibility(View.GONE);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 }

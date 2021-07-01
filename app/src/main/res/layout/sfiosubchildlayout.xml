@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:id="@+id/viewclickdata"
+     android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/colorLine"/>
+
+    <LinearLayout
+        android:layout_marginRight="@dimen/_22sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:weightSum="3"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:paddingTop="@dimen/_10sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tvtrxnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/black"
+                style="@style/myhometext"
+                />
+
+            <TextView
+                android:layout_marginTop="@dimen/_2sdp"
+                android:id="@+id/tvamountsb"
+                android:singleLine="true"
+                android:textStyle="bold"
+                style="@style/subhintdataSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_color"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:gravity="center_vertical"
+            android:id="@+id/redeemview"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/submit"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/button_accent_round"
+                android:text="Redeem"
+                android:textColor="@color/white"
+                style="@style/MyCustomTabText_small"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="0.9"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:paddingRight="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="@color/black_color"
+                android:text="06-02-2021"
+                style="@style/subsmallSize" />
+
+            <TextView
+                android:id="@+id/tvstatus"
+                android:paddingRight="@dimen/_4sdp"
+                android:paddingLeft="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="@color/green_color"
+                android:text="Send"
+                style="@style/hintview_frozen" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+ </LinearLayout>

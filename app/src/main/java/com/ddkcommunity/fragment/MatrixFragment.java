@@ -90,6 +90,9 @@ public class MatrixFragment extends Fragment{
 
         MainActivity.setTitle("Matrix");
         MainActivity.scanview.setVisibility(View.GONE);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

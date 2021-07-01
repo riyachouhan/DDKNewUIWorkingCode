@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_margin="@dimen/_15sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="P"
+                style="@style/forgotheadpay"
+                android:gravity="center"
+                android:id="@+id/billerfirstname"
+                android:background="@drawable/circle_new_gray"
+                android:textColor="@color/txtblack"
+                />
+
+            <TextView
+                android:id="@+id/billername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="Payment Biller"
+                style="@style/textSizehint"
+                android:gravity="center"
+                android:textColor="@color/txtblack"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:text="Payment will be posted within 24 hours"
+                style="@style/sabphasetets"
+                android:gravity="center"
+                android:textColor="@color/txtblack"
+                />
+
+           <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addpaylayout"
+            android:gravity="center_vertical"
+            android:background="@drawable/card_white_bg"
+            android:orientation="vertical"
+            >
+
+           </LinearLayout>
+
+            <TextView
+                android:id="@+id/submit_BT"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/button_accent_round"
+                android:text="Pay Now"
+                style="@style/subhintdataSize"
+                android:gravity="center"
+                android:padding="@dimen/_9sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

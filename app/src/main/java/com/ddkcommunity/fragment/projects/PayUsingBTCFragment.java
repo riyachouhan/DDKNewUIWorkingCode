@@ -703,6 +703,9 @@ public class PayUsingBTCFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
         if(SelectPaymentPoolingFragment.selectedSubscription.equalsIgnoreCase("btc"))
         {
             MainActivity.setTitle("Using BTC");

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -73,6 +74,7 @@ import com.ddkcommunity.model.verifcationFundSource;
 import com.ddkcommunity.model.wallet.WalletResponse;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -556,7 +558,7 @@ public class dataPutMethods
             public void onClick(View v)
             {
                 dialog.dismiss();
-             //   activity.finishAffinity();
+                activity.finishAffinity();
             }
         });
     }

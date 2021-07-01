@@ -36,6 +36,53 @@
                     style="@style/homeheader"
                     android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_weight="1.3"
+                    android:layout_width="0dp"
+                    android:visibility="gone"
+                    android:id="@+id/searchlayout"
+                    android:layout_marginRight="@dimen/_50sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:gravity="left"
+                    android:background="@drawable/card_white_bg"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/places_ic_search"
+                        android:id="@+id/ivIcon"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        />
+
+                    <View
+                        android:layout_width="0.9dp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_height="match_parent"
+                        android:background="@color/grey_color"/>
+
+                    <EditText
+                        android:id="@+id/search_ET"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        style="@style/viewerpagetext"
+                        android:hint="Search "
+                        android:padding="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/colorApp"
+                        android:textColorHint="@color/grey_color"
+                        />
+
+                </LinearLayout>
+
+
                 <ImageView
                     android:id="@+id/scanview"
                     android:layout_width="@dimen/_20sdp"

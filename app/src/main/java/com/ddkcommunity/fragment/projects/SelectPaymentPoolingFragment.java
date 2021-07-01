@@ -110,6 +110,9 @@ public class SelectPaymentPoolingFragment extends Fragment implements View.OnCli
         // HomeActivity.setHomeItem(getActivity(), R.id.profile);
         MainActivity.setTitle("Subscription");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     public void getSettingServerOnTab(Activity activity, final String functionname)

@@ -19,8 +19,10 @@
     <color name="colorGreen">#31be15</color>
     <color name="colorGreendark">#1E9F04</color>
     <color name="colorRed">#e50606</color>
+    <color name="colorpedn">#7F827E</color>
     <color name="colorReddark">#C60303</color>
     <color name="colorGreenLight">#c2f8b8</color>
+    <color name="colorBlueLight">#D088D2F8</color>
     <color name="colorRedLight">#fdbfc1</color>
     <color name="buyGreen">#76bf63</color>
     <color name="sellRed">#f70000</color>
@@ -29,6 +31,7 @@
     <color name="cyan">#17E2B8</color>
     <color name="grey_color">#80999999</color>
     <color name="orange">#CC5E02</color>
+    <color name="neworangesfio">#CC5E02</color>
     <color name="dark_grey_color">#999999</color>
     <color name="purple_color">#651A7F</color>
     <color name="black_color">#000000</color>

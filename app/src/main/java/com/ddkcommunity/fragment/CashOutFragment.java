@@ -1112,5 +1112,8 @@ public class CashOutFragment extends Fragment implements View.OnClickListener
         super.onResume();
         MainActivity.setTitle("Sell");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 }

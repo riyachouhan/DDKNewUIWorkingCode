@@ -13,16 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ExpandableListView
+        android:id="@+id/left_drawer"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        android:groupIndicator="@null"
+        android:background="@color/colorPrimary" />
+
+    <!-- The drawer is given a fixed width in dp and extends the full height of
+       the container. -->
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:itemIconTint="#5E636b"
-        app:itemTextColor="#5E636b"
-        app:itemTextAppearance="@style/MyCustomTabText_small"
+        app:itemIconTint="#ffffff"
+        app:itemTextColor="#ffffff"
+        android:background="@color/colorPrimary"
+        app:itemTextAppearance="@style/MyCustomTabText"
         app:menu="@menu/activity_main_drawer">
 
         <LinearLayout

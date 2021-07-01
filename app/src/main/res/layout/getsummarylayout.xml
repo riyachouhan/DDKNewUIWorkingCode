@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/savefoldevacl"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+        <LinearLayout  android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/forgot_TV"
+                    android:gravity="center"
+                    style="@style/textSizehint_hint_summar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Summary"
+                    android:textColor="@color/black_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:background="@color/dark_gray"
+                    android:layout_height="1dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/mapheader"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    >
+
+                        <com.dinuscxj.progressbar.CircleProgressBar
+                            android:id="@+id/custom_progress_outer"
+                            android:layout_centerVertical="true"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_marginBottom="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:line_count="30"
+                            app:line_width="@dimen/_4sdp"
+                            app:progress_background_color="#B1AEAE"
+                            app:progress_end_color="@color/colorPrimary"
+                            app:progress_start_color="@color/colorPrimary"
+                            app:progress_stroke_cap="round"
+                            app:progress_stroke_width="@dimen/_2sdp"
+                            app:progress_style="solid_line"
+                            app:progress_text_size="18sp"
+                            app:progress_text_color="@color/colorPrimary" />
+
+                        <com.dinuscxj.progressbar.CircleProgressBar
+                            android:id="@+id/custom_progress_inner"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:layout_marginBottom="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:line_count="30"
+                            app:line_width="@dimen/_1sdp"
+                            app:progress_background_color="#B1AEAE"
+                            app:progress_end_color="@color/colorPrimary"
+                            app:progress_start_color="@color/colorPrimary"
+                            app:progress_stroke_cap="round"
+                            app:progress_stroke_width="@dimen/_1sdp"
+                            app:progress_style="solid_line"
+                            app:progress_text_size="0dp"
+                            app:progress_text_color="@color/colorPrimary" />
+
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:layout_width="match_parent"
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="@dimen/_90sdp"
+                            android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/expandedListItem"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorPrimary"
+                                    android:text="Bronze"
+                                    android:gravity="left"
+                                    style="@style/buttontext"
+                                    />
+
+                                <TextView
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:id="@+id/tvAddressCode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/_8sdp"
+                                    android:layout_marginBottom="@dimen/_3sdp"
+                                    android:drawableTint="@color/black_color"
+                                    android:drawableEnd="@drawable/ic_copy_small"
+                                    android:drawablePadding="@dimen/_15sdp"
+                                    style="@style/sabphasetets"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black_color"
+                                    />
+
+                        </LinearLayout>
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Direct Referral"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="..................."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:id="@+id/directReferral"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Group Matrix"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="......."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:id="@+id/groupMatrix"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Power of 10"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="......."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:id="@+id/powerx10"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Platinum"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="......."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:id="@+id/platinum"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Titanium"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="......."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:id="@+id/titanium"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:background="@color/dark_gray"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                        <TextView
+                            android:text="Total"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:paddingLeft="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen" />
+
+                        <TextView
+                            android:text="......."
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            style="@style/MyCustomTabText_small_frozen"  />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:id="@+id/total"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:layout_weight="0.9"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/secondhintview" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="#40000000"
+            android:id="@+id/mainview"
+            android:layout_height="@dimen/_290sdp">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_centerInParent="true"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_centerHorizontal="true"
+                    android:background="@android:color/transparent"
+                    />
+        </RelativeLayout>
+</RelativeLayout>

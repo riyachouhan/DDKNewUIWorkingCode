@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-
 /*Password : .DDK@123
      *Key password Alias: .DDK@123*/
 /*alias: ddkglobalcommunityalias*/
@@ -16,8 +15,8 @@ android {
                 applicationId "com.ddkcommunity"
                 minSdkVersion 21
                 targetSdkVersion 29
-                versionCode 50
-                versionName "2.4.21"
+                versionCode 53
+                versionName "2.4.24"
                 multiDexEnabled true
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
@@ -93,5 +92,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     //for video compree
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+    // AndroidX version
+    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
+    implementation 'com.github.nirwannursabda:expandable-navigation:0.1.2'
+
 }
 apply plugin: 'com.google.gms.google-services'

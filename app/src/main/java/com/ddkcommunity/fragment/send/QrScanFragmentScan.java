@@ -130,6 +130,9 @@ public class QrScanFragmentScan extends Fragment {
         }
         MainActivity.setTitle("Scan via QR Code");
         MainActivity.scanview.setVisibility(View.GONE);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 

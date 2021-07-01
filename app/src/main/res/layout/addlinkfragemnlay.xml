@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eeeeee"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+         android:orientation="vertical"
+        android:layout_margin="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:padding="@dimen/_15sdp"
+        android:paddingTop="@dimen/_30sdp"
+        android:paddingBottom="@dimen/_25sdp"
+        android:paddingLeft="@dimen/_15sdp"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:text="Please enter email address \n &amp; password to proceed"
+            android:id="@+id/tvOrderType"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="@color/black"
+            android:layout_margin="@dimen/_5sdp"
+            style="@style/textSizehint_hint"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email address *"
+            android:id="@+id/emailadd"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_8sdp"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/text_enfi"
+            android:textColor="@color/black_color"
+            android:textColorHint="@color/black_color"
+            style="@style/subhintdataSize" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password *"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_8sdp"
+            android:id="@+id/passwordtxt"
+            android:drawableRight="@drawable/eye"
+            android:inputType="textPassword"
+            android:background="@drawable/text_enfi"
+            android:textColor="@color/black_color"
+            android:textColorHint="@color/black_color"
+            style="@style/subhintdataSize" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/button_accent_round"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp" />
+
+    </LinearLayout>
+
+</LinearLayout>

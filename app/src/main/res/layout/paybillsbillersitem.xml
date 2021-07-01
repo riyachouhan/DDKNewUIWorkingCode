@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginLeft="@dimen/_2sdp"
+    android:layout_marginRight="@dimen/_2sdp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/btnBiller"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:padding="@dimen/_4sdp"
+            android:id="@+id/catimg"
+            android:background="@drawable/billpaybagg"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/bpiimg" />
+
+        <ImageView
+            android:id="@+id/moreiocn"
+            android:padding="@dimen/_4sdp"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/sellallbg" />
+
+        <TextView
+            android:id="@+id/catname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlackText"
+            style="@style/myhometext"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

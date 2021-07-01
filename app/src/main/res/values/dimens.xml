@@ -12,5 +12,5 @@
     <dimen name="icon_large">64dp</dimen>
     <dimen name="icon_x_large_width">100dp</dimen>
     <dimen name="icon_x_large_height">50dp</dimen>
-
+    <dimen name="txtSize">6pt</dimen>
 </resources>

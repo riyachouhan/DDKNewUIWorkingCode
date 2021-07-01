@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/grey_color"
+            android:layout_height="1dp"/>
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:paddingLeft="@dimen/_15sdp"
+            android:background="@color/colorPrimary" >
+
+            <TextView
+                android:id="@+id/appverisonanem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="App Version 2.4.22"
+                android:gravity="left"
+                style="@style/homeheader"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</FrameLayout>

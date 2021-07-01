@@ -84,5 +84,8 @@ public class SendLinkFragment extends Fragment
         super.onResume();
         MainActivity.setTitle("");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 }

@@ -210,9 +210,10 @@ public class ReceivedActivity extends AppCompatActivity {
             tvText1.setText(getResources().getString(R.string.toclickfirst)+clickAddressname+getResources().getString(R.string.othersecondhint));
             sch_txt.setText(getResources().getString(R.string.receivehint)+clickAddressname);
             ivQrCode.setImageBitmap(bitmap);
-            if(bitmap!=null) {
+            if(bitmap!=null)
+            {
                 String path = saveImage(bitmap);  //give read write permission
-            }//Toast.makeText(context, "QRCode saved to -> "+path, Toast.LENGTH_SHORT).show();
+            }
         } catch (WriterException e)
         {
             e.printStackTrace();

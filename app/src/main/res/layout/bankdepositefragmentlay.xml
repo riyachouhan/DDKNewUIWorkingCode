@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewclickdata"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:gravity="left">
+
+
+            <ImageView
+                android:id="@+id/bankIconImg"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/flagi"
+               />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_width="0dp"
+            android:id="@+id/bank_subscriber_view"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:hint="Australian subscriber"
+            android:layout_weight="1.7"
+            android:textColor="@color/colorBlackText"
+            android:textColorHint="@color/colorBlackText"
+            style="@style/hintview" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:id="@+id/bankName"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"
+            android:text="------------"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary"
+            style="@style/corporateSummer"
+            />
+
+
+        <TextView
+            android:id="@+id/bankNameValue"
+            android:layout_weight="0.95"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:id="@+id/bankAccountNo"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"
+            android:text="------------"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary"
+            style="@style/corporateSummer"
+            />
+
+
+        <TextView
+            android:layout_weight="0.95"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:id="@+id/bankAccountvalue"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:id="@+id/bankAccountName"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"
+            android:text="------------"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary"
+            style="@style/corporateSummer"
+            />
+
+        <TextView
+            android:id="@+id/bankAccountNameValue"
+            android:layout_weight="0.95"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:id="@+id/swiftcodevie"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:id="@+id/swift_code_label"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"
+            android:text="------------"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:textColor="@color/colorPrimary"
+            style="@style/corporateSummer"
+            />
+
+        <TextView
+            android:id="@+id/swift_code"
+            android:layout_weight="0.95"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            style="@style/sabphasetets"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:id="@+id/linevvie"
+        android:layout_marginLeft="@dimen/_45sdp"
+        android:layout_marginRight="@dimen/_45sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:background="@color/texthint"/>
+
+</LinearLayout>
+
+

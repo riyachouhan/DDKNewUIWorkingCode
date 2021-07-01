@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ import com.ddkcommunity.App;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.fragment.SFIOShowFragmement;
+import com.ddkcommunity.fragment.mapmodule.corporateUser.corporateUserDashboardFragment;
 import com.ddkcommunity.fragment.projects.MapOtionAllFragment;
 import com.ddkcommunity.fragment.projects.MapreferralFragment;
 import com.ddkcommunity.model.OtpResponse;
@@ -67,8 +70,8 @@ public class SuccessFragmentScan extends Fragment implements View.OnClickListene
     private UserResponse userData;
     String txtid,name,amount;
     String otp,action;
-    String emailaddress,currentWalletBalance;
-    TextView upperheading,hintform,etWalletUserName,etDDKCoins,btnVerify;
+    String emailaddress,currentWalletBalance,message;
+    TextView hintformsubvie,upperheading,hintform,etWalletUserName,etDDKCoins,btnVerify;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,14 +87,20 @@ public class SuccessFragmentScan extends Fragment implements View.OnClickListene
                 if (getArguments().getString("action") != null) {
                     action= getArguments().getString("action");
                 }
+                hintformsubvie=view.findViewById(R.id.hintformsubvie);
                 upperheading=view.findViewById(R.id.upperheading);
                 btnVerify = view.findViewById(R.id.btnVerify);
                 etDDKCoins = view.findViewById(R.id.etDDKCoins);
                 userData = AppConfig.getUserData(mContext);
+                ImageView failedi,succeicon;
+                failedi=view.findViewById(R.id.failedi);
+                succeicon=view.findViewById(R.id.succeicon);
                 etWalletUserName = view.findViewById(R.id.etWalletUserName);
 
                 if(action.equalsIgnoreCase("scan"))
                 {
+                    succeicon.setVisibility(View.VISIBLE);
+                    failedi.setVisibility(View.GONE);
                     if (getArguments().getString("txtid") != null) {
                         txtid = getArguments().getString("txtid");
                     }
@@ -118,8 +127,156 @@ public class SuccessFragmentScan extends Fragment implements View.OnClickListene
                     btnVerify.setText("Go To Home");
                     btnVerify.setOnClickListener(this);
 
+                }else if(action.equalsIgnoreCase("successcorporate"))
+                {
+                    btnVerify.setText("Go To Dashboard");
+                    if (getArguments().getString("email") != null) {
+                        emailaddress = getArguments().getString("email");
+                    }
+
+                    String actionamnt="";
+                    if (getArguments().getString("actionamnt") != null) {
+                        actionamnt = getArguments().getString("actionamnt");
+                    }
+
+                    if(getArguments().getString("message")!=null)
+                    {
+                        message=getArguments().getString("message");
+                    }
+
+                    hintform=view.findViewById(R.id.hintform);
+                    etDDKCoins.setVisibility(View.GONE);
+                    etWalletUserName.setVisibility(View.GONE);
+                    upperheading.setVisibility(View.GONE);
+                    btnVerify.setOnClickListener(this);
+                    if(actionamnt.equalsIgnoreCase("success")) {
+                        hintform.setText("Successfully registered your \n" +
+                                "account as Corporate User");
+                        succeicon.setVisibility(View.VISIBLE);
+                        failedi.setVisibility(View.GONE);
+
+                    }else
+                    {
+                        succeicon.setVisibility(View.GONE);
+                        failedi.setVisibility(View.VISIBLE);
+
+                        hintform.setText("Sorry ! \n" +
+                                "Payment Failed. Please try again later");
+                    }
+                }else if(action.equalsIgnoreCase("addnewlinka"))
+                {
+                    btnVerify.setText("Manage Account");
+
+                    String actionamnt="";
+                    if (getArguments().getString("actionamnt") != null) {
+                        actionamnt = getArguments().getString("actionamnt");
+                    }
+
+                    if(getArguments().getString("message")!=null)
+                    {
+                        message=getArguments().getString("message");
+                    }
+
+                    hintform=view.findViewById(R.id.hintform);
+                    etDDKCoins.setVisibility(View.GONE);
+                    etWalletUserName.setVisibility(View.GONE);
+                    upperheading.setVisibility(View.GONE);
+                    btnVerify.setOnClickListener(this);
+                    if(actionamnt.equalsIgnoreCase("success")) {
+                        hintform.setText("Successfully linked account to \n" +
+                                "your Corporate User Account");
+                        succeicon.setVisibility(View.VISIBLE);
+                        failedi.setVisibility(View.GONE);
+
+                    }else
+                    {
+                        succeicon.setVisibility(View.GONE);
+                        failedi.setVisibility(View.VISIBLE);
+
+                        hintform.setText("Sorry ! \n" +
+                                "Payment Failed. Please try again later");
+                    }
+
+                }else if(action.equalsIgnoreCase("sfio"))
+                {
+                    btnVerify.setText("Go To SFIO");
+                    if (getArguments().getString("email") != null) {
+                        emailaddress = getArguments().getString("email");
+                    }
+
+                    String actionamnt="";
+                    if (getArguments().getString("actionamnt") != null) {
+                        actionamnt = getArguments().getString("actionamnt");
+                    }
+
+                    if(getArguments().getString("message")!=null)
+                    {
+                        message=getArguments().getString("message");
+                    }
+
+                    hintform=view.findViewById(R.id.hintform);
+                    etDDKCoins.setVisibility(View.GONE);
+                    etWalletUserName.setVisibility(View.GONE);
+                    upperheading.setVisibility(View.GONE);
+                    btnVerify.setOnClickListener(this);
+                    if(actionamnt.equalsIgnoreCase("success")) {
+                        hintform.setText("Congratulations ! \n" +
+                                "Payment Successful");
+                        hintformsubvie.setText(message+"");
+                        succeicon.setVisibility(View.VISIBLE);
+                        failedi.setVisibility(View.GONE);
+
+                    }else
+                    {
+                        succeicon.setVisibility(View.GONE);
+                        failedi.setVisibility(View.VISIBLE);
+
+                        hintform.setText("Sorry ! \n" +
+                                "Payment Failed. Please try again later");
+                    }
+
+                }else if(action.equalsIgnoreCase("sfioSave"))
+                {
+                    btnVerify.setText("Go To SFIO");
+                    if (getArguments().getString("email") != null) {
+                        emailaddress = getArguments().getString("email");
+                    }
+
+                    String actionamnt="";
+                    if (getArguments().getString("actionamnt") != null) {
+                        actionamnt = getArguments().getString("actionamnt");
+                    }
+
+                    if(getArguments().getString("message")!=null)
+                    {
+                        message=getArguments().getString("message");
+                    }
+
+                    hintform=view.findViewById(R.id.hintform);
+                    etDDKCoins.setVisibility(View.GONE);
+                    etWalletUserName.setVisibility(View.GONE);
+                    upperheading.setVisibility(View.GONE);
+                    btnVerify.setOnClickListener(this);
+                    if(actionamnt.equalsIgnoreCase("success")) {
+                        hintform.setText("Congratulations ! \n" +
+                                "");
+                        hintformsubvie.setText(message+"");
+                        succeicon.setVisibility(View.VISIBLE);
+                        failedi.setVisibility(View.GONE);
+
+                    }else
+                    {
+                        succeicon.setVisibility(View.GONE);
+                        failedi.setVisibility(View.VISIBLE);
+
+                        hintform.setText("Sorry ! \n" +
+                                "Payment Failed. Please try again later");
+                    }
+
                 }else
                 {
+                    succeicon.setVisibility(View.VISIBLE);
+                    failedi.setVisibility(View.GONE);
                     if (getArguments().getString("email") != null) {
                         emailaddress = getArguments().getString("email");
                     }
@@ -149,6 +306,21 @@ public class SuccessFragmentScan extends Fragment implements View.OnClickListene
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(i);
                 getActivity().finishAffinity();
+            }else if(action.equalsIgnoreCase("sfio") || action.equalsIgnoreCase("sfioSave"))
+            {
+                Fragment fragment = new SFIOShowFragmement();
+                Bundle arg = new Bundle();
+                fragment.setArguments(arg);
+                MainActivity.addFragment(fragment, false);
+
+            }else if(action.equalsIgnoreCase("successcorporate"))
+            {
+
+                Fragment fragment = new corporateUserDashboardFragment();
+                Bundle arg = new Bundle();
+                fragment.setArguments(arg);
+                MainActivity.addFragment(fragment, false);
+
             }else
             {
                 Intent i=new Intent(getActivity(),MainActivity.class);
@@ -163,6 +335,10 @@ public class SuccessFragmentScan extends Fragment implements View.OnClickListene
         super.onResume();
         if(action.equalsIgnoreCase("scan")) {
             MainActivity.setTitle("Success");
+        }else if(action.equalsIgnoreCase("sfio"))
+        {
+            MainActivity.setTitle("SFIO Success");
+
         }else
         {
             MainActivity.setTitle("Referral Code");

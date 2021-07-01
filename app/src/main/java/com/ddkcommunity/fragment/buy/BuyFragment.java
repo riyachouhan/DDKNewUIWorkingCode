@@ -294,6 +294,9 @@ public class BuyFragment extends Fragment implements View.OnClickListener {
 
         MainActivity.setTitle("Buy Coins");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     @Override

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/selection_type_layout"
+            android:layout_margin="@dimen/_15sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:text="Please follow this instruction"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                style="@style/textSizehint"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingRight="@dimen/_8sdp"
+                android:background="@drawable/text_card_bg"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bankdepositelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:padding="@dimen/_5sdp"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/bankicon" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_weight="1.6"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:hint="STEP 1"
+                            android:textColor="@color/colorBlackText"
+                            android:textColorHint="@color/colorBlackText"
+                            style="@style/textSizehint" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_vertical"
+                            android:hint="Deposit"
+                            android:textColor="@color/colorBlackText"
+                            android:textColorHint="@color/colorBlackText"
+                            style="@style/hintview" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Deposit Amount"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_7sdp"
+                    android:id="@+id/amount"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:inputType="number"
+                    android:background="@drawable/text_enfi"
+                    android:textColor="@color/black_color"
+                    android:textColorHint="@color/texthint"
+                    style="@style/subhintdataSize" />
+
+                <LinearLayout
+                    android:id="@+id/convertolayout"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/text_enfi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_weight="1.7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:id="@+id/convertto"
+                        android:hint="Select Convert To"
+                        android:padding="@dimen/_8sdp"
+                        android:textColor="@color/colorBlackText"
+                        android:textColorHint="@color/texthint"
+                        style="@style/subhintdataSize" />
+
+                    <ImageView
+                        android:layout_weight="0.3"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_gravity="end|center_vertical"
+                        android:visibility="visible"
+                        android:padding="@dimen/_5sdp"
+                        android:tint="@color/colorBlackText"
+                        android:src="@drawable/right_arrow" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amount"
+                    android:id="@+id/finalamount"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/text_enfi"
+                    android:textColor="@color/black_color"
+                    android:textColorHint="@color/texthint"
+                    style="@style/subhintdataSize" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:background="@drawable/text_card_bg"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingRight="@dimen/_8sdp"
+                android:background="@drawable/text_card_bg"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+                    <LinearLayout
+                        android:layout_weight="0.4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:padding="@dimen/_5sdp"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@drawable/ic_camera_alt_black_24dp"
+                            android:tint="@color/colorPrimary"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_weight="1.6"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:hint="STEP 2"
+                            android:textColor="@color/colorBlackText"
+                            android:textColorHint="@color/colorBlackText"
+                            style="@style/textSizehint" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_vertical"
+                            android:hint="Take picture"
+                            android:textColor="@color/colorBlackText"
+                            android:textColorHint="@color/colorBlackText"
+                            style="@style/hintview" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_vertical"
+                            android:hint="Please take a picture of the receipt after depositing the money."
+                            android:textColor="@color/colorBlackText"
+                            android:textColorHint="@color/colorBlackText"
+                            style="@style/MyCustomTabText_small" />
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingRight="@dimen/_8sdp"
+                android:background="@drawable/text_card_bg"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+                <LinearLayout
+                    android:layout_weight="0.4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:padding="@dimen/_5sdp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:src="@drawable/cloud"
+                        android:tint="@color/colorPrimary"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1.6"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:hint="STEP 3"
+                        android:textColor="@color/colorBlackText"
+                        android:textColorHint="@color/colorBlackText"
+                        style="@style/textSizehint" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:hint="Upload"
+                        android:textColor="@color/colorBlackText"
+                        android:textColorHint="@color/colorBlackText"
+                        style="@style/hintview" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:hint="Please upload the receipt on the SFIO list"
+                        android:textColor="@color/colorBlackText"
+                        android:textColorHint="@color/colorBlackText"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/submit"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/button_accent_round"
+                android:text="Continue"
+                android:textColor="@color/white"
+                style="@style/corporateSummer" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -74,7 +74,7 @@ public class PollingHistoryTransction
     @Expose
     public String totalStartDate;
 
-    public class PoolingHistoryData {
+    public static class PoolingHistoryData {
         @SerializedName("id")
         @Expose
         public Integer id;

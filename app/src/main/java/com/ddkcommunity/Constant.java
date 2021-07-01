@@ -28,11 +28,12 @@ public class Constant
    // public static final String BASE_URL= "http://128.199.182.16/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URL= "http://107.20.12.68/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URL= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
-    public static final String BASE_URL_versionName= "new_api/api/v2.4/v2.4.20/";
+    public static final String BASE_URL_versionName= "new_api/api/v2.4/v2.4.23/";
     public static final String BASE_URL= "";
-    public static final String TERMS_CONDITION_URL= "http://54.198.160.25/";
-    public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
+    //public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.22/";
+    // public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.20/";
+    public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.23/";
      public static final String IS_LOGIN = "isLogin";
     public static final String STATUS = "status";
     public static final String ANDROID = "android";
@@ -71,6 +72,8 @@ public class Constant
     public static final String BTC_Secaret = "btc_secaret";
     public static final String BTC_Balance = "btc_balance";
     public static final String PHP_Balance = "php_balance";
+    public static final String Navigationcount = "navigationcount";
+    public static final String Packagename = "packagename";
     public static final String PHP_Functionality_View = "php_functionality_view";
     public static final String BTC_publickey = "btc_publickey";
     public static final String SAM_Balance = "Sam_balance";
@@ -78,12 +81,14 @@ public class Constant
     public static final String INVITE_CONTENT = "invite_content";
     public static final String SAM_CONVERSION = "SamConversion";
     public static final String Strip_Payment_Key = "STRIPEKEY";
+    public static final String UserWebViewProfile = "UserWebViewProfile";
     public static final String MApLoginURl = "MAPLoginURL";
     public static final String MApURl = "MAPURLData";
+    public static final String MAPToken= "maptoken";
     public static final String MApURllive = "MAPURLDatalive";
     public static final String AllURllive = "AllURllive";
     public static final String apiserver = "";
- //for verificaytion
+    //for verificaytion
     public static final String MOBILE_VERIFIED_STATUS="mobileverified";
     public static final String EMAIL_VERIFIED_STATUS="emailverified";
     public static final String FUND_VERIFIED_STATUS="fundverified";
@@ -140,6 +145,8 @@ public class Constant
     public static String APP_NAME = "DDK_COMMUNITY";
     public  static String REG_NAME = "DDK_COMMUNITY_REG";
     public static String sellsam_transaction_fees="sellsam_transaction_fees";
+    public static String sfio_minimumamount="sfiominimumamt";
+    public static String sfiofees="sfiofees";
     public static String sellsam_transaction_feeskpay="sellsam_transaction_feeskpay";
     public static String sendsam_transaction_fees="sendsam_transaction_fees";
     public static String sendphp_transaction_fees="sendphp_transaction_fees";

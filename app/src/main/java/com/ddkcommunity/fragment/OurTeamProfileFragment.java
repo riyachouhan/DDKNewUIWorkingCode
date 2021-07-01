@@ -151,6 +151,9 @@ public class OurTeamProfileFragment extends Fragment {
 
         MainActivity.setTitle("Profile");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

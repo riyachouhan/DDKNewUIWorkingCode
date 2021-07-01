@@ -1,14 +1,11 @@
 package com.ddkcommunity.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
@@ -18,21 +15,18 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
-import com.ddkcommunity.fragment.projects.PayBillsFragment;
-import com.ddkcommunity.fragment.send.SendDDkFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
-import com.ddkcommunity.model.SliderImg;
+import com.ddkcommunity.model.SliderWithType;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeBannerPagerAdapter extends PagerAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<SliderImg> mResources;
+    private ArrayList<SliderWithType.Datum> mResources;
 
-    public HomeBannerPagerAdapter(Context context, ArrayList<SliderImg> mResources) {
+    public HomeBannerPagerAdapter(Context context, ArrayList<SliderWithType.Datum> mResources) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mResources = mResources;

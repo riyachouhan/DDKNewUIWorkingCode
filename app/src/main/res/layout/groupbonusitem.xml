@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_8sdp"
+    android:layout_marginLeft="@dimen/_8sdp"
+    android:background="@drawable/tablayout_funnel_iteam"
+    android:id="@+id/viewclickdata"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_1sdp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.6"
+            android:paddingBottom="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/ivHistoryIcon"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/groupbnusjj"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Level"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:textColor="@color/colorPrimary"
+                    style="@style/MyCustomTabText_small" />
+
+                <TextView
+                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="-2dp"
+                    android:text="1"
+                    android:id="@+id/levelno"
+                    android:textColor="@color/colorPrimary"
+                    style="@style/extrabuttontext" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2.4"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:weightSum="2"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/tvpoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Point : 100.00"
+                        style="@style/viewerpagetext"/>
+
+                    <TextView
+                        android:id="@+id/tvdatetime"
+                        android:text="05/05/2021 | 5:00 pm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlackText"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvRenewal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_9sdp"
+                        android:paddingLeft="@dimen/_9sdp"
+                        android:textColor="@color/black"
+                        style="@style/viewerpagetext" />
+
+                    <TextView
+                        android:paddingRight="@dimen/_4sdp"
+                        android:id="@+id/tvLeftRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlackText"
+                        style="@style/MyCustomTabText_small"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

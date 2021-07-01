@@ -1,120 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:background="@color/background">
+    tools:context=".activities.ReceivedActivity">
 
-   <ScrollView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:orientation="vertical"
-           android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:background="@drawable/text_card_bg"
+            android:orientation="vertical">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_margin="@dimen/_10sdp"
-               android:gravity="center"
-               android:background="@drawable/text_card_bg"
-               android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/_10sdp"
+                style="@style/MyCustomTabText"
+                android:gravity="center_horizontal"
+                android:text="To share with this QR Code user can \n see your profile ."
+                android:textColor="@color/colorBlackText" />
 
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="@dimen/_20sdp"
-                   android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                   android:textColor="@color/colorBlackText"
-                   android:gravity="center"
-                   android:textSize="@dimen/_10ssp"
-                   android:fontFamily="@font/montserrat_semibold"
-                   android:text="Get the QR code into the camera view"/>
+            <ImageView
+                android:id="@+id/ivQrCode"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"/>
 
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="horizontal"
-                   android:gravity="center_horizontal">
+        </LinearLayout>
 
-                   <RelativeLayout
-                       android:layout_width="@dimen/_200sdp"
-                       android:layout_height="@dimen/_200sdp"
-                       android:layout_margin="@dimen/_16sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/text_card_bg"
+            android:orientation="vertical">
 
-                       <SurfaceView
-                           android:id="@+id/camera_view"
-                           android:layout_width="@dimen/_200sdp"
-                           android:layout_height="@dimen/_200sdp"
-                           />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_15sdp"
+                android:id="@+id/header_view"
+                android:text="To share your profile with other so share below link ."
+                android:textColor="@color/colorBlackText"
+                style="@style/MyCustomTabText"
+                />
 
-                   </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                style="@style/MyCustomTabText"
+                android:text="Profile Link"
+                android:textColor="@color/tab_unSelect"
+                />
 
-               </LinearLayout>
+            <TextView
+                android:id="@+id/tvWalletAddressCopy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:maxLines="2"
+                android:drawableEnd="@drawable/ic_copy_small"
+                android:drawablePadding="@dimen/_15sdp"
+                style="@style/MyCustomTabText"
+                android:drawableTint="@color/colorBlackText"
+                android:text="http://userprofile.html"
+                android:textColor="@color/colorBlackText"
+                />
 
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                   android:textColor="@color/colorBlackText"
-                   android:gravity="center"
-                   android:fontFamily="@font/montserrat_semibold"
-                   android:textSize="@dimen/_10ssp"
-                   android:layout_marginBottom="@dimen/_20sdp"
-                   android:text="Scanning..."/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-           </LinearLayout>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:paddingBottom="@dimen/_15sdp"
-               android:layout_marginLeft="@dimen/_10sdp"
-               android:layout_marginRight="@dimen/_10sdp"
-               android:layout_marginBottom="@dimen/_10sdp"
-               android:background="@drawable/text_card_bg"
-               android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnShareQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:background="@drawable/button_accent_round"
+                android:text="Share Profile link with friends"
+                android:textColor="@color/white"
+                style="@style/MyCustomTabText"
+                />
 
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:padding="@dimen/_15sdp"
-                   android:id="@+id/header_view"
-                   android:text="To share your profile with other so share below link"
-                   android:textColor="@color/colorBlackText"
-                   style="@style/MyCustomTabText"
-                   />
+        </LinearLayout>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="@dimen/_15sdp"
-                   style="@style/MyCustomTabText"
-                   android:text="Profile link"
-                   android:textColor="@color/tab_unSelect"
-                   />
-
-               <TextView
-                   android:id="@+id/tvWalletAddressCopy"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginStart="@dimen/_15sdp"
-                   android:drawableEnd="@drawable/ic_copy_small"
-                   android:drawablePadding="@dimen/_15sdp"
-                   style="@style/MyCustomTabText"
-                   android:drawableTint="@color/colorBlackText"
-                   android:text="1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
-                   android:textColor="@color/colorBlackText"
-                   />
-
-           </LinearLayout>
-
-       </LinearLayout>
-
-   </ScrollView>
-
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

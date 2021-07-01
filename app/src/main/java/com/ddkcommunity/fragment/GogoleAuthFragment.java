@@ -210,6 +210,9 @@ public class GogoleAuthFragment extends Fragment /*implements View.OnClickListen
         super.onResume();
         MainActivity.setTitle("Google Authenticator");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void getAuthQrCode()

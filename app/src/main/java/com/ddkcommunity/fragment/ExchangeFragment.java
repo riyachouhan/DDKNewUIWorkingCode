@@ -77,6 +77,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         MainActivity.setTitle("Exchange");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void getLocalData()

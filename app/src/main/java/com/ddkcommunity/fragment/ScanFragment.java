@@ -181,6 +181,9 @@ public class ScanFragment extends Fragment implements View.OnClickListener
         MainActivity.setTitle("Scan QR");
         MainActivity.enableBackViews(true);
         MainActivity.scanview.setVisibility(View.GONE);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     public void getSettingServerOther(final ProgressDialog dialog, Activity activity, final String functionname)

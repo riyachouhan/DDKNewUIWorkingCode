@@ -1,6 +1,20 @@
 package com.ddkcommunity;
 
 
+import com.ddkcommunity.fragment.mapmodule.model.GroupBonusModel;
+import com.ddkcommunity.fragment.mapmodule.model.dailyBonusModel;
+import com.ddkcommunity.fragment.mapmodule.model.directReferralModel;
+import com.ddkcommunity.fragment.mapmodule.model.finnelModel;
+import com.ddkcommunity.fragment.mapmodule.model.groupModel;
+import com.ddkcommunity.fragment.mapmodule.model.overFlowModel;
+import com.ddkcommunity.fragment.mapmodule.model.phaseOneBonusModel;
+import com.ddkcommunity.fragment.mapmodule.model.powerOfXModel;
+import com.ddkcommunity.fragment.mapmodule.model.powerXSubFragment;
+import com.ddkcommunity.fragment.mapmodule.model.summaryModelNavi;
+import com.ddkcommunity.fragment.paybillsModule.models.addformModelBiller;
+import com.ddkcommunity.fragment.paybillsModule.models.billerAllModel;
+import com.ddkcommunity.fragment.paybillsModule.models.catModel;
+import com.ddkcommunity.fragment.paybillsModule.models.categoryAllModel;
 import com.ddkcommunity.model.AllowGoogleModel;
 import com.ddkcommunity.model.Announcement;
 import com.ddkcommunity.model.BankList;
@@ -18,28 +32,43 @@ import com.ddkcommunity.model.ReferalSubWalletListModel;
 import com.ddkcommunity.model.ReferralPayoutModel;
 import com.ddkcommunity.model.RequestModel;
 import com.ddkcommunity.model.SAMPDModel;
+import com.ddkcommunity.model.SMPDCompanyDetailsModel;
 import com.ddkcommunity.model.ShowRequestApiModel;
 import com.ddkcommunity.model.SliderImgResponse;
+import com.ddkcommunity.model.SliderWithType;
 import com.ddkcommunity.model.SubModelReeralList;
 import com.ddkcommunity.model.TransactionDate;
 import com.ddkcommunity.model.TransactionFeesResponse;
 import com.ddkcommunity.model.UserBankListResponse;
+import com.ddkcommunity.model.activityModel;
+import com.ddkcommunity.model.addActivityModel;
+import com.ddkcommunity.model.bankDepositeModel;
+import com.ddkcommunity.model.bankLstModel;
 import com.ddkcommunity.model.baseUrlModel;
 import com.ddkcommunity.model.buyCryptoModel;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.conatcModel;
+import com.ddkcommunity.model.currencyModelClick;
+import com.ddkcommunity.model.depositeModelSaveData;
 import com.ddkcommunity.model.exchange.CurrencyList;
 import com.ddkcommunity.model.getGoogleAuthSecraModel;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.googleAuthPasswordModel;
+import com.ddkcommunity.model.mapLoginModel;
 import com.ddkcommunity.model.mapSubscriptionModel;
 import com.ddkcommunity.model.mazigneModel;
+import com.ddkcommunity.model.navigationModel;
 import com.ddkcommunity.model.projects.PoolingTransactionHistory;
 import com.ddkcommunity.model.referral.ReferralChain;
 import com.ddkcommunity.model.referralSublistModel;
 import com.ddkcommunity.model.samBalanceModel;
 import com.ddkcommunity.model.samModel;
 import com.ddkcommunity.model.scanQRModel;
+import com.ddkcommunity.model.sfioAddModelsee;
+import com.ddkcommunity.model.sfioModel;
+import com.ddkcommunity.model.sfioSubPackageModel;
+import com.ddkcommunity.model.smpdModelNew;
+import com.ddkcommunity.model.smpdfavmodel;
 import com.ddkcommunity.model.summaryHistoryModel;
 import com.ddkcommunity.model.usdtreddeemModel;
 import com.ddkcommunity.model.userInviteModel;
@@ -298,7 +327,7 @@ public interface LoadInterface {
     Call<buyCryptoModel> getbuyCryptoList(@Query("token") String token);
 
     @POST("commondetails/get-constant-url")
-    Call<baseUrlModel> getConstantUrl(@Query("token") String token);
+    Call<baseUrlModel> getConstantUrl(@Query("token") String token,@Body HashMap<String, String> hm);
 
     // @GET("ninethface/sliders")
     @GET("commondetails/sliders")
@@ -364,6 +393,14 @@ public interface LoadInterface {
     @POST("kyc/kyc-address-submission")
     Call<ResponseBody> submitaddresssubmission(
             @Query("token") String token,
+            @Part MultipartBody.Part id_proof_1_front);
+
+
+    @Multipart
+    @POST("sfio/sfio-bank-document-save")
+    Call<ResponseBody> sfioSubmiticon(
+            @Query("token") String token,
+            @Part("sfio_id") RequestBody email,
             @Part MultipartBody.Part id_proof_1_front);
 
     @Multipart
@@ -463,6 +500,30 @@ public interface LoadInterface {
     @POST("commondetails/sam-pd-docs")
     Call<PdfViewPojo> getFreeVoucherDocs(@Body JsonObject gsonObject);
 
+    @POST("commondetails/sliders-with-type")
+    Call<SliderWithType> getSlidersType(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("ibayad/category-list")
+    Call<categoryAllModel> getCategorylist(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("ibayad/biller-list")
+    Call<billerAllModel> getBillerlist(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("ibayad/biller-parameter-list")
+    Call<ResponseBody> getBillerParamterList(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("ibayad/search-billers-category")
+    Call<billerAllModel> getSearchList(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sampd-company/company-list")
+    Call<smpdModelNew> getSMPDLIST(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("ibayad/ibayad-home")
+    Call<catModel> getPayBillCat(@Query("token") String token);
+
+    @POST("sampd-company/add-remove-fav-sampd-company")
+    Call<smpdfavmodel> AddFavItem(@Query("token") String token, @Body HashMap<String, String> hm);
+
     //@POST("ninethface/token")
     @POST("commondetails/token")
     Call<samModel> getSameToken(@Query("token") String token);
@@ -475,6 +536,9 @@ public interface LoadInterface {
 
     @POST("commondetails/get_map_login_url")
     Call<ResponseBody> getMapLoginUrl(@Query("token") String token);
+
+    @POST("userauth/user-profile-web-view")
+    Call<ResponseBody> getProfilewebview(@Query("token") String token);
 
     @POST("userauth/delete-profile-image")
     Call<ResponseBody> removePhotoCall(@Query("token") String token);
@@ -508,6 +572,9 @@ public interface LoadInterface {
 
     @POST("map/subscription")
     Call<mapSubscriptionModel> mapSubscription(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/add")
+    Call<sfioAddModelsee> addSFIOAmt(@Query("token") String token, @Body HashMap<String, String> hm);
 
     //@POST("delete-user-logged-in-device")
     @POST("userauth/delete-user-logged-in-device")
@@ -673,6 +740,9 @@ public interface LoadInterface {
     @GET("cryptopayemnt/cash-out-fees")
     Call<TransactionFeesResponse> gettransactionFees(@Query("token") String token);
 
+    @GET("sfio/get-currency-list")
+    Call<bankLstModel> getCurrenecySfioList();
+
     @GET("kyc/get-source-fund")
     Call<verifcationFundSource> getFundSource();
 
@@ -713,6 +783,9 @@ public interface LoadInterface {
     @POST("sam-payment/create-crypto-transaction")
     Call<ResponseBody> createSAMKOINTransaction(@Query("token") String token, @Body HashMap<String, String> hm);
 
+    @POST("sampd-company/company-details")
+    Call<SMPDCompanyDetailsModel> getCompanydetails(@Query("token") String token, @Body HashMap<String, String> hm);
+
     // @POST("apicancelrequest/show-active-subscription")
     @POST("redeem/show-active-subscription")
     Call<ShowRequestApiModel> showactivesubscription(@Query("token") String token);
@@ -731,6 +804,7 @@ public interface LoadInterface {
 
     // @POST("all_transactions/all-transaction-history")
     //@POST("seventhface/all-transaction-history")
+   // @POST("commondetails/all-transaction-history-new")
     @POST("commondetails/all-transaction-history-new")
     //@POST("commondetails/all-transaction-history-seventhface")
     Call<PollingHistoryTransction> getAllTransactionHistory(@Query("token") String token, @Body HashMap<String, String> hm);
@@ -989,8 +1063,9 @@ public interface LoadInterface {
     @POST("check-refcode-exist")
     Call<checkRefferalModel> getRefferalCode(@Body HashMap<String, String> hm);
 
-    @POST("subscribe-package")
+   /* @POST("subscribe-package")
     Call<checkRefferalModel> getSubscribePackage(@Body HashMap<String, String> hm);
+*/
 
     @POST("get-user-token")
     Call<checkRefferalModel> getUserToken(@Body HashMap<String, String> hm);
@@ -1010,8 +1085,84 @@ public interface LoadInterface {
     @POST("check-user-active")
     Call<checkRefferalModel> CheckUserActive(@Body HashMap<String, String> hm);
 
+    @POST("login")
+    Call<mapLoginModel> mapLoginApp(@Body HashMap<String, String> hm);
+
+    @GET("progress")
+    Call<navigationModel> mapNavigationData(@Query("token") String token);
+
+    @GET("summary")
+    Call<summaryModelNavi> mapSummaryData(@Query("token") String token);
+
+    @GET("funnel")
+    Call<finnelModel> getFunnelData(@Query("token") String token,@Query("status") String status);
+
+    @GET("phase-one-bonus")
+    Call<phaseOneBonusModel> getPhaseOneBonusData(@Query("token") String token);
+
+    @GET("direct-bonus")
+    Call<directReferralModel> getDirectbonus(@Query("token") String token);
+
+    @GET("daily-bonus")
+    Call<dailyBonusModel> getDailyBonus(@Query("token") String token);
+
+    @GET("power-bonus")
+    Call<powerOfXModel> getPowerBonus(@Query("token") String token);
+
+    @GET("platinum-bonus")
+    Call<powerOfXModel> getPlatinumBonus(@Query("token") String token);
+
+    @GET("titanium-bonus")
+    Call<powerOfXModel> getTitaniumBonus(@Query("token") String token);
+
+    @GET("power-bonus-details")
+    Call<powerXSubFragment> getPowerBonusDetails(@Query("token") String token,@Query("from_date") String from_date, @Query("to_date") String to_date);
+
+    @GET("platinum-bonus-details")
+    Call<powerXSubFragment> getPlatinumDetails(@Query("token") String token,@Query("from_date") String from_date, @Query("to_date") String to_date);
+
+    @GET("titanium-bonus-details")
+    Call<powerXSubFragment> getTitaniumDetails(@Query("token") String token,@Query("from_date") String from_date, @Query("to_date") String to_date);
+
+    @GET("overflow")
+    Call<overFlowModel> getOverflowBonus(@Query("token") String token);
+
+    @GET("group-bonus")
+    Call<GroupBonusModel> getGroupBonus(@Query("token") String token);
+
+    @GET("group")
+    Call<groupModel> getGroup(@Query("token") String token,@Query("groupno") String groupno);
+
+    @POST("map-activity/list")
+    Call<activityModel> mapActivityList(@Query("token") String token);
+
+    @POST("sfio/sfio-list")
+    Call<sfioModel> getSFIOData(@Query("token") String token);
+
+    @POST("sfio/get-bank-details")
+    Call<bankDepositeModel> getBankDetails(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/usd-to-others")
+    Call<currencyModelClick> getUSDTToConvert(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/sfio-bank-details-save")
+    Call<depositeModelSaveData> getSFIOBankDepositeSave(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("map-activity/add")
+    Call<addActivityModel> addActivity(@Query("token") String token, @Body HashMap<String, String> hm);
+
     @POST("get-user-all-package")
     Call<userPackagesModel> getAllPackage(@Body HashMap<String, String> hm);
+
+    @POST("sfio/sfio-monthly-list")
+    Call<sfioSubPackageModel> getSFIOSubPAckage(@Query("token") String token, @Body HashMap<String, String> hm);
+
+
+    @POST("sfio/sfio-monthly-status-change")
+    Call<sfioSubPackageModel> getRedeemStatus(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/sfio-cancellation-status-change")
+    Call<sfioSubPackageModel> getCancellationstatus(@Query("token") String token, @Body HashMap<String, String> hm);
 
 
     //    http://157.245.52.206/new_api/api/thirdFace/currency-list

@@ -289,6 +289,9 @@ public class SamKoinsRedeemFragment extends Fragment {
         super.onResume();
         MainActivity.setTitle("Redeem");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private int count = 0;

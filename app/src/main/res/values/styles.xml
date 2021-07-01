@@ -118,6 +118,17 @@
 
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/savefoldevacl</item>
+    </style>
+
     <style name="MyCustomTabText" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/_9ssp</item>
         <item name="android:fontFamily">@font/inter_regular</item>
@@ -135,6 +146,11 @@
 
     <style name="subhinttext" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/_5ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="subhinttexthi" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_6ssp</item>
         <item name="android:fontFamily">@font/inter_regular</item>
     </style>
 
@@ -213,4 +229,80 @@
         <item name="android:fontFamily">@font/inter_extrabold</item>
     </style>
 
+    <style name="extrabuttontext" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="subMyCustomTabText_small" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_6ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="sabphasetets" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="hintview_frozen" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_7ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="MyCustomTabText_small_frozen" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="textSizehint" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="textSizehint_hint" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_11ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="powerbolde" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_11ssp</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+    </style>
+
+    <style name="hintview" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="textSizehint_hint_summar" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="corporateSummer" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="corporateSummerheading" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="powerboldecorporate" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_11ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="hintviewdeposi" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
+    <style name="subMyCustomTabText_small_ext" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_6ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
 </resources>
+

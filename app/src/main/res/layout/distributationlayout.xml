@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/profiletabs"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginRight="-10dp"
+                android:layout_marginLeft="-10dp"
+                android:layout_gravity="center"
+                android:background="@color/background"
+                app:tabGravity="fill"
+                app:tabIndicatorHeight="@dimen/_4sdp"
+                app:tabTextAppearance="@style/MyCustomTabText_small_frozen"
+                app:tabIndicatorColor="@color/colorApp"
+                app:tabInlineLabel="true"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorApp"
+                app:tabTextColor="@color/tab_unSelect" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/grey_color"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/frozenlayout"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvOrderNumber"
+                    android:singleLine="true"
+                    style="@style/viewerpagetext"
+                    android:text="Total Frozen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:paddingRight="@dimen/_4sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:text="365,245.335"
+                    style="@style/buttontext" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_2sdp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/card_white_bg"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/places_ic_search"
+                        android:id="@+id/ivBankIcon"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        />
+
+                    <View
+                        android:layout_width="0.9dp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_height="match_parent"
+                        android:background="@color/grey_color"/>
+
+                    <EditText
+                        android:id="@+id/search_ET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        style="@style/subhintdataSize"
+                        android:hint="Search "
+                        android:padding="@dimen/_5sdp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:textColor="@color/colorApp"
+                        android:textColorHint="@color/grey_color"
+                        />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProjectRecycle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/distributionlayout"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvdistributionRecycle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</LinearLayout>

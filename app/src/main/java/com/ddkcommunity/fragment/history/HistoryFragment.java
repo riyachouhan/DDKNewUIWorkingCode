@@ -621,6 +621,9 @@ public class HistoryFragment extends Fragment {
         // HomeActivity.setHomeItem(getActivity(), R.id.profile);
         MainActivity.setTitle("Transaction History");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void getPolingTransactionHistory(final String wallet_codeid,final String wallet_code,final String wallet_type) {

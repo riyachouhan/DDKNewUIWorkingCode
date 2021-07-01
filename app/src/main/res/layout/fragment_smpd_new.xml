@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_10sdp"
+          android:orientation="vertical">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginLeft="@dimen/_10sdp"
+              android:layout_marginTop="@dimen/_5sdp"
+              android:paddingBottom="@dimen/_5sdp"
+              android:background="@drawable/text_card_bg"
+              android:gravity="center_vertical"
+              android:paddingLeft="@dimen/_5sdp"
+              android:visibility="visible">
+
+              <TextView
+                  style="@style/subsmallSize"
+                  android:text="Subscription"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/_10sdp"
+                  android:layout_marginTop="@dimen/_10sdp"
+                  android:textColor="@color/black"
+                  android:textStyle="bold" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/recyclerviewsubc"
+                  android:layout_marginTop="-5dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:scrollbars="horizontal" />
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/newsamlayout"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_75sdp"
+              android:orientation="vertical"
+              android:layout_marginLeft="@dimen/_10sdp"
+              android:layout_marginTop="@dimen/_15sdp"
+              android:paddingBottom="@dimen/_5sdp"
+              android:background="@drawable/text_card_bg"
+              android:gravity="center_vertical"
+              android:paddingLeft="@dimen/_5sdp"
+              android:visibility="visible">
+
+              <TextView
+                  style="@style/subsmallSize"
+                  android:id="@+id/myfav"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/_10sdp"
+                  android:layout_marginTop="@dimen/_10sdp"
+                  android:textColor="@color/black"
+                  android:textStyle="bold" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/recyclerview1"
+                  android:layout_marginTop="-5dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:scrollbars="horizontal" />
+
+          </LinearLayout>
+
+          <androidx.viewpager.widget.ViewPager
+              android:id="@+id/viewPager"
+              android:layout_marginTop="@dimen/_5sdp"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_135sdp"
+              android:layout_gravity="center_horizontal"
+              android:clipToPadding="false"
+              android:paddingLeft="@dimen/_5sdp"
+              android:paddingRight="@dimen/_30sdp" />
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/rvProjectRecycle"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/_5sdp"
+              android:layout_marginTop="@dimen/_3sdp"
+              android:layout_marginRight="@dimen/_5sdp"
+              app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+      </LinearLayout>
+
+  </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -157,6 +157,9 @@ public class QrScanFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
         if (hasCameraPermission) {
 
             // Init and Start with SurfaceView

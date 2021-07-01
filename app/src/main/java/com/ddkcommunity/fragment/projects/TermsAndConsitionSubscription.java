@@ -23,6 +23,7 @@ import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.SplashActivity;
+import com.ddkcommunity.fragment.AddSFIOfrgament;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.user.UserResponse;
@@ -58,7 +59,7 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
     public static final String SAMPLE_FILE = "terms_comdition.pdf";
     PDFView pdfView;
     Integer pageNumber = 0;
-    String pdfFileName,activityaction;
+    String pdfFileName,activityaction="";
     private TextView bottom_view;
     CheckBox simpleCheckBox;
     private TextView btnGoBack,file_content;
@@ -84,14 +85,19 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
             //........for url
             String linkmain;
             String urlapp= App.pref.getString(Constant.apiserver,"");
-            if(!activityaction.equalsIgnoreCase("subscription"))
+            if(activityaction.equalsIgnoreCase("subscriptionSFIO"))
+            {
+                linkmain=SplashActivity.baseurl+"new_api/api/sifo-terms-and-conditions";
+
+            }else if(!activityaction.equalsIgnoreCase("subscription"))
             {
                 linkmain= SplashActivity.baseurl+"new_api/api/map-terms-and-conditions";
+
             }else
             {
                 linkmain=SplashActivity.baseurl+"new_api/api/sam-terms-and-conditions";
-            }
 
+            }
             WebView webview =view.findViewById(R.id.webView);
             WebSettings settings = webview.getSettings();
             settings.setJavaScriptEnabled(true);
@@ -169,7 +175,12 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
             Boolean checkBoxState = simpleCheckBox.isChecked();
             if (checkBoxState)
             {
-                if(!activityaction.equalsIgnoreCase("subscription"))
+                if(activityaction!=null && !activityaction.equalsIgnoreCase("") && activityaction.equalsIgnoreCase("subscriptionSFIO"))
+                {
+                    MainActivity.addFragment(new AddSFIOfrgament(), false);
+
+                }else
+                if(activityaction!=null && !activityaction.equalsIgnoreCase("") && !activityaction.equalsIgnoreCase("subscription"))
                 {
                     CheckUserActiveStaus();
                 }else
@@ -186,9 +197,10 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
     @Override
     public void onResume() {
         super.onResume();
-        // HomeActivity.setHomeItem(getActivity(), R.id.profile);
         setTitle("Terms And Condition");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
     }
 
     private void CheckUserActiveStaus()

@@ -125,6 +125,9 @@ public class ConvertFragment extends Fragment {
         super.onResume();
         MainActivity.setTitle("Convert DDK Coins");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

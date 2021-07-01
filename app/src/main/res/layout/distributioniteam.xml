@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:id="@+id/viewclickdata"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:background="@drawable/tablayout_funnel_iteam"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+                <TextView
+                    android:text="Rewards Incentiveves"
+                    android:layout_width="0dp"
+                    android:id="@+id/titel_main"
+                    android:layout_weight="1.7"
+                    android:paddingLeft="@dimen/_12sdp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    style="@style/MyCustomTabText_small_frozen" />
+
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_weight="0.6"
+                  android:layout_height="match_parent">
+
+                  <TextView
+                      android:id="@+id/tvmelimun"
+                      android:text="150M"
+                      android:layout_width="match_parent"
+                      android:gravity="left"
+                      android:layout_height="wrap_content"
+                      android:textColor="@color/black"
+                      style="@style/MyCustomTabText_small_frozen"  />
+
+              </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:layout_height="match_parent">
+
+             <TextView
+                android:id="@+id/percentvalue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:text="43%"
+                  android:paddingRight="@dimen/_8sdp"
+                android:textColor="@color/colorPrimary"
+                style="@style/secondhintview" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

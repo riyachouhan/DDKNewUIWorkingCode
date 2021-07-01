@@ -200,6 +200,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 style="@style/titlehint"
+                android:visibility="gone"
                 android:text="Upload Picture With ID"
                 android:background="@null"
                 android:drawablePadding="@dimen/_5sdp"
@@ -210,6 +211,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 

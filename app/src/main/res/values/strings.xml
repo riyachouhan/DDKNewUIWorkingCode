@@ -95,6 +95,16 @@ with your friends/relative</string>
     <string name="api_error" translatable="false">Something went wrong on the application, Please close and re-open.
 If this message continue to display please contact the technical team.</string>
 
-    <string name="calling_api" translatable="false">Make sure your device is connceted to the internet.</string>
+    <string name="calling_api" translatable="false">Your internet is unstable. Please try again later.</string>
+
+    <string name="fa_glass">&#xf000;</string>
+    <string name="fa_music">&#xf001;</string>
+    <string name="fa_search">&#xf002;</string>
+    <string name="fa_envelope_o">&#xf003;</string>
+    <string name="fa_heart">&#xf004;</string>
+
+
+    <string name="fa_chevron_right">&#xf054;</string>
+    <string name="fa_chevron_down">&#xf078;</string>
 
 </resources>

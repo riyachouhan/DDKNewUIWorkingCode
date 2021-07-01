@@ -189,6 +189,9 @@ public class SellFragment extends Fragment implements View.OnClickListener, Adap
         super.onResume();
         MainActivity.setTitle("Sell");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     @Override

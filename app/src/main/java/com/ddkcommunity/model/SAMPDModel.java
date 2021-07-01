@@ -44,7 +44,7 @@ public class SAMPDModel implements Serializable
     }
 
 
-    public class Datum implements Serializable
+    public static class Datum implements Serializable
     {
 
         @SerializedName("project_name")

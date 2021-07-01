@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_margin="@dimen/_5sdp"
-    app:cardElevation="4dp"
-    >
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_85sdp"
+        android:gravity="center"
+         android:layout_margin="@dimen/_5sdp"
+        android:id="@+id/ll_GeneralInformation"
+        android:background="@drawable/text_card_bg_smdp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        >
 
-    <LinearLayout
-        android:background="@drawable/text_bg_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="@dimen/padding_medium">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_view"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/smpdicon"
+            android:src="@drawable/ilacm"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"/>
 
         <TextView
-            android:id="@+id/name_TV"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/padding"
-            android:paddingEnd="@dimen/padding"
-            android:textSize="14sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
+            android:textStyle="bold"
+            android:id="@+id/pdname"
+            android:maxLines="3"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            style="@style/subsmallSize"  />
 
-       </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+    </LinearLayout>

@@ -17,10 +17,23 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
+            android:id="@+id/succeicon"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:src="@drawable/right_icon_scan"
             android:tint="@color/green_color"
+            />
+
+        <ImageView
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:src="@drawable/info"
+            android:visibility="gone"
+            android:id="@+id/failedi"
+            android:tint="@color/red_color"
             />
 
         <TextView
@@ -34,6 +47,19 @@
         android:textColor="@color/black"
         style="@style/subHeadingsmasubllSize"
         android:id="@+id/hintform"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="Paid Successfully To"
+            android:gravity="center"
+            android:visibility="gone"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/black"
+            style="@style/subHeadingsmasubllSize"
+            android:id="@+id/hintformsubvie"/>
 
     <TextView
         android:id="@+id/etWalletUserName"

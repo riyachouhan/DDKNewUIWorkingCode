@@ -87,6 +87,13 @@ public class UserModel {
                             String usdt_transaction_fees=send_transaction_fees.getString("usdt_transaction_fees");
                             String transaction_fees_mode_eth=send_transaction_fees.getString("transaction_fees_mode_eth");
                             String transaction_fees_mode_usdt=send_transaction_fees.getString("transaction_fees_mode_usdt");
+                            //for sfio
+                            JSONObject sfio_minimum_amount=jsonObject.getJSONObject("sfio_minimum_amount");
+                            String miniumamountsfio=sfio_minimum_amount.getString("sfio_minimum_amount");
+                            String sfiofee=sfio_minimum_amount.getString("fee");
+                            AppConfig.setStringPreferences(App.getInstance(), Constant.sfio_minimumamount,""+miniumamountsfio);
+                            AppConfig.setStringPreferences(App.getInstance(), Constant.sfiofees,""+sfiofee);
+
                             //for sell
                             JSONObject sell_transaction_fees=jsonObject.getJSONObject("sell_transaction_fees");
                             String sell_sam_transaction_fees=sell_transaction_fees.getString("sam_transaction_fees");

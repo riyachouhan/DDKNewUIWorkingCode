@@ -61,17 +61,19 @@ import com.ddkcommunity.activities.CreateWalletActivity;
 import com.ddkcommunity.activities.CustomPinActivity;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.MapsActivity;
-import com.ddkcommunity.activities.OTPActivity;
 import com.ddkcommunity.activities.ReceivedActivity;
 import com.ddkcommunity.activities.ReferralChainPayoutActivity;
 import com.ddkcommunity.adapters.AnnouncementAdapter;
 import com.ddkcommunity.adapters.HomeBannerPagerAdapter;
 import com.ddkcommunity.adapters.WalletPopupAdapter;
+import com.ddkcommunity.fragment.SAMPD.SAMPDNewFragment;
 import com.ddkcommunity.fragment.buy.BuyFragment;
 import com.ddkcommunity.fragment.credential.AddCredentialsFragment;
 import com.ddkcommunity.fragment.credential.CredentialsFragment;
 import com.ddkcommunity.fragment.history.HistoryFragment;
-import com.ddkcommunity.fragment.projects.PayBillsFragment;
+import com.ddkcommunity.fragment.projects.BillerAllFragment;
+import com.ddkcommunity.fragment.projects.MarketPlaceFragment;
+import com.ddkcommunity.fragment.paybillsModule.PayBillsFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
 import com.ddkcommunity.fragment.send.SendFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
@@ -82,8 +84,7 @@ import com.ddkcommunity.model.Announcement;
 import com.ddkcommunity.model.EthModelBalance;
 import com.ddkcommunity.model.MapTransactionReceiverModel;
 import com.ddkcommunity.model.RedeemOptionModel;
-import com.ddkcommunity.model.SliderImg;
-import com.ddkcommunity.model.SliderImgResponse;
+import com.ddkcommunity.model.SliderWithType;
 import com.ddkcommunity.model.TransactionFeeData;
 import com.ddkcommunity.model.TransactionFeesResponse;
 import com.ddkcommunity.model.buyCryptoModel;
@@ -114,11 +115,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
-import com.vansuita.pickimage.bean.PickResult;
-import com.vansuita.pickimage.bundle.PickSetup;
-import com.vansuita.pickimage.dialog.PickImageDialog;
-import com.vansuita.pickimage.listeners.IPickCancel;
-import com.vansuita.pickimage.listeners.IPickResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -144,7 +140,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.app.Activity.RESULT_OK;
 import static com.ddkcommunity.activities.SplashActivity.baseurl;
 import static com.ddkcommunity.utilies.dataPutMethods.ReplacecommaValue;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
@@ -167,7 +162,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final int NUM_PAGES = 5;
     private ViewPager mViewPager, mViewPagerAll;
     private static Context mContext;
-    private ArrayList<SliderImg> drawablesList = new ArrayList<>();
+    public static ArrayList<SliderWithType.Datum> drawablesList = new ArrayList<>();
     private boolean isCallWallet = true;
     private UserResponse userData;
     private View dialogueView;
@@ -187,7 +182,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private AnnouncementAdapter announcementAdapter;
     private String wallet_type = "";
     public static int tabclickevent=0;
-    public LinearLayout btnPayBills,btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
+    public LinearLayout btnmarketplcae,btnPayBills,btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
     TextView tvSelectDdkAddress,facebook_invite,share_app;
     public static ArrayList listdata;
     ImageView userimg;
@@ -300,6 +295,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             whyusemap=view.findViewById(R.id.whyusemap);
             callbackManager = CallbackManager.Factory.create();
             tabLayout = view.findViewById(R.id.tabs);
+            btnmarketplcae=view.findViewById(R.id.btnmarketplcae);
             btnPayBills=view.findViewById(R.id.btnPayBills);
             setTablayoutview();
             //To hide the first tab
@@ -332,6 +328,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             sam_wallet=view.findViewById(R.id.sam_wallet);
             tvAddressCode.setOnClickListener(this);
             btnPayBills.setOnClickListener(this);
+            btnmarketplcae.setOnClickListener(this);
             view.findViewById(R.id.btnSAMPD_2).setOnClickListener(this);
             view.findViewById(R.id.btnsampd).setOnClickListener(this);
             view.findViewById(R.id.btnexchange).setOnClickListener(this);
@@ -438,6 +435,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getEthBtcUsdtSellBuyy("");
         progressBar.setVisibility(View.GONE);
         getVerificationStatus();
+        getProfileUrlScan();
         getMaploginurl();
         getDATAStatusKey();
         //getCurrentBalance(1);
@@ -502,11 +500,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         share_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String messagecontetn =App.pref.getString(Constant.INVITE_CONTENT, "");
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, messagecontetn);
-                startActivity(Intent.createChooser(share, "Invite your friends"));
+                try{
+                    String messagecontetn =App.pref.getString(Constant.INVITE_CONTENT, "");
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT, messagecontetn);
+                    startActivity(Intent.createChooser(share, "Invite your friends"));
+                }catch (Exception  e)
+                {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -848,7 +852,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }
 
                         }else {
-                            AppConfig.showToast(response.body().getMsg());
+                          //  AppConfig.showToast(response.body().getMsg());
                         }
                     } else {
                         ShowApiError(mContext,"server error ninethface/buy-crypto-list");
@@ -890,7 +894,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     {
                                     App.editor.putString(Constant.PHP_Balance,"0.000000");
                                     App.editor.apply();
-                                    AppConfig.showToast(response.body().getMsg());
+                                   // AppConfig.showToast(response.body().getMsg());
                                 }
                             } else {
                                 Log.d("context","::");
@@ -959,7 +963,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }else {
                                 App.editor.putString(Constant.SAMKOIN_Balance,"0.000000");
                                 App.editor.apply();
-                                AppConfig.showToast(response.body().getMsg());
+                              //  AppConfig.showToast(response.body().getMsg());
                             }
                         } else {
                             Log.d("context","::");
@@ -1095,7 +1099,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }else {
                             App.editor.putString(Constant.USDT_Balance,"0.000000");
                             App.editor.apply();
-                            AppConfig.showToast(response.body().getMsg());
+                           // AppConfig.showToast(response.body().getMsg());
                         }
                     } else {
                         Log.d("context",":con");
@@ -1157,7 +1161,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }else {
                                 App.editor.putString(Constant.BTC_Balance,"0.000000");
                                 App.editor.apply();
-                                AppConfig.showToast(response.body().getMsg());
+                               // AppConfig.showToast(response.body().getMsg());
                             }
                         } else {
                             Log.d("context","::");
@@ -1227,7 +1231,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }else {
                                 App.editor.putString(Constant.Eth_Balance,"0.000000");
                                 App.editor.apply();
-                                AppConfig.showToast(response.body().getMsg());
+                              //  AppConfig.showToast(response.body().getMsg());
                             }
                         } else {
                             ShowApiError(mContext,"server error eightface/eth-balance");
@@ -1261,7 +1265,58 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getBannerKImages() {
+    private void getBannerKImages()
+    {
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("banner_type", "home");
+
+        AppConfig.getLoadInterface().getSlidersType(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken),hm).enqueue(new Callback<SliderWithType>() {
+            @Override
+            public void onResponse(Call<SliderWithType> call, Response<SliderWithType> response) {
+                try {
+
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus() == 1)
+                        {
+                            Log.d("chages data",response.toString());
+                            if(response.body().getData()!=null)
+                            {
+
+                                drawablesList = new ArrayList<>();
+                                drawablesList.addAll(response.body().getData());
+                                setBannerImages();
+                                //.........
+                                AppConfig.hideLoader();
+
+                            }
+                        }else
+                        {
+                            AppConfig.hideLoader();
+                            AppConfig.showToast(response.body().getMsg());
+                        }
+                    } else {
+                        AppConfig.hideLoader();
+                        ShowApiError(mContext,"server error sampd-company/company-list");
+                    }
+
+                } catch (Exception e) {
+                    AppConfig.hideLoader();
+                    ShowApiError(mContext,"error in response sampd-company/company-list");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SliderWithType> call, Throwable t)
+            {
+                AppConfig.hideLoader();
+                Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /* private void getBannerKImages() {
         try {
             LoadInterface apiservice = AppConfig.getClient().create(LoadInterface.class);
             //we havd to  correct
@@ -1287,7 +1342,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             } else if (status == 400) {
                                ShowApiError(getActivity(),"error in api ninethface/sliders");
                             } else {
-                                Toast.makeText(getActivity(), retrofitMesage, Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(getActivity(), retrofitMesage, Toast.LENGTH_SHORT).show();
                             }
                             return;
                         }
@@ -1317,7 +1372,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-
+*/
     private void getInviteFriend()
     {
         String userReferalCode =App.pref.getString(Constant.USER_REFERAL_CODE, "");
@@ -1379,8 +1434,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             {
                                 App.editor.putString(Constant.SAM_Balance,"0.00000");
                                 App.editor.apply();
-                                AppConfig.showToast(response.body().getMsg());
-                                Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT).show();
+                              //  AppConfig.showToast(response.body().getMsg());
+                              //  Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT).show();
                             }
 
                         }else if (response.body().getStatus() == 4)
@@ -1388,7 +1443,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             ShowServerPost(getActivity(),"server error redeem/redeem-options");
                         }else
                         {
-                            AppConfig.showToast(response.body().getMsg());
+                           // AppConfig.showToast(response.body().getMsg());
                         }
                     } else {
                         ShowApiError(mContext,"server error redeem/redeem-options");
@@ -1442,15 +1497,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             {
                                 App.editor.putString(Constant.SAM_Balance,"0.0000");
                                 App.editor.apply();
-                                AppConfig.showToast(response.body().getMsg());
-                                Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT).show();
                             }
                         }else if (response.body().getStatus() == 4)
                         {
                             ShowServerPost(getActivity(),"server error apibalance/token");
                         }else
                         {
-                            AppConfig.showToast(response.body().getMsg());
+                          //  AppConfig.showToast(response.body().getMsg());
                         }
                     } else {
                         ShowApiError(mContext,"server error apibalance/token");
@@ -1505,6 +1559,48 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }catch (Exception e)
                     {
                         ShowApiError(mContext,"exception in commondetails/api-constant-key");
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t)
+                {
+//                dialog.dismiss();
+                }
+            });
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    // get profile url
+    private void getProfileUrlScan()
+    {
+        try {
+            AppConfig.getLoadInterface().getProfilewebview(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        if (response.isSuccessful() && response.body() != null)
+                        {
+                            String responseData = response.body().string();
+                            JSONObject object = new JSONObject(responseData);
+                            if (object.getInt(Constant.STATUS) == 1)
+                            {
+                                String webviewurl =object.getString("url");
+                                App.editor.putString(Constant.UserWebViewProfile,webviewurl);
+                                App.editor.apply();
+                            } else {
+                               // AppConfig.showToast(object.getString("msg"));
+                            }
+                        } else {
+                            ShowApiError(mContext,"server error in userauth/user-profile-web-view");
+                        }
+                    }catch (Exception e)
+                    {
+                        ShowApiError(mContext,"exception in userauth/user-profile-web-view");
                         e.printStackTrace();
                     }
                 }
@@ -1591,7 +1687,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     String single_video_verification_status=dataobj.getString("single_video_verification_status");
                                     dataPutMethods.putUserVerification(emailverifcation,moibleverifcation,id_proof_1_verification_status,id_proof_2_verification_status,fund_source_verification_status,address_verification_status,single_video_verification_status);
                             } else {
-                                AppConfig.showToast(object.getString("msg"));
+                              //  AppConfig.showToast(object.getString("msg"));
                             }
                         } else {
                             ShowApiError(mContext,"server error in kyc-verification-status");
@@ -1725,7 +1821,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                         else
                         {
-                            Toast.makeText(getActivity(), retrofitMesage, Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), retrofitMesage, Toast.LENGTH_SHORT).show();
                         }
                         return;
                     }
@@ -1780,7 +1876,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }else
                         {
                             String msg=jsonObject.getString("msg");
-                            Toast.makeText(getActivity(), ""+msg, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), ""+msg, Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (Exception e)
@@ -1868,7 +1964,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 }
 
-                if (doctorNew.size() == 0) {
+                if (doctorNew.size() == 0)
+                {
                     AppConfig.showToast("No search data Found.");
                 }
             }
@@ -1881,6 +1978,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         super.onResume();
         MainActivity.scanview.setVisibility(View.VISIBLE);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+        //MainActivity.showHideIteam("home");
+        MainActivity.prepareListData(getActivity(),"home");
+
         if (adapter != null && isCallWallet) {
             isCallWallet = false;
             getCredentialsCallVlidate();
@@ -1892,6 +1994,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             MainActivity.setTitle("Dashboard");
             MainActivity.enableBackViews(false);
+            view.findViewById(R.id.lytMain).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.lytAll).setVisibility(View.GONE);
+
         }
 
         if(MainActivity.updateTabview==1)
@@ -2138,6 +2243,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         {
                             UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
                             AppConfig.setUserData(activity, data);
+                            MainActivity.userData=data;
                             String user_idvalue=data.getUser().getId().toString();
                             String emailidv=data.getUser().getEmail().toString();
                             App.editor.putString(Constant.USER_ID,user_idvalue);
@@ -2173,6 +2279,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         {
                             if(dialog!=null)
                                 dialog.dismiss();
+                            AppConfig.showToast(object.getString("msg"));
+
                         }
                     } catch (Exception e)
                     {
@@ -2575,6 +2683,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     {
         switch (v.getId())
         {
+            case R.id.btnmarketplcae:
+                MainActivity.addFragment(new MarketPlaceFragment(), true);
+                break;
+
             case R.id.btnPayBills:
                 MainActivity.addFragment(new PayBillsFragment(), true);
                 break;
@@ -2598,6 +2710,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 view.findViewById(R.id.lytMain).setVisibility(View.GONE);
                 view.findViewById(R.id.lytAll).setVisibility(View.VISIBLE);
                 MainActivity.enableBackViews(true);
+                MainActivity.setTitle("All Features");
                 break;
 
             case R.id.btntransaparet:
@@ -2614,7 +2727,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.btnSAMPD_2:
             case R.id.btnsampd:
-                MainActivity.addFragment(new SAMPDFragment(), true);
+               // MainActivity.addFragment(new SAMPDFragment(), true);
+                MainActivity.addFragment(new SAMPDNewFragment(), true);
                 break;
 
             case R.id.btnremittance:
@@ -2889,7 +3003,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 AppConfig.showToast(object.getString("msg"));
                                 AppConfig.openSplashActivity(getActivity());
                             } else {
-                                AppConfig.showToast(object.getString("msg"));
+                               // AppConfig.showToast(object.getString("msg"));
                                 setWalletDataNull();
                             }
                         } catch (IOException e) {
@@ -2980,7 +3094,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 AppConfig.showToast(object.getString("msg"));
                                 AppConfig.openSplashActivity(getActivity());
                             } else {
-                                AppConfig.showToast(object.getString("msg"));
+                                //AppConfig.showToast(object.getString("msg"));
                                 setWalletDataNull();
                             }
                         } catch (IOException e) {
@@ -3023,6 +3137,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 view.findViewById(R.id.lytMain).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.lytAll).setVisibility(View.GONE);
                 MainActivity.enableBackViews(false);
+                MainActivity.setTitle("Dashboard");
+
             }
         }, 1000);
     }
@@ -3398,3 +3514,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(broadcastReceiver);
     }
 }
+
+

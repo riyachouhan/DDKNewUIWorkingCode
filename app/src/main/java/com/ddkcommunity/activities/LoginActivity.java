@@ -338,16 +338,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             hm.put("fcm_id", fcmToken);
             hm.put("device_type", deviceType);
             hm.put("device_id", getDeviceID());
+            Log.d("login app hm",hm.toString());
             Call<ResponseBody> call = AppConfig.getLoadInterface().loginCall(hm);
 
             call.enqueue(new retrofit2.Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Log.d("login app",response.toString());
                     if (response.isSuccessful())
                     {
                         try {
                             String responseData = response.body().string();
-                            Log.d("login app",responseData);
                             JSONObject object = new JSONObject(responseData);
                             if (object.getInt(Constant.STATUS) == 1) {
                                // AppConfig.showToast("Login Successfully.");

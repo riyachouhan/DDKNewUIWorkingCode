@@ -238,7 +238,7 @@ public class CreditCardPaymentFragment extends Fragment {
                         e.printStackTrace();
                     }
                     String otp = response.body().data;
-                    Log.d("otp",otp);
+                    Log.d("otp ",otp+" "+tokenid);
                     initOtpVerifiaction(tokenid,otp,getActivity());
                 } else if (response.isSuccessful() && response.body() != null && response.body().status == 3) {
                     AppConfig.showToast(response.body().msg);
@@ -601,7 +601,7 @@ public class CreditCardPaymentFragment extends Fragment {
         });
     }
 
-    private void registerAmountOnMap(final BottomSheetDialog dialogbottom,final String textid,final String baseprice,final ProgressDialog dialog)
+    /*private void registerAmountOnMap(final BottomSheetDialog dialogbottom,final String textid,final String baseprice,final ProgressDialog dialog)
     {
         final String emailid=userData.getUser().getEmail();
         HashMap<String, String> hm = new HashMap<>();
@@ -656,6 +656,7 @@ public class CreditCardPaymentFragment extends Fragment {
             }
         });
     }
+*/
 
     private void hideKeyBoard() {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

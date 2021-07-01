@@ -52,6 +52,9 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
         // HomeActivity.setHomeItem(getActivity(), R.id.profile);
         MainActivity.setTitle("Subscription");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

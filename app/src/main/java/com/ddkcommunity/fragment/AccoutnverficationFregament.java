@@ -251,6 +251,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         super.onResume();
         MainActivity.setTitle("Account Verification");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
         setProgressBar();
         circularProgressBar2.setProgress(progrescount);
         myAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.button_click);

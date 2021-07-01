@@ -19,7 +19,7 @@
 
             <ImageView
                 android:id="@+id/logo1"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_width="220dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"

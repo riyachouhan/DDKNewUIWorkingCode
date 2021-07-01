@@ -846,7 +846,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                         }
                     holder.tvFees.setVisibility(View.GONE);
 
-                }else if(data.get(position).transaction_type.toString().equalsIgnoreCase("MAP Reward"))
+                }else if(data.get(position).transaction_type.toString().toUpperCase().contains("MAP REWARD"))
                 {
                     if (data.get(position).conversion != null) {
                         holder.tvConversion.setText(new DecimalFormat("##.####").format(data.get(position).conversion) + " DDK Conv.");
@@ -856,13 +856,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
                     holder.tvConversion.setVisibility(View.GONE);
                     holder.tvddkamount.setVisibility(View.VISIBLE);
                     holder.tvAmount.setVisibility(View.VISIBLE);
-                    if(data.get(position).payment_type.toString().equalsIgnoreCase("map_reward"))
-                    {
-                        holder.tvOrderNumber.setText("MAP REWARD");
-                    }else
-                    {
-                        holder.tvOrderNumber.setText(data.get(position).transaction_type.toString());
-                    }
+                    holder.tvOrderNumber.setText(data.get(position).transaction_type.toString());
                     holder.tvAmount.setText("" + data.get(position).receiver_address.toString());
                     Double ddkvalue = Double.valueOf(data.get(position).amount.toString());
                     holder.tvddkamount.setText(new DecimalFormat("##.####").format(ddkvalue) + " POINTS");

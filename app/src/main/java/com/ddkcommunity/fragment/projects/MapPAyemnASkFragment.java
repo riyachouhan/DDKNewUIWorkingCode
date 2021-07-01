@@ -231,6 +231,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
         //for calculation
         BigDecimal total;
         total = new BigDecimal(payamt);
+        CheckUserActiveStaus();
         if(actiontype.equalsIgnoreCase("samkoin"))
         {
             total =total.multiply(SellTemp);
@@ -321,7 +322,6 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         slideToActView.resetSlider();
                         return;
                     }
-
                     //1 means for getter then to enter amount, 0 means equals, and else means less then.
                     BigDecimal conversionvalue = new BigDecimal(input_amount);
                     BigDecimal subscriptionCompare = new BigDecimal(subscriptionamount);
@@ -331,7 +331,6 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         slideToActView.resetSlider();
                         return;
                     }
-
                     MainActivity.mapcreditcard=1;
                     sendOtp();
                     slideToActView.resetSlider();
@@ -340,6 +339,50 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
         });
 
         return view;
+    }
+
+    private void CheckUserActiveStaus()
+    {
+        String emailid=userData.getUser().getEmail();
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("email", emailid);
+        AppConfig.getLoadInterfaceMap().CheckUserActive(hm).enqueue(new Callback<checkRefferalModel>() {
+            @Override
+            public void onResponse(Call<checkRefferalModel> call, Response<checkRefferalModel> response) {
+                try
+                {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getSubscription_status().equalsIgnoreCase("true"))
+                        {
+                            action="mapwithreferralnot";
+                        }else
+                        {
+                            if (response.body().getRegister_status().equalsIgnoreCase("true"))
+                            {
+                                action="mapwithreferralnot";
+                            }else
+                            {
+
+                            }
+                        }
+                    } else {
+                        ShowApiError(getActivity(),"server error check-mail-exist");
+                    }
+
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<checkRefferalModel> call, Throwable t)
+            {
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -762,6 +805,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                     {
                         if (response.body().getStatus().equalsIgnoreCase("true"))
                         {
+                            Toast.makeText(mContext, "register user call", Toast.LENGTH_SHORT).show();
                             sendMapDataServer(dialogNew,pd,getActivity(),actiontype,payamt,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,"");
                         }else
                         {
@@ -910,12 +954,12 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             public void onFailure(Call<mapSubscriptionModel> call, Throwable t)
             {
                dialogNew.dismiss();
-                Toast.makeText(getContext(), "map subscription "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                errordurigApiCalling(getActivity(),t.getMessage());
             }
         });
     }
 
-    private void registerAmountOnMap(final BottomSheetDialog dialogNew,final String textid,final String baseprice,final ProgressDialog dialog)
+  /*  private void registerAmountOnMap(final BottomSheetDialog dialogNew,final String textid,final String baseprice,final ProgressDialog dialog)
     {
         String cryptotypnemae="";
         if(actiontype.equalsIgnoreCase("creditcard"))
@@ -992,7 +1036,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             }
         });
     }
-
+*/
     private void hideKeyBoard() {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);

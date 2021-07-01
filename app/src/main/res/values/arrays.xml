@@ -7,4 +7,38 @@
         <item>75 %</item>
         <item>100 %</item>
     </array>
+
+    <string-array name="nav_drawer_labels">
+        <item>Funnel</item>
+        <item>Group</item>
+        <item>Bonuses</item>
+        <item>Overflow</item>
+    </string-array>
+
+   <!-- <string-array name="elements_home">
+        <item>Babha</item>
+        <item>Gandhi</item>
+        <item>Nehru</item>
+        <item>Tagore</item>
+    </string-array>-->
+
+    <string-array name="elements_friends">
+        <item>Rachel</item>
+        <item>Ross</item>
+        <item>Monica</item>
+        <item>Phoebe</item>
+        <item>Chandler</item>
+        <item>Joey</item>
+    </string-array>
+
+    <string-array name="elements_notifs">
+        <item>Phase 1</item>
+        <item>Direct Referral</item>
+        <item>Group</item>
+        <item>Power of 10</item>
+        <item>Platinum</item>
+        <item>Titanium</item>
+        <item>Daily Rewards</item>
+    </string-array>
+
 </resources>

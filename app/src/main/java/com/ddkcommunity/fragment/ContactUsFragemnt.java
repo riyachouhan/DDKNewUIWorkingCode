@@ -136,6 +136,9 @@ public class ContactUsFragemnt extends Fragment
         super.onResume();
         MainActivity.setTitle("Contact Us");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void submitBillingView(String messagevalue,String description) {

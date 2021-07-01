@@ -416,7 +416,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                             String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString().toLowerCase();
                             if(userphotoidvalue!=null && !userphotoidvalue.equalsIgnoreCase(""))
                             {
-                                if(userPhotoisVerified.equalsIgnoreCase("pending") || userPhotoisVerified.equalsIgnoreCase("verified"))
+                                if(userPhotoisVerified.equalsIgnoreCase("pending") || userPhotoisVerified.equalsIgnoreCase("verified") || userPhotoisVerified.equalsIgnoreCase("in_review"))
                                 {
                                     Intent intent = new Intent(OTPActivity.this, CustomPinActivity.class);
                                     intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);

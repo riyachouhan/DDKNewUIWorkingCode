@@ -234,6 +234,9 @@ public class CancellationFragment extends Fragment {
         super.onResume();
         MainActivity.setTitle("Cancellation Request");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
     private void  getRequestDataApi()

@@ -246,6 +246,9 @@ public class CredentialsFragment extends Fragment {
         credentialListCall();
         MainActivity.setTitle("Credentials");
         MainActivity.enableBackViews(true);
+        MainActivity.titleText.setVisibility(View.VISIBLE);
+        MainActivity.searchlayout.setVisibility(View.GONE);
+
     }
 
 }

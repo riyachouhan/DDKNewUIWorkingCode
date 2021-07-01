@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.ddkcommunity.App;
+import com.ddkcommunity.AppSignatureHelper;
 import com.ddkcommunity.BuildConfig;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
@@ -77,13 +78,14 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public static boolean isAppRunning;
     public static Activity activity;
     String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
     private int MY_REQUEST_CODE = 1010;
     private AppUpdateManager appUpdateManager;
     private boolean isComeFromUpdate = false;
     private Context mContext;
     public static List<Country> countryList;
     public static String finalcall,baseurl;
+    AppSignatureHelper appSignatureHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         mContext = this;
         CamomileSpinner spinner1 = findViewById(R.id.spinner1);
         //for new
+       appSignatureHelper = new AppSignatureHelper(SplashActivity.this);
         //for value
         String IVparam=App.pref.getString(Constant.IVPARAM, "");
         if(IVparam ==null || IVparam.equalsIgnoreCase("null") || IVparam.equalsIgnoreCase("")) {
@@ -139,12 +142,12 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
 
     private void proceed() {
         //**************************** Location ( Latitude & longitude ) *********************************
-        if (ActivityCompat.checkSelfPermission(SplashActivity.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(SplashActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
 
-            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE},
+            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA},
                     PERMISSION_REQUEST_CODE);
         } else {
             //if we have use the debug mode and release mode for the testing purpose then we have use the check login.
@@ -274,7 +277,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                             {
                                 String imgview = response.body().getData().getAndroidVersion();
                                 String versionName = BuildConfig.VERSION_NAME;
-                                //if(imgview.equalsIgnoreCase(versionName))
+                             //   if(imgview.equalsIgnoreCase(versionName))
                                 {
                                     proceed();
                                 }/*else
@@ -305,8 +308,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     //for sererchangeurl
     private void getUserAppApi()
     {
-        String tok="";
-        AppConfig.getSingleLoadInterface().getConstantUrl(AppConfig.getStringPreferences(SplashActivity.this, Constant.JWTToken)).enqueue(new Callback<baseUrlModel>() {
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("appkey", appSignatureHelper.getAppSignatures().get(0));
+        AppConfig.getSingleLoadInterface().getConstantUrl(AppConfig.getStringPreferences(SplashActivity.this, Constant.JWTToken),hm).enqueue(new Callback<baseUrlModel>() {
             @Override
             public void onResponse(Call<baseUrlModel> call, Response<baseUrlModel> response) {
                 try {

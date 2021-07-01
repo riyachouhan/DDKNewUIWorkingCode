@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     android:orientation="vertical">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:fitsSystemWindows="true">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,13 +24,13 @@
                 android:paddingLeft="@dimen/_5sdp"
                 android:paddingRight="@dimen/_30sdp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_160sdp"
+                android:layout_height="@dimen/_135sdp"
                 android:layout_gravity="center_horizontal"
                 />
 
             <LinearLayout
                 android:layout_marginStart="@dimen/_11sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_11sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,33 +48,45 @@
                     style="@style/secondhintview"
                     />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProjectRecycleBiller"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:orientation="horizontal"
                     android:weightSum="4">
 
                     <LinearLayout
-                        android:id="@+id/btnMAp"
+                        android:id="@+id/btnBPI"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/samk_logo_new_on" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/bpiimg" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_6sdp"
-                            android:text="Buy SAMK"
+                            android:text="BPI (Credit Card Bill)"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlackText"
                             style="@style/myhometext"
@@ -83,18 +95,19 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/btnImport_1"
+                        android:id="@+id/btnCaritas"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_import" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/caritasicon" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -102,7 +115,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_6sdp"
                             style="@style/myhometext"
-                            android:text="Import"
+                            android:text="Caritas Manila"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlackText"
                             />
@@ -110,50 +123,26 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/btnBuy_1"
+                        android:id="@+id/btnNationalbureau"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_buy_color" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/nationalbg" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_6sdp"
-                            style="@style/myhometext"
-                            android:text="Buy"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorBlackText"
-                            />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btnCashOut_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_cash_out" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/_6sdp"
-                            android:text="Sell"
+                            android:text="National Bureau of Investigation"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlackText"
                             style="@style/myhometext" />
@@ -161,17 +150,19 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/btnsampd"
+                        android:id="@+id/btnManiilawater"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/pi_icon" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/malinanbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -179,7 +170,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_6sdp"
                             style="@style/myhometext"
-                            android:text="SAMPD"
+                            android:text="Manila Water"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlackText"
                             />
@@ -189,26 +180,29 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="@dimen/_12sdp"
                     android:id="@+id/sam_view_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_17sdp"
                     android:orientation="horizontal"
                     android:weightSum="4">
 
                     <LinearLayout
-                        android:id="@+id/btnaccoutnverification"
+                        android:id="@+id/btnmetrobank"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
+                            android:background="@drawable/billpaybagg"
                             android:layout_gravity="center"
-                            android:src="@drawable/accountverfiication_icon" />
+                            android:src="@drawable/metrobg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -216,7 +210,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_6sdp"
                             style="@style/myhometext"
-                            android:text="Verification"
+                            android:text="Metrobank"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlackText"
                             />
@@ -231,10 +225,12 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/forex_icon" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/vecobg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -257,10 +253,12 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/exchange" />
+                            android:background="@drawable/billpaybagg"
+                            android:src="@drawable/sunsellur"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -283,10 +281,11 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/_22sdp"
-                            android:layout_height="@dimen/_22sdp"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_36sdp"
+                            android:layout_height="@dimen/_36sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_all" />
+                            android:background="@drawable/sellallbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -307,8 +306,9 @@
 
             <LinearLayout
                 android:layout_marginStart="@dimen/_11sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_11sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_white_bg"
@@ -325,7 +325,18 @@
                     style="@style/secondhintview"
                     />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProjectRecyclecategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -344,7 +355,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/samk_logo_new_on" />
+                            android:src="@drawable/electricitybcg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -370,7 +381,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_buy_color" />
+                            android:src="@drawable/creditcardicon" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -396,7 +407,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_cash_out" />
+                            android:src="@drawable/donationbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -421,7 +432,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/pi_icon" />
+                            android:src="@drawable/insurancebg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -439,6 +450,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -457,7 +469,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/accountverfiication_icon" />
+                            android:src="@drawable/broadbandbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -483,7 +495,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/forex_icon" />
+                            android:src="@drawable/cablechannelbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -509,7 +521,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/exchange" />
+                            android:src="@drawable/telecombg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -535,7 +547,7 @@
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_all" />
+                            android:src="@drawable/sellallbg" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -556,7 +568,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>
