@@ -232,10 +232,11 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
 
             if(data.get(position).getBank_status().equalsIgnoreCase("Approved") || data.get(position).getBank_status().equalsIgnoreCase("Confirmed"))
             {
+                
                 holder.arrow_click.setVisibility(View.VISIBLE);
             }else
             {
-                
+
                 holder.arrow_click.setVisibility(View.INVISIBLE);
             }
 
