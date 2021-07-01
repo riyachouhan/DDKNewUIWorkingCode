@@ -235,6 +235,7 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
                 holder.arrow_click.setVisibility(View.VISIBLE);
             }else
             {
+                
                 holder.arrow_click.setVisibility(View.INVISIBLE);
             }
 
