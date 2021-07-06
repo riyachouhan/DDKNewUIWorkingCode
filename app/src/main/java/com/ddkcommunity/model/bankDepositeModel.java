@@ -44,6 +44,56 @@ public class bankDepositeModel implements Serializable
         this.data = data;
     }
 
+    public class Bankfield implements Serializable
+    {
+
+        @SerializedName("detail_id")
+        @Expose
+        private Integer detailId;
+        @SerializedName("label")
+        @Expose
+        private String label;
+        @SerializedName("bank_detail_id")
+        @Expose
+        private Integer bankDetailId;
+        @SerializedName("value")
+        @Expose
+        private String value;
+        private final static long serialVersionUID = 8679234626721910054L;
+
+        public Integer getDetailId() {
+            return detailId;
+        }
+
+        public void setDetailId(Integer detailId) {
+            this.detailId = detailId;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public Integer getBankDetailId() {
+            return bankDetailId;
+        }
+
+        public void setBankDetailId(Integer bankDetailId) {
+            this.bankDetailId = bankDetailId;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+    }
 
     public class Datum implements Serializable
     {
@@ -51,30 +101,9 @@ public class bankDepositeModel implements Serializable
         @SerializedName("bank_detail_id")
         @Expose
         private Integer bankDetailId;
-        @SerializedName("bank_name_label")
+        @SerializedName("Bankfield")
         @Expose
-        private String bankNameLabel;
-        @SerializedName("bank_name")
-        @Expose
-        private String bankName;
-        @SerializedName("account_number_label")
-        @Expose
-        private String accountNumberLabel;
-        @SerializedName("account_number")
-        @Expose
-        private String accountNumber;
-        @SerializedName("account_name_label")
-        @Expose
-        private String accountNameLabel;
-        @SerializedName("account_name")
-        @Expose
-        private String accountName;
-        @SerializedName("swift_code_label")
-        @Expose
-        private String swiftCodeLabel;
-        @SerializedName("swift_code")
-        @Expose
-        private String swiftCode;
+        private List<Bankfield> bankfield = null;
         @SerializedName("country_id")
         @Expose
         private Integer countryId;
@@ -89,8 +118,8 @@ public class bankDepositeModel implements Serializable
         private String createdAt;
         @SerializedName("updated_at")
         @Expose
-        private Object updatedAt;
-        private final static long serialVersionUID = 3804126950908493059L;
+        private String updatedAt;
+        private final static long serialVersionUID = 3278784714649686968L;
 
         public Integer getBankDetailId() {
             return bankDetailId;
@@ -100,68 +129,12 @@ public class bankDepositeModel implements Serializable
             this.bankDetailId = bankDetailId;
         }
 
-        public String getBankNameLabel() {
-            return bankNameLabel;
+        public List<Bankfield> getBankfield() {
+            return bankfield;
         }
 
-        public void setBankNameLabel(String bankNameLabel) {
-            this.bankNameLabel = bankNameLabel;
-        }
-
-        public String getBankName() {
-            return bankName;
-        }
-
-        public void setBankName(String bankName) {
-            this.bankName = bankName;
-        }
-
-        public String getAccountNumberLabel() {
-            return accountNumberLabel;
-        }
-
-        public void setAccountNumberLabel(String accountNumberLabel) {
-            this.accountNumberLabel = accountNumberLabel;
-        }
-
-        public String getAccountNumber() {
-            return accountNumber;
-        }
-
-        public void setAccountNumber(String accountNumber) {
-            this.accountNumber = accountNumber;
-        }
-
-        public String getAccountNameLabel() {
-            return accountNameLabel;
-        }
-
-        public void setAccountNameLabel(String accountNameLabel) {
-            this.accountNameLabel = accountNameLabel;
-        }
-
-        public String getAccountName() {
-            return accountName;
-        }
-
-        public void setAccountName(String accountName) {
-            this.accountName = accountName;
-        }
-
-        public String getSwiftCodeLabel() {
-            return swiftCodeLabel;
-        }
-
-        public void setSwiftCodeLabel(String swiftCodeLabel) {
-            this.swiftCodeLabel = swiftCodeLabel;
-        }
-
-        public String getSwiftCode() {
-            return swiftCode;
-        }
-
-        public void setSwiftCode(String swiftCode) {
-            this.swiftCode = swiftCode;
+        public void setBankfield(List<Bankfield> bankfield) {
+            this.bankfield = bankfield;
         }
 
         public Integer getCountryId() {
@@ -196,11 +169,11 @@ public class bankDepositeModel implements Serializable
             this.createdAt = createdAt;
         }
 
-        public Object getUpdatedAt() {
+        public String getUpdatedAt() {
             return updatedAt;
         }
 
-        public void setUpdatedAt(Object updatedAt) {
+        public void setUpdatedAt(String updatedAt) {
             this.updatedAt = updatedAt;
         }
 

@@ -76,6 +76,7 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
     private SMPDBannerPagerAdapter homeBannerPager;
     private int count = 0;
     TextView myfav;
+    View view1 = null;
 
     public SAMPDNewFragment()
     {
@@ -86,7 +87,6 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View view1 = null;
         if (view1 == null)
         {
             view1 = inflater.inflate(R.layout.fragment_smpd_new, container, false);

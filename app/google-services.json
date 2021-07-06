@@ -1,59 +1,44 @@
 {
   "project_info": {
-    "project_number": "619461836679",
-    "firebase_url": "https://ddkcommunityapp-1539581164952.firebaseio.com",
-    "project_id": "ddkcommunityapp-1539581164952",
-    "storage_bucket": "ddkcommunityapp-1539581164952.appspot.com"
+    "project_number": "888701467924",
+    "project_id": "smart-asset-managers",
+    "storage_bucket": "smart-asset-managers.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:619461836679:android:1627cd095a70274d",
+        "mobilesdk_app_id": "1:888701467924:android:079fe06a8e596cbe05d601",
         "android_client_info": {
           "package_name": "com.ddkcommunity"
         }
       },
       "oauth_client": [
         {
-          "client_id": "619461836679-8oi5l8lngcgkuvld0k4te572fsia8vse.apps.googleusercontent.com",
+          "client_id": "888701467924-d2dljod7l4gagj044un05l6ihihq8srg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ddkcommunity",
-            "certificate_hash": "c56fdb32678517163b70f1038136968c1cdf6898"
+            "certificate_hash": "dafc206cd4e87da97fb6b2e65258de01b73153e3"
           }
         },
         {
-          "client_id": "619461836679-k01ocjj68je0eddt1hf9snr6ck9rb26j.apps.googleusercontent.com",
+          "client_id": "888701467924-mqe305k1a90b3rqn3dmhks88gnajd648.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAFHyhGNNEpAJTNGP6DRe3vzbfIS3rVh9A"
+          "current_key": "AIzaSyDJLiBXDKUODJERiyGLQ1Pr7YMOT1yxDiQ"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "619461836679-k01ocjj68je0eddt1hf9snr6ck9rb26j.apps.googleusercontent.com",
+              "client_id": "888701467924-mqe305k1a90b3rqn3dmhks88gnajd648.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "619461836679-f5517m6efpj7rlk3u2phnmkdevuu3pln.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.questglt.DDKCommunity"
-              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

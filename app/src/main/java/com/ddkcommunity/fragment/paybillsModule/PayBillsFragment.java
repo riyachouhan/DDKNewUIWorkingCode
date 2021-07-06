@@ -55,7 +55,7 @@ public class PayBillsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView rvProjectRecyclecategory,rvProjectRecycleBiller;
     ArrayList<catModel.DataCategory> catlist;
     ArrayList<catModel.DataBiller> billerlist;
-    View view;
+    View view=null;
     //for subitem
     public static ArrayList<addformModelBiller.Datum> arraylist;
     public static ArrayList<dynamicFormModel> viewList;
@@ -82,9 +82,8 @@ public class PayBillsFragment extends Fragment implements View.OnClickListener {
             rvProjectRecyclecategory.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
             rvProjectRecycleBiller.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
             getPaybillsCatData();
+            getPayBills();
         }
-        getPayBills();
-
         return view;
     }
 

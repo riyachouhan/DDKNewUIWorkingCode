@@ -117,9 +117,9 @@ public class CommonMethodFunction
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                activty.finish();
                 Intent i=new Intent(activty,MainActivity.class);
                 activty.startActivity(i);
+                activty.finish();
             }
         });
 

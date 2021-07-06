@@ -34,6 +34,7 @@ import com.ddkcommunity.fragment.mapmodule.groupfragment;
 import com.ddkcommunity.fragment.mapmodule.overflowFragment;
 import com.ddkcommunity.fragment.mapmodule.phaseonefragment;
 import com.ddkcommunity.fragment.mapmodule.powerofxfragmetn;
+import com.ddkcommunity.fragment.projects.MapOtionAllFragment;
 import com.ddkcommunity.fragment.projects.Mapsubfragmentclick;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
@@ -103,12 +104,6 @@ public class mapoptionadapter extends RecyclerView.Adapter<mapoptionadapter.MyVi
             userData = AppConfig.getUserData(activity);
             if(actionname.equalsIgnoreCase("main"))
             {
-                /*if (position == 10) {
-                    holder.mapoptiontext.setTextColor(ContextCompat.getColor(activity, R.color.white_color));
-                    holder.backviewshades.setBackground(activity.getDrawable(R.drawable.maproundselectmap));
-                } else {
-                    holder.mapoptiontext.setTextColor(ContextCompat.getColor(activity, R.color.black_color));
-                }*/
                 holder.mapoptiontext.setTextColor(ContextCompat.getColor(activity, R.color.black_color));
                 holder.iconmapop.setImageResource(mapoptionList.get(position).getImageUrl());
                 holder.mapoptiontext.setText(mapoptionList.get(position).getName());
@@ -152,51 +147,62 @@ public class mapoptionadapter extends RecyclerView.Adapter<mapoptionadapter.MyVi
                             arg.putString("action", "map");
                             fragment.setArguments(arg);
                             MainActivity.addFragment(fragment,true);
-                            }else if(position==0)
+                            }else
                             {
-                                MainActivity.addFragment(new funnelfragment(), true);
-                            }else if(position==1)
-                            {
-                                MainActivity.addFragment(new groupfragment(), true);
-                            }else if (position==9)
-                            {
-                                MainActivity.addFragment(new overflowFragment(), true);
-                            }else if(position==2)
-                            {
-                                MainActivity.addFragment(new phaseonefragment(), true);
-                            }else if(position==3)
-                            {
-                                MainActivity.addFragment(new directReferralfragment(), true);
+                            
+                                if(MapOtionAllFragment.activeStatus.equalsIgnoreCase("1"))
+                                {
+                                    if(position==0)
+                                    {
+                                        MainActivity.addFragment(new funnelfragment(), true);
+                                    }else if(position==1)
+                                    {
+                                        MainActivity.addFragment(new groupfragment(), true);
+                                    }else if (position==9)
+                                    {
+                                        MainActivity.addFragment(new overflowFragment(), true);
+                                    }else if(position==2)
+                                    {
+                                        MainActivity.addFragment(new phaseonefragment(), true);
+                                    }else if(position==3)
+                                    {
+                                        MainActivity.addFragment(new directReferralfragment(), true);
 
-                            }else if(position==4)
-                            {
-                                MainActivity.addFragment(new groupbonusFragment(), true);
+                                    }else if(position==4)
+                                    {
+                                        MainActivity.addFragment(new groupbonusFragment(), true);
 
-                            }else if(position==5)
-                            {
-                                MainActivity.addFragment(new powerofxfragmetn(), true);
+                                    }else if(position==5)
+                                    {
+                                        MainActivity.addFragment(new powerofxfragmetn(), true);
 
-                            }else if(position==6)
-                            {
-                                Fragment fragment = new PlatinumFragment();
-                                Bundle arg = new Bundle();
-                                arg.putString("fragmenttype", "platinum");
-                                fragment.setArguments(arg);
-                                MainActivity.addFragment(fragment, true);
+                                    }else if(position==6)
+                                    {
+                                        Fragment fragment = new PlatinumFragment();
+                                        Bundle arg = new Bundle();
+                                        arg.putString("fragmenttype", "platinum");
+                                        fragment.setArguments(arg);
+                                        MainActivity.addFragment(fragment, true);
 
-                            }else if(position==7)
-                            {
-                                Fragment fragment = new PlatinumFragment();
-                                Bundle arg = new Bundle();
-                                arg.putString("fragmenttype", "titanium");
-                                fragment.setArguments(arg);
-                                MainActivity.addFragment(fragment, true);
+                                    }else if(position==7)
+                                    {
+                                        Fragment fragment = new PlatinumFragment();
+                                        Bundle arg = new Bundle();
+                                        arg.putString("fragmenttype", "titanium");
+                                        fragment.setArguments(arg);
+                                        MainActivity.addFragment(fragment, true);
 
-                            }else if(position==8)
-                            {
-                                MainActivity.addFragment(new dailybonousFragment(), true);
-                            }
+                                    }else if(position==8)
+                                    {
+                                        MainActivity.addFragment(new dailybonousFragment(), true);
+                                    }
 
+                                }else 
+                                {
+                                    Toast.makeText(activity, "Subscribe MAP First", Toast.LENGTH_SHORT).show();
+                                }
+                            }   
+                            
                             /*else if (position==1)
                            {
                                getMatrixToken();

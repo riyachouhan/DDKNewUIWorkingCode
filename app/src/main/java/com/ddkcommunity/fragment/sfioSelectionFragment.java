@@ -69,7 +69,7 @@ public class sfioSelectionFragment extends Fragment {
                 arg.putString("input_amount", input_amount);
                 arg.putString("fee", fee);
                 fragment.setArguments(arg);
-                MainActivity.addFragment(fragment,true);
+                MainActivity.addFragment(fragment,false);
             }
         });
 
@@ -82,7 +82,7 @@ public class sfioSelectionFragment extends Fragment {
                 arg.putString("input_amount", input_amount);
                 arg.putString("fee", fee);
                 fragment.setArguments(arg);
-                MainActivity.addFragment(fragment,true);
+                MainActivity.addFragment(fragment,false);
 
             }
         });

@@ -448,7 +448,7 @@ public class CreditCardPaymentFragment extends Fragment {
     {
         final ProgressDialog pd=new ProgressDialog(getActivity());
         pd.setCanceledOnTouchOutside(false);
-        pd.setMessage("Please wait");
+        pd.setMessage("Please wait do not close these screen. ......");
         pd.show();
         String countrydata=userData.getUser().country.get(0).country;
         final String emailid=userData.getUser().getEmail();

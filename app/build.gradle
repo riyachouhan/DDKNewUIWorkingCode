@@ -15,8 +15,8 @@ android {
                 applicationId "com.ddkcommunity"
                 minSdkVersion 21
                 targetSdkVersion 29
-                versionCode 53
-                versionName "2.4.24"
+                versionCode 54
+                versionName "2.4.25"
                 multiDexEnabled true
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])
@@ -95,6 +95,13 @@ dependencies {
     // AndroidX version
     implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
     implementation 'com.github.nirwannursabda:expandable-navigation:0.1.2'
+
+    // Import the Firebase BoM
+    /*implementation platform('com.google.firebase:firebase-bom:28.2.0')
+
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'*/
 
 }
 apply plugin: 'com.google.gms.google-services'

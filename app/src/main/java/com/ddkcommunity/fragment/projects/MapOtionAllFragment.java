@@ -68,7 +68,7 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
     TextView Portal,mapoptiontext;
     LinearLayout submenuiteam,headerinactiviteview;
     ArrayList<mapoptionmodel> mapoptionList;
-    String activeStatus;
+    public static String activeStatus;
     ImageView copyview,browseview;
     RelativeLayout mapheader;
     TextView expandedListItem;
@@ -100,7 +100,27 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         String userReferalCode = App.pref.getString(Constant.USER_REFERAL_CODE, "");
         submenuiteam.setVisibility(View.GONE);
         Portal=view.findViewById(R.id.Portal);
-        mapNavigaton();
+        if(activeStatus.equalsIgnoreCase("1")) {
+            mapNavigaton();
+        }else
+        {
+            App.editor.putInt(Constant.Navigationcount, 0);
+            App.editor.putString(Constant.Packagename, "");
+            App.editor.apply();
+            //....
+            String Packagename=App.pref.getString(Constant.Packagename, "");
+            if(activeStatus.equalsIgnoreCase("1"))
+            {
+                expandedListItem.setText(Packagename+" | Active");
+            }else
+            {
+                expandedListItem.setText(" Inactive");
+            }
+            tvAddressCode.setText(userReferalCode);
+            int maptoken=App.pref.getInt(Constant.Navigationcount, 0);
+            circularProgressBar2.setProgress(maptoken);
+            custom_progress_inner.setProgress(maptoken);
+        }
         //............
         tvAddressCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,21 +153,6 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         mapoptionList.add(new mapoptionmodel("Overflow",R.drawable.overflow_b));
         mapoptionList.add(new mapoptionmodel("M.A.P. Activity",R.drawable.mapactivtiy));
 
-        // mapoptionList.add(new mapoptionmodel("Matrix",R.drawable.matrixicon));
-       /* mapoptionList.add(new mapoptionmodel("ILACM",R.drawable.ilcam));
-        mapoptionList.add(new mapoptionmodel("Best Venture",R.drawable.bestventure));
-        mapoptionList.add(new mapoptionmodel("Poultry",R.drawable.poultry));
-        mapoptionList.add(new mapoptionmodel("BAWE",R.drawable.beauty));
-        mapoptionList.add(new mapoptionmodel("REMJON Petroleum",R.drawable.remjon));
-        mapoptionList.add(new mapoptionmodel("Dressing Plant",R.drawable.dressingplant));
-        mapoptionList.add(new mapoptionmodel("Kaisan Product",R.drawable.kasianicon));
-        mapoptionList.add(new mapoptionmodel("Airline Ticketing",R.drawable.airline));
-        mapoptionList.add(new mapoptionmodel("Feed Processing Plant",R.drawable.feedprocessing));
-        mapoptionList.add(new mapoptionmodel("Import/Export Commodity",R.drawable.pisam));
-        mapoptionList.add(new mapoptionmodel("Digital Fintech",R.drawable.digitalfintech));
-        mapoptionList.add(new mapoptionmodel("Payment Facility",R.drawable.paymentfac));
-        mapoptionList.add(new mapoptionmodel("Gen Merchandise",R.drawable.genmerch));
-*/
         recyclerviewGridView=view.findViewById(R.id.recyclerviewGridView);
         mapoptionadapter allTypeCashoutFragmentAdapter = new mapoptionadapter("","main",mapoptionList, getActivity());
         recyclerviewGridView.setAdapter(allTypeCashoutFragmentAdapter);
@@ -190,7 +195,11 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         MainActivity.mDrawerToggle.setDrawerIndicatorEnabled(true);
         MainActivity.mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_menu);
         MainActivity.searchlayout.setVisibility(View.GONE);
-        MainActivity.prepareListData(getActivity(),"map");
+
+        if(activeStatus.equalsIgnoreCase("1"))
+        {
+            MainActivity.prepareListData(getActivity(),"map");
+        }
 
     }
 

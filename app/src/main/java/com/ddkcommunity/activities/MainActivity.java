@@ -418,8 +418,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 {
                 if (groupPosition == ExpandableListAdapter.ITEM1)
                 {
-                   // MainActivity.addFragment(new funnelfragment(), true);
-                    MainActivity.addFragment(new corporateUserChoiceFragment(), true);
+                    MainActivity.addFragment(new funnelfragment(), true);
+                   // MainActivity.addFragment(new corporateUserChoiceFragment(), true);
                     drawer.closeDrawer(GravityCompat.START);
 
                 } else if (groupPosition == ExpandableListAdapter.ITEM2)

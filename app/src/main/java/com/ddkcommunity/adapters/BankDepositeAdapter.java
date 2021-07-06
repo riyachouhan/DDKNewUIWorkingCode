@@ -5,12 +5,15 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,21 +90,6 @@ public class BankDepositeAdapter extends RecyclerView.Adapter<BankDepositeAdapte
 
             bankDepositeFragment.bankidsele="";
             holder.bank_subscriber_view.setText(data.get(position).getHeading()+"");
-            holder.bankName.setText(data.get(position).getBankNameLabel()+"");
-            holder.bankNameValue.setText(data.get(position).getBankName()+"");
-            holder.bankAccountvalue.setText(data.get(position).getAccountNumber()+"");
-            holder.bankAccountNo.setText(data.get(position).getAccountNumberLabel()+"");
-            holder.bankAccountName.setText(data.get(position).getAccountNameLabel()+"");
-            holder.bankAccountNameValue.setText(data.get(position).getAccountName()+"");
-            if(data.get(position).getSwiftCodeLabel()== null || data.get(position).getSwiftCodeLabel().toString().equalsIgnoreCase(""))
-            {
-                holder.swiftcodevie.setVisibility(View.GONE);
-            }else
-            {
-                holder.swiftcodevie.setVisibility(View.VISIBLE);
-            }
-            holder.swift_code.setText(data.get(position).getSwiftCode()+"");
-            holder.swift_code_label.setText(data.get(position).getSwiftCodeLabel()+"");
             Glide.with(activity)
                     .asBitmap()
                     .load(data.get(position).getIcon())
@@ -118,10 +106,61 @@ public class BankDepositeAdapter extends RecyclerView.Adapter<BankDepositeAdapte
                         }
 
                     });
+            //.............
+            ArrayList<bankDepositeModel.Bankfield> bankfiel=new ArrayList<>();
+            bankfiel.addAll(data.get(position).getBankfield());
+
+            for(int i=0;i<bankfiel.size();i++)
+            {
+                String labaleview=bankfiel.get(i).getLabel().toString();
+                String valueview=bankfiel.get(i).getValue().toString();
+                createdynamic(holder.subaddpaylayout,labaleview,valueview,activity);
+            }
+            //...............
         }catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    public static void createdynamic(LinearLayout subaddpaylayout,String labaleview,String valueview,Activity activity)
+    {
+        LinearLayout row = new LinearLayout(activity);
+        row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        p.setMargins(0, 10, 0, 10);
+        row.setLayoutParams(p);
+        row.setGravity(Gravity.TOP);
+
+        TextView textView = new TextView(activity);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(250, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setTextSize(11);
+        String upperString = labaleview.substring(0, 1).toUpperCase() + labaleview.substring(1).toLowerCase();
+        textView.setText(upperString+" ");
+        textView.setTextColor(activity.getResources().getColor(R.color.txtblack));
+        row.addView(textView);
+
+        TextView textView1 = new TextView(activity);
+        textView1.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView1.setGravity(Gravity.CENTER_VERTICAL);
+        textView1.setTextSize(11);
+        String upperString1 = "-----------";
+        textView1.setText(upperString1+" ");
+        textView1.setTextColor(activity.getResources().getColor(R.color.colorPrimary));
+        row.addView(textView1);
+
+        TextView newField = new TextView(activity);
+        newField.setGravity(Gravity.LEFT);
+        newField.setTextSize(12);
+        String upperString23 = valueview.substring(0, 1).toUpperCase() + valueview.substring(1).toLowerCase();
+        newField.setText(upperString23);
+        newField.setPadding(5,5,5,5);
+        newField.setBackgroundColor(activity.getResources().getColor(R.color.white));
+        newField.setTextColor(activity.getResources().getColor(R.color.txtblack));
+        row.addView(newField);
+        subaddpaylayout.addView(row);
+
     }
 
     @Override
@@ -132,25 +171,15 @@ public class BankDepositeAdapter extends RecyclerView.Adapter<BankDepositeAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView bank_subscriber_view,bankName,bankNameValue,
-                bankAccountNo,bankAccountvalue,bankAccountName,bankAccountNameValue,
-                swift_code_label,swift_code;
+        public TextView bank_subscriber_view;
         public ImageView bankIconImg;
-        LinearLayout swiftcodevie;
+        LinearLayout subaddpaylayout;
 
         public MyViewHolder(View view) {
             super(view);
-            swiftcodevie=view.findViewById(R.id.swiftcodevie);
-            swift_code_label=view.findViewById(R.id.swift_code_label);
-            swift_code=view.findViewById(R.id.swift_code);
             bank_subscriber_view=view.findViewById(R.id.bank_subscriber_view);
             bankIconImg=view.findViewById(R.id.bankIconImg);
-            bankName=view.findViewById(R.id.bankName);
-            bankNameValue=view.findViewById(R.id.bankNameValue);
-            bankAccountNo=view.findViewById(R.id.bankAccountNo);
-            bankAccountvalue=view.findViewById(R.id.bankAccountvalue);
-            bankAccountName=view.findViewById(R.id.bankAccountName);
-            bankAccountNameValue=view.findViewById(R.id.bankAccountNameValue);
+            subaddpaylayout=view.findViewById(R.id.subaddpaylayout);
         }
     }
 

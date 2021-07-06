@@ -106,9 +106,9 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
         return position;
     }
 
-
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.sfiofragmentlayout, parent, false);
         return new MyViewHolder(itemView);
@@ -121,8 +121,8 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
+    public void onBindViewHolder(final MyViewHolder holder, final int position)
+    {
         try
         {
             String udata="Trx Link..";
@@ -232,11 +232,10 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
 
             if(data.get(position).getBank_status().equalsIgnoreCase("Approved") || data.get(position).getBank_status().equalsIgnoreCase("Confirmed"))
             {
-                
+
                 holder.arrow_click.setVisibility(View.VISIBLE);
             }else
             {
-
                 holder.arrow_click.setVisibility(View.INVISIBLE);
             }
 
@@ -311,11 +310,13 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return data.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder
+    {
         public LinearLayout arrow_click;
         ImageView ivdropIcon;
         RecyclerView rvRecycle;
@@ -323,7 +324,8 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
         TextView   rejectvie,Noteview,uploadRequestview,Statusview,cancelRequestview
                 ,tvRemainingdays,tvtrxnumber,tvAount,tvDate,tvtrxlink;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view)
+        {
             super(view);
             rejectvie=view.findViewById(R.id.rejectvie);
             Noteview=view.findViewById(R.id.Noteview);
@@ -341,6 +343,7 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
             arrow_click = view.findViewById(R.id.arrow_click);
             ivdropIcon=view.findViewById(R.id.ivdropIcon);
       }
+
     }
 
     private void getRedeemData(final List<sfioModel.Datum> data, final SFIOAdapter mAdapter, final int position, final TextView cancelconfirm, final LinearLayout statusliner, final TextView Statusview, final Context activity, final String idsfio)

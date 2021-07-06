@@ -121,7 +121,7 @@ public class AddSFIOfrgament extends Fragment {
                         arg.putString("input_amount", amountvlaue);
                         arg.putString("fee", fee);
                         fragment.setArguments(arg);
-                        MainActivity.addFragment(fragment,true);
+                        MainActivity.addFragment(fragment,false);
 
                     }
 

@@ -133,14 +133,6 @@ public class bankDepositeFragment extends Fragment {
 
                     }else
                     {
-                        /*String miniumsfio=App.pref.getString(Constant.sfio_minimumamount, "");
-                        String sfiofee=App.pref.getString(Constant.sfiofees, "");
-                        BigDecimal threeHundred = new BigDecimal(miniumsfio);
-                        if (threeHundred.compareTo(new BigDecimal(amountvlaue.trim())) == 1)
-                        {
-                            Toast.makeText(mContext, "Minimum amount is "+miniumsfio+" USDT", Toast.LENGTH_SHORT).show();
-                            return;
-                        }*/
                         String bankid=bankidsele;
                         String amountval=amount.getText().toString();
                         String converted_amountval=finalamount.getText().toString();
@@ -265,7 +257,8 @@ public class bankDepositeFragment extends Fragment {
                         {
                             pd.dismiss();
                             BigDecimal finalamt=new BigDecimal(response.body().getResult());
-                            finalamount.setText(finalamt.toPlainString()+"");
+                            BigDecimal roundhaldv = finalamt.setScale(6, BigDecimal.ROUND_FLOOR);
+                            finalamount.setText(roundhaldv.toPlainString()+"");
                             ratevalue=response.body().getInfo().getRate()+"";
                         }else
                         {
