@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:gravity="center"
+        android:weightSum="1"
+        android:background="@drawable/rounded_sfioadd"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/idonetv"
+                android:text="#00923"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                style="@style/hintview_frozen"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="left"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_lock"
+                android:tint="@color/white_color" />
+
+            <TextView
+                android:id="@+id/dateonetv"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                android:text="23-02-2021"
+                style="@style/MyCustomTabText_small"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_width="0dp"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/amountonetv"
+                style="@style/hintview"
+                android:layout_width="match_parent"
+                android:text="$1000"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                />
+            <TextView
+                android:id="@+id/uploadbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                android:text="Upload Request"
+                android:gravity="right"
+                style="@style/MyCustomTabText_small"
+                />
+
+            <TextView
+                android:gravity="right"
+                android:id="@+id/statsbank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                android:text="Upload Request"
+                android:visibility="gone"
+                style="@style/MyCustomTabText_small"
+                />
+
+            <TextView
+                android:gravity="right"
+                android:id="@+id/trxlink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_color"
+                android:text="Trx Link..."
+                style="@style/MyCustomTabText_small"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

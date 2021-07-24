@@ -3,6 +3,7 @@ package com.ddkcommunity.fragment.projects;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -79,6 +81,34 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
     {
     }
 
+    public void ShowUserOnly(Context activity, String apierronamev)
+    {
+        //api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.alertmapsublayotu, null);
+        TextView btnGoHome =customView.findViewById(R.id.btnGoHome);
+        TextView apierrorname=customView.findViewById(R.id.apierrorname);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        apierrorname.setText(apierronamev);
+        final AlertDialog dialog = alert.create();
+        dialog.show();
+        dialog.setCancelable(false);
+        btnGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+                Fragment fragment = new Mapsubfragmentclick();
+                Bundle arg = new Bundle();
+                arg.putString("action", "map");
+                fragment.setArguments(arg);
+                MainActivity.addFragment(fragment,true);
+
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -120,6 +150,8 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
             int maptoken=App.pref.getInt(Constant.Navigationcount, 0);
             circularProgressBar2.setProgress(maptoken);
             custom_progress_inner.setProgress(maptoken);
+
+            ShowUserOnly(getActivity(),"You registerd successfully . Now please subscribe for access the MAP first.");
         }
         //............
         tvAddressCode.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +184,6 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         mapoptionList.add(new mapoptionmodel("Daily Rewards Bonus",R.drawable.daily_rearws));
         mapoptionList.add(new mapoptionmodel("Overflow",R.drawable.overflow_b));
         mapoptionList.add(new mapoptionmodel("M.A.P. Activity",R.drawable.mapactivtiy));
-
         recyclerviewGridView=view.findViewById(R.id.recyclerviewGridView);
         mapoptionadapter allTypeCashoutFragmentAdapter = new mapoptionadapter("","main",mapoptionList, getActivity());
         recyclerviewGridView.setAdapter(allTypeCashoutFragmentAdapter);
@@ -169,7 +200,8 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
             {
                 String mapurl= App.pref.getString(Constant.MApLoginURl,"");
                 String linkvalue=mapurl;
-                if(linkvalue!=null) {
+                if(linkvalue!=null)
+                {
                     //send view
                     Fragment fragment = new SendLinkFragment();
                     Bundle arg = new Bundle();
@@ -180,7 +212,6 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
                 {
                     Toast.makeText(mContext, "Link not available ", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         return view;

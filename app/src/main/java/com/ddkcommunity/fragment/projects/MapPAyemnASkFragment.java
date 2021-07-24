@@ -4,6 +4,7 @@ package com.ddkcommunity.fragment.projects;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,12 +32,14 @@ import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
+import com.ddkcommunity.fragment.SAMPDFragment;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
 import com.ddkcommunity.interfaces.GetCryptoSubscriptionResponse;
 import com.ddkcommunity.model.OtpResponse;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.mapSubscriptionModel;
 import com.ddkcommunity.model.mapoptionmodel;
+import com.ddkcommunity.model.mapregistrationCombineModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.CommonMethodFunction;
@@ -258,6 +262,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
             @Override
             public void onSlideComplete(SlideToActView slideToActView)
             {
+
                 String input_amount=payamt;
                 String conversion_rate=SellTemp+"";
                 String sam_koin_conversion=samkoinConversion;
@@ -286,8 +291,9 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                     arg.putString("fee", fee);
                     arg.putString("total_usdt_subscription", total_usdt_subscription);
                     fragment.setArguments(arg);
-                    MainActivity.addFragment(fragment,true);
-                    //MainActivity.addFragment(new CreditCardPaymentFragment(input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription), true);
+                    MainActivity.addFragment(fragment,false);
+                    //for dialog
+                    //AskPermissionDialog(getActivity(),"creidtyes",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                     slideToActView.resetSlider();
 
                 }else
@@ -333,12 +339,62 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                     }
                     MainActivity.mapcreditcard=1;
                     sendOtp();
+                    //AskPermissionDialog(getActivity(),"no",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                     slideToActView.resetSlider();
                 }
             }
         });
 
         return view;
+    }
+
+    public void AskPermissionDialog(final Activity activity,final String creditmove,final String input_amount,final String conversion_rate,final String sam_koin_conversion,final String fee,final String total_usdt_subscription,final String transaction_id)
+    {
+        //api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.beforepaymentdialog, null);
+        TextView no =customView.findViewById(R.id.no);
+        TextView yes=customView.findViewById(R.id.yes);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        final AlertDialog dialog = alert.create();
+        dialog.show();
+        dialog.setCancelable(false);
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+                Intent i=new Intent(activity,MainActivity.class);
+                activity.startActivity(i);
+                activity.finish();
+            }
+        });
+
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+                if(creditmove.equalsIgnoreCase("no")) {
+                    sendOtp();
+                }else
+                {
+                    Fragment fragment = new CreditCardPaymentFragment();
+                    Bundle arg = new Bundle();
+                    arg.putString("userenterreferrla",usereferrlacode);
+                    arg.putString("action", action);
+                    arg.putString("input_amount", input_amount);
+                    arg.putString("conversion_rate",conversion_rate);
+                    arg.putString("samkoinconversion", sam_koin_conversion);
+                    arg.putString("fee", fee);
+                    arg.putString("total_usdt_subscription", total_usdt_subscription);
+                    fragment.setArguments(arg);
+                    MainActivity.addFragment(fragment,false);
+                }
+            }
+        });
+
     }
 
     private void CheckUserActiveStaus()
@@ -608,14 +664,16 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         String transaction_id = "";
                         if(action.equalsIgnoreCase("mapwithreferral"))
                         {
+                           // combineregisterUserMap(getActivity(),dialogNew,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                             registerUserMap(dialogNew,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                         }else
                         {
                             ProgressDialog pd=new ProgressDialog(getActivity());
                             pd.setCanceledOnTouchOutside(false);
-                            pd.setMessage("Please wait");
+                            pd.setMessage("Please wait sub..");
                             pd.show();
-                            sendMapDataServer(dialogNew,pd,getActivity(),actiontype,payamt,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,"");
+                            //combineregisterUserMap(getActivity(),dialogNew,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
+                             sendMapDataServer(dialogNew,pd,getActivity(),actiontype,payamt,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,"");
                         }
                     } else {
                         AppConfig.showToast("Otp is expired or incorrect");
@@ -756,11 +814,169 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
         dialogNew.show();
     }
 
+    //.............
+    /*private void combineregisterUserMap(final Activity activity,final BottomSheetDialog dialogNew,String userrefferal, String input_amount, final String conversion_rate, final String sam_koin_conversion, final String fee, final String total_usdt_subscription, String transaction_id)
+    {
+        String transactionreivervalue = "",transactionfeessreceiver="";
+        final ProgressDialog pd=new ProgressDialog(getActivity());
+        pd.setCanceledOnTouchOutside(false);
+        pd.setMessage("Please wait registration.......");
+        pd.show();
+        String countrydata=userData.getUser().country.get(0).country;
+        final String emailid=userData.getUser().getEmail();
+        String password=userData.getUser().getPassword();
+        String Username=userData.getUser().getName().trim();
+        String user[]=Username.split(" ");
+        String firstname ="",lastname="";
+        if(user.length>0)
+        {
+            for(int i=0;i<user.length;i++)
+            {
+                if(i==0)
+                {
+                    firstname=user[0];
+                }else
+                {
+                    String userlast=user[1].trim();
+                    lastname=userlast;
+                }
+            }
+        }
+        String mobileno=userData.getUser().getMobile();
+        String dob=userData.getUser().getDob();
+        String userReferalCode = App.pref.getString(Constant.USER_REFERAL_CODE, "");
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("current_user_ref_code",userReferalCode);
+        hm.put("first_name", firstname);
+        hm.put("last_name", lastname);
+        hm.put("password", password);
+        hm.put("email", emailid);
+        hm.put("mobile", mobileno);
+        hm.put("dob", dob);
+        hm.put("country", countrydata);
+        hm.put("referring_user_ref_code", userrefferal);
+        //.....
+        if(actiontype.equalsIgnoreCase("samkoin"))
+        {
+            hm.put("public_key", App.pref.getString(Constant.SAMKOIN_publickey, ""));
+            hm.put("subscription_mode", "manual");
+            hm.put("crypto_type","sam_koin");
+            hm.put("payment_mode", "sam_koin");
+            hm.put("sender_address", App.pref.getString(Constant.SAMKOIN_ADD, ""));
+            transactionreivervalue=AppConfig.getStringPreferences(activity, Constant.Transaction_Receiver_SAMKOIN_Map);
+            transactionfeessreceiver=AppConfig.getStringPreferences(activity, Constant.SAMTransactionAddress_Map);
+
+        }else
+        if(actiontype.equalsIgnoreCase("btc"))
+        {
+            hm.put("secret",App.pref.getString(Constant.BTC_Secaret, ""));
+            hm.put("public_key", App.pref.getString(Constant.BTC_publickey, ""));
+            hm.put("subscription_mode", "manual");
+            hm.put("crypto_type","BTC");
+            hm.put("payment_mode", "BTC");
+            hm.put("sender_address", App.pref.getString(Constant.BTC_ADD, ""));
+            transactionreivervalue=AppConfig.getStringPreferences(activity, Constant.Transaction_Receiver_BTC_Map);
+            transactionfeessreceiver=AppConfig.getStringPreferences(activity, Constant.BTCTransactionAddress_Map);
+        }else
+        if(actiontype.equalsIgnoreCase("eth"))
+        {
+            hm.put("secret",App.pref.getString(Constant.Eth_Secret, ""));
+            hm.put("public_key", App.pref.getString(Constant.Eth_publickey, ""));
+            hm.put("subscription_mode", "manual");
+            hm.put("crypto_type","ETH");
+            hm.put("payment_mode", "ETH");
+            hm.put("sender_address", App.pref.getString(Constant.Eth_ADD, ""));
+            transactionreivervalue=AppConfig.getStringPreferences(activity, Constant.Transaction_Receiver_ETH_Map);
+            transactionfeessreceiver=AppConfig.getStringPreferences(activity, Constant.ETHTranscationAddress_Map);
+        }else
+        if(actiontype.equalsIgnoreCase("usdt"))
+        {
+            hm.put("secret",App.pref.getString(Constant.USDT_Secaret, ""));
+            hm.put("public_key", App.pref.getString(Constant.USDT_publickey, ""));
+            hm.put("subscription_mode", "manual");
+            hm.put("crypto_type","USDT");
+            hm.put("payment_mode", "USDT");
+            hm.put("sender_address", App.pref.getString(Constant.USDT_ADD, ""));
+            transactionreivervalue=AppConfig.getStringPreferences(activity, Constant.Transaction_Receiver_USDT_Map);
+            transactionfeessreceiver=AppConfig.getStringPreferences(activity, Constant.USDTTransactionAddress_Map);
+        }
+        hm.put("transaction_receiver_address",transactionfeessreceiver);
+        hm.put("receiver_address",transactionreivervalue);
+        hm.put("input_amount",input_amount);
+        hm.put("amount",input_amount);
+        hm.put("total_amount",total_usdt_subscription);
+        hm.put("conversion_rate",conversion_rate);
+        hm.put("sam_koin_conversion", sam_koin_conversion);
+        hm.put("fee",fee);
+        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+        hm.put("transaction_id", transaction_id);
+        //......
+        Log.d("create user ", hm.toString());
+        AppConfig.getLoadInterfaceMap().getSubscriptionREgiterCombine(hm).enqueue(new Callback<mapregistrationCombineModel>() {
+            @Override
+            public void onResponse(Call<mapregistrationCombineModel> call, Response<mapregistrationCombineModel> response) {
+                try {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus().equalsIgnoreCase("true"))
+                        {
+                            pd.dismiss();
+                            String text_id=response.body().getData().getTxtId();
+                            if(action.equalsIgnoreCase("mapwithreferral"))
+                            {
+                                dialogNew.dismiss();
+                                final String emailid=userData.getUser().getEmail();
+                                Fragment fragment = new SuccessFragmentScan();
+                                Bundle arg = new Bundle();
+                                arg.putString("action", action);
+                                arg.putString("email", emailid);
+                                fragment.setArguments(arg);
+                                MainActivity.addFragment(fragment, false);
+                            }else
+                            {
+                                dialogNew.dismiss();
+                                CommonMethodFunction.transactionStatus("Completed",getActivity(),text_id,"");
+                            }
+                            // registerAmountOnMap(dialogNewbottom,text_id,input_amount,dialogNew);
+                        }else
+                        {
+                            pd.dismiss();
+                            dialogNew.dismiss();
+                            Toast.makeText(activity, ""+response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        pd.dismiss();
+                        ShowApiError(getContext(),"server error check-mail-exist");
+                    }
+
+                } catch (Exception e) {
+                    if(pd.isShowing())
+                    {
+                        pd.dismiss();
+                    }
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<mapregistrationCombineModel> call, Throwable t)
+            {
+                pd.dismiss();
+                String responseerror=t.getMessage();
+                errordurigApiCalling(getActivity(),t.getMessage());
+            }
+        });
+    }*/
+    //.............
+
     private void registerUserMap(final BottomSheetDialog dialogNew,String userrefferal, String input_amount, final String conversion_rate, final String sam_koin_conversion, final String fee, final String total_usdt_subscription, String transaction_id)
     {
         final ProgressDialog pd=new ProgressDialog(getActivity());
         pd.setCanceledOnTouchOutside(false);
-        pd.setMessage("Please wait");
+        pd.setMessage("Please wait registration.......");
         pd.show();
         String countrydata=userData.getUser().country.get(0).country;
         final String emailid=userData.getUser().getEmail();
@@ -805,8 +1021,8 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                     {
                         if (response.body().getStatus().equalsIgnoreCase("true"))
                         {
-                            Toast.makeText(mContext, "register user call", Toast.LENGTH_SHORT).show();
-                            sendMapDataServer(dialogNew,pd,getActivity(),actiontype,payamt,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,"");
+                           /* Toast.makeText(mContext, "register user call", Toast.LENGTH_SHORT).show();
+                           */ sendMapDataServer(dialogNew,pd,getActivity(),actiontype,payamt,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,"");
                         }else
                         {
                             pd.dismiss();

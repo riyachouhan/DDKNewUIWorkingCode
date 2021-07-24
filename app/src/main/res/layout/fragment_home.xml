@@ -1523,14 +1523,15 @@
                                     android:layout_width="@dimen/_22sdp"
                                     android:layout_height="@dimen/_22sdp"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_profile" />
+                                    android:tint="@color/colorPrimary"
+                                    android:src="@drawable/ic_settings" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_marginTop="@dimen/_6sdp"
-                                    android:text="Profile"
+                                    android:text="Setting"
                                     android:textAlignment="center"
                                     android:textColor="@color/colorBlackText"
                                     style="@style/myhometext"

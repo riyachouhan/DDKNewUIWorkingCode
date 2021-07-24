@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    >
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/upperheader"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent"
+                        android:layout_height="@dimen/_135sdp"
+                        android:background="@drawable/mapbacksfio"
+                        android:gravity="bottom"
+                        android:id="@+id/homeheader"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingBottom="@dimen/_16sdp"
+                        android:paddingRight="@dimen/_16sdp"
+                        android:layout_gravity="center_vertical"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imgprofile"
+                            android:layout_width="@dimen/_100sdp"
+                            android:padding="@dimen/_1sdp"
+                            android:background="@drawable/circle_gray"
+                            android:layout_height="@dimen/_100sdp"
+                            android:src="@drawable/defalut_profile" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/name_TV"
+                                android:layout_marginTop="@dimen/_25sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/darkShbla"
+                                android:text="Rommel Santos"
+                                style="@style/hintheadpaysfio"
+                                />
+
+                            <TextView
+                                android:id="@+id/email_TV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlackText"
+                                android:text="voipdgreat@gmail.com"
+                                style="@style/subhintdataSize"
+                                />
+
+                            <LinearLayout
+                                android:id="@+id/addicon"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:gravity="center"
+                                android:background="@drawable/rounded_sfioadd"
+                                android:orientation="horizontal">
+
+
+                                <LinearLayout
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:layout_width="@dimen/_12sdp"
+                                    android:gravity="center"
+                                    android:background="@drawable/circle_purple_whited"
+                                    android:layout_height="@dimen/_12sdp">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_8sdp"
+                                        android:background="@drawable/ic_add"
+                                        android:tint="@color/colorPrimary"
+                                        android:layout_height="@dimen/_8sdp"/>
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white_color"
+                                    android:text="Add Subscription"
+                                    style="@style/MyCustomTabText_small"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_135sdp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvRecycleher"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                            <TextView
+                                android:id="@+id/seelall"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorPrimary"
+                                android:text="See All.."
+                                android:paddingRight="@dimen/_5sdp"
+                                android:gravity="right"
+                                style="@style/viewerpagetext"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlackText"
+                                android:text="Total Points"
+                                android:gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                style="@style/textSizehint_hint"
+                                />
+
+                            <RelativeLayout
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="@dimen/_80sdp"
+                                >
+
+                                <com.dinuscxj.progressbar.CircleProgressBar
+                                    android:id="@+id/custom_progress_outer"
+                                    android:layout_centerVertical="true"
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="@dimen/_80sdp"
+                                    app:line_count="30"
+                                    app:line_width="@dimen/_5sdp"
+                                    app:progress_background_color="#B1AEAE"
+                                    app:progress_end_color="@color/colorPrimary"
+                                    app:progress_start_color="@color/colorPrimary"
+                                    app:progress_stroke_cap="round"
+                                    app:progress_stroke_width="@dimen/_7sdp"
+                                    app:progress_style="solid_line"
+                                    app:progress_text_size="0sp"
+                                    app:progress_text_color="@color/colorPrimary" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textColor="@color/colorPrimary"
+                                    android:id="@+id/totalpoint"
+                                    android:gravity="center"
+                                    android:layout_margin="@dimen/_4sdp"
+                                    style="@style/textSizehint_hint"
+                                    />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/darkShbla"
+                        android:text="Monthly Reward Points"
+                        style="@style/powerbolde"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/texthint"/>
+
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

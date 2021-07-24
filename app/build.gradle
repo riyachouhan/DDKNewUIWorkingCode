@@ -95,7 +95,6 @@ dependencies {
     // AndroidX version
     implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
     implementation 'com.github.nirwannursabda:expandable-navigation:0.1.2'
-
     // Import the Firebase BoM
     /*implementation platform('com.google.firebase:firebase-bom:28.2.0')
 

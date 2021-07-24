@@ -37,8 +37,8 @@ import retrofit2.Response;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 
 public class addsampdfrgae extends RecyclerView.Adapter<addsampdfrgae.ViewHolder>
-        implements SectionIndexer {
-
+        implements SectionIndexer
+{
     private List<smpdModelNew.Datum> mDataArray;
     private String mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
     private HashMap<Integer, Integer> sectionsTranslator = new HashMap<>();

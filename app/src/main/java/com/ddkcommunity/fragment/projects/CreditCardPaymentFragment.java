@@ -46,6 +46,7 @@ import com.ddkcommunity.model.OtpResponse;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.credential.Credential;
 import com.ddkcommunity.model.mapSubscriptionModel;
+import com.ddkcommunity.model.mapregistrationCombineModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.CommonMethodFunction;
@@ -73,6 +74,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
+import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 
 
 /**
@@ -166,12 +168,14 @@ public class CreditCardPaymentFragment extends Fragment {
                         /*"pk_test_SEzNBwE6G7lELdq63At6lvEV"*/
                         stripe.createToken(
                                 card,
-                                new TokenCallback() {
-                                    public void onSuccess(Token token) {
-                                        // Send token to your server
-                                        AppConfig.hideLoading(dialog);
+                                new TokenCallback()
+                                {
+                                    public void onSuccess(Token token)
+                                    {
+                                        // Send token to your servAppConfig.hideLoading(dialog);
                                         String tokenId = token.getId();
                                         Log.d("credit card",tokenId);
+                                        AppConfig.hideLoading(dialog);
                                         sendOtp(tokenId);
                                     }
 
@@ -290,10 +294,13 @@ public class CreditCardPaymentFragment extends Fragment {
                     {
                         if(MainActivity.mapcreditcard==1)
                         {
-                            if(action.equalsIgnoreCase("mapwithreferral")) {
+                            if(action.equalsIgnoreCase("mapwithreferral"))
+                            {
+                                //combineregisterUserMap(getActivity(),dialog,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,tokenid);
                                 registerUserMap(dialog,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,tokenid);
                             }else
                             {
+                               // combineregisterUserMap(getActivity(),dialog,usereferrlacode,input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,tokenid);
                                 ProgressDialog pd=new ProgressDialog(getActivity());
                                 pd.setCanceledOnTouchOutside(false);
                                 pd.setMessage("Please wait");
@@ -443,6 +450,129 @@ public class CreditCardPaymentFragment extends Fragment {
 
         dialog.show();
     }
+
+    //.............
+   /* private void combineregisterUserMap(final Activity activity,final BottomSheetDialog dialogNew,String userrefferal, String input_amount, final String conversion_rate, final String sam_koin_conversion, final String fee, final String total_usdt_subscription, String transaction_id)
+    {
+        String transactionreivervalue = "",transactionfeessreceiver="";
+        final ProgressDialog pd=new ProgressDialog(getActivity());
+        pd.setCanceledOnTouchOutside(false);
+        pd.setMessage("Please wait registration.......");
+        pd.show();
+        String countrydata=userData.getUser().country.get(0).country;
+        final String emailid=userData.getUser().getEmail();
+        String password=userData.getUser().getPassword();
+        String Username=userData.getUser().getName().trim();
+        String user[]=Username.split(" ");
+        String firstname ="",lastname="";
+        if(user.length>0)
+        {
+            for(int i=0;i<user.length;i++)
+            {
+                if(i==0)
+                {
+                    firstname=user[0];
+                }else
+                {
+                    String userlast=user[1].trim();
+                    lastname=userlast;
+                }
+            }
+        }
+        String mobileno=userData.getUser().getMobile();
+        String dob=userData.getUser().getDob();
+        String userReferalCode = App.pref.getString(Constant.USER_REFERAL_CODE, "");
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("current_user_ref_code",userReferalCode);
+        hm.put("first_name", firstname);
+        hm.put("last_name", lastname);
+        hm.put("password", password);
+        hm.put("email", emailid);
+        hm.put("mobile", mobileno);
+        hm.put("dob", dob);
+        hm.put("country", countrydata);
+        hm.put("referring_user_ref_code", userrefferal);
+        //.....
+        hm.put("secret",App.pref.getString(Constant.SAMKOIN_Secaret, ""));
+        hm.put("public_key", App.pref.getString(Constant.BTC_publickey, ""));
+        hm.put("subscription_mode", "stripe");
+        hm.put("crypto_type","credit card");
+        hm.put("sender_address", App.pref.getString(Constant.SAMKOIN_ADD, ""));
+        transactionreivervalue=AppConfig.getStringPreferences(activity, Constant.Transaction_Receiver_SAMKOIN_Map);
+        transactionfeessreceiver=AppConfig.getStringPreferences(activity, Constant.SAMTransactionAddress_Map);
+        hm.put("transaction_receiver_address",transactionfeessreceiver);
+        hm.put("receiver_address",transactionreivervalue);
+        hm.put("input_amount",input_amount);
+        hm.put("total_amount",total_usdt_subscription);
+        hm.put("conversion_rate",conversion_rate);
+        hm.put("sam_koin_conversion", sam_koin_conversion);
+        hm.put("payment_mode", "credit card");
+        hm.put("fee",fee);
+        hm.put("amount",input_amount);
+        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+        hm.put("transaction_id", transaction_id);
+        //......
+        Log.d("create user ", hm.toString());
+        AppConfig.getLoadInterfaceMap().getSubscriptionREgiterCombine(hm).enqueue(new Callback<mapregistrationCombineModel>() {
+            @Override
+            public void onResponse(Call<mapregistrationCombineModel> call, Response<mapregistrationCombineModel> response) {
+                try {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus().equalsIgnoreCase("true"))
+                        {
+                            pd.dismiss();
+                            String text_id=response.body().getData().getTxtId();
+                            if(action.equalsIgnoreCase("mapwithreferral"))
+                            {
+                                dialogNew.dismiss();
+                                final String emailid=userData.getUser().getEmail();
+                                Fragment fragment = new SuccessFragmentScan();
+                                Bundle arg = new Bundle();
+                                arg.putString("action", action);
+                                arg.putString("email", emailid);
+                                fragment.setArguments(arg);
+                                MainActivity.addFragment(fragment, false);
+                            }else
+                            {
+                                dialogNew.dismiss();
+                                CommonMethodFunction.transactionStatus("Completed",getActivity(),text_id,"");
+                            }
+                            // registerAmountOnMap(dialogNewbottom,text_id,input_amount,dialogNew);
+                        }else
+                        {
+                            pd.dismiss();
+                            dialogNew.dismiss();
+                            Toast.makeText(activity, ""+response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        pd.dismiss();
+                        ShowApiError(getContext(),"server error check-mail-exist");
+                    }
+
+                } catch (Exception e) {
+                    if(pd.isShowing())
+                    {
+                        pd.dismiss();
+                    }
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<mapregistrationCombineModel> call, Throwable t)
+            {
+                pd.dismiss();
+                String responseerror=t.getMessage();
+                Toast.makeText(activity, ""+responseerror, Toast.LENGTH_SHORT).show();
+                errordurigApiCalling(getActivity(),t.getMessage());
+            }
+        });
+    }
+   */ //...........
 
     private void registerUserMap(final BottomSheetDialog dialog,final String userrefferal, final String input_amount, final String conversion_rate, final String sam_koin_conversion, final String fee, final String total_usdt_subscription, final String transaction_id)
     {

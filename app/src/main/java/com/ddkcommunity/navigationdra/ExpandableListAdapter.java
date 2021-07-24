@@ -128,7 +128,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }else
         {
             if (listPosition == ITEM1)
-                listTitleTextIconView.setImageResource(R.drawable.ic_profile);
+                listTitleTextIconView.setImageResource(R.drawable.ic_settings);
             else if (listPosition == ITEM2)
                 listTitleTextIconView.setImageResource(R.drawable.ic_credentials);
             else if (listPosition == ITEM3)

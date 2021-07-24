@@ -214,6 +214,11 @@
         <item name="android:fontFamily">@font/inter_extrabold</item>
     </style>
 
+    <style name="hintheadpaysfio" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_15ssp</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
+    </style>
+
     <style name="secondhintview" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:fontFamily">@font/inter_extrabold</item>

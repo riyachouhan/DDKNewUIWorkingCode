@@ -77,6 +77,7 @@ import com.ddkcommunity.fragment.paybillsModule.PayBillsFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
 import com.ddkcommunity.fragment.send.SendFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
+import com.ddkcommunity.fragment.settingModule.SettingFragment;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.interfaces.GetAvailableValue;
 import com.ddkcommunity.interfaces.GetBTCUSDTETHPriceCallback;
@@ -87,6 +88,7 @@ import com.ddkcommunity.model.RedeemOptionModel;
 import com.ddkcommunity.model.SliderWithType;
 import com.ddkcommunity.model.TransactionFeeData;
 import com.ddkcommunity.model.TransactionFeesResponse;
+import com.ddkcommunity.model.adsDialogModel;
 import com.ddkcommunity.model.buyCryptoModel;
 import com.ddkcommunity.model.credential.Credential;
 import com.ddkcommunity.model.credential.CredentialsResponse;
@@ -140,6 +142,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ddkcommunity.activities.MainActivity.showAdsDialog;
 import static com.ddkcommunity.activities.SplashActivity.baseurl;
 import static com.ddkcommunity.utilies.dataPutMethods.ReplacecommaValue;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
@@ -429,6 +432,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             });
 
         //getSamToken("not");
+        showDiloagUrl(getActivity());
         setCredentialPopup(inflater);
         openAnnouncementPopup();
         getEthBtcUsdtSellBuyy("");
@@ -519,7 +523,57 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 dataPutMethods.showDialogForSAMKoin(getActivity(),tabLayout,view,getContext(),samkoinlist,tvSelectDdkAddress);
             }
         });
+
+
         return view;
+    }
+
+    public void showDiloagUrl(final Activity activity)
+    {
+        AppConfig.getLoadInterface().getAds(AppConfig.getStringPreferences(activity, Constant.JWTToken)).enqueue(new Callback<adsDialogModel>() {
+            @Override
+            public void onResponse(Call<adsDialogModel> call, Response<adsDialogModel> response) {
+                try
+                {
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus() == 1)
+                        {
+                            Log.d("chages data",response.toString());
+                            if(response.body().getData()!=null)
+                            {
+                                String img=response.body().getData().getAdImage();
+                                String url=response.body().getData().getAdUrl();
+                                String status=response.body().getData().getAdStatus();
+                                if(status.equalsIgnoreCase("active"))
+                                {
+                                    showAdsDialog(activity, img, url);
+                                }
+                            }
+                        }else
+                        {
+                            AppConfig.hideLoader();
+                            //AppConfig.showToast(response.body().getMsg());
+                        }
+                    } else {
+                        AppConfig.hideLoader();
+                        ShowApiError(mContext,"server error sampd-company/company-list");
+                    }
+
+                } catch (Exception e) {
+                    AppConfig.hideLoader();
+                    ShowApiError(mContext,"error in response sampd-company/company-list");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<adsDialogModel> call, Throwable t)
+            {
+                AppConfig.hideLoader();
+                Toast.makeText(activity, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setTabView(TabLayout.Tab tab)
@@ -2840,7 +2894,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 }else
                 {
-                    MainActivity.addFragment(new ProfileFragment(), true);
+                    MainActivity.addFragment(new SettingFragment(), true);
+                   // MainActivity.addFragment(new ProfileFragment(), true);
                 }
                 break;
 

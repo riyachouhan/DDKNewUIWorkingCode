@@ -29,7 +29,8 @@ public class ExpandableListDataPump
             expandableListDetail.put("Bonuses", list1);
             expandableListDetail.put("Overflow", list2);
         }else {
-            expandableListDetail.put("Profile", list2);
+            //expandableListDetail.put("Profile", list2);
+            expandableListDetail.put("Setting   ", list2);
             expandableListDetail.put("Credentials", list2);
             expandableListDetail.put("B-Card", list2);
             expandableListDetail.put("Activity", list2);

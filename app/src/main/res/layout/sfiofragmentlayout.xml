@@ -5,11 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="@dimen/_10sdp"
     android:id="@+id/viewclickdata"
-    android:background="@drawable/text_card_bg"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@drawable/text_card_bg"
         android:paddingBottom="@dimen/_4sdp"
         android:layout_width="match_parent"
         android:layout_marginRight="@dimen/_5sdp"
@@ -210,11 +210,10 @@
         android:visibility="gone"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
         android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_35sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-3dp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/red_color"
         />
 
@@ -222,6 +221,7 @@
         android:id="@+id/rvRecycle"
         android:visibility="gone"
         android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/_5sdp"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -233,20 +233,19 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_marginRight="@dimen/_22sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:weightSum="3"
+            android:layout_marginTop="@dimen/_5sdp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_height="@dimen/_35sdp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tvRemainingdays"
-                android:paddingRight="@dimen/_4sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
                 android:textColor="@color/red_color"
                 style="@style/subsmallSize" />

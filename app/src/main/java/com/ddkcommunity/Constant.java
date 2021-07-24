@@ -28,12 +28,12 @@ public class Constant
    // public static final String BASE_URL= "http://128.199.182.16/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URL= "http://107.20.12.68/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URL= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
-    public static final String BASE_URL_versionName= "new_api/api/v2.4/v2.4.23/";
+    public static final String BASE_URL_versionName= "new_api/api/v2.4/v2.4.24/";
     public static final String BASE_URL= "";
-   // public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.23/";
+   // public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.24/";
     // public static final String BASE_URLserv= "http://54.198.160.25/new_api/api/v2.4/v2.4.20/";
    // public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.20/";
-    public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.23/";
+    public static final String BASE_URLserv= "http://128.199.182.16/migration/new_api/api/v2.4/v2.4.24/";
      public static final String IS_LOGIN = "isLogin";
     public static final String STATUS = "status";
     public static final String ANDROID = "android";

@@ -12,11 +12,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
+import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.SplashActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -39,13 +43,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String notification_type = "";
     String driver_id = "";
     String username = "";
-
+    String  CHANNEL_NAME= "Simplified Coding";
     // Override onMessageReceived() method to extract the
     // title and
     // body from the message passed in FCM
     @Override
     public void
-    onMessageReceived(RemoteMessage remoteMessage) {
+    onMessageReceived(RemoteMessage remoteMessage)
+    {
+        try
+        {
+          //  Log.d("notifiaction data",remoteMessage.getData().toString());
+        //Log.d("notifiaction noti",remoteMessage.getNotification().toString());
+
         // First case when notifications are received via
         // data event
         // Here, 'title' and 'message' are the assumed names
@@ -53,9 +63,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // attributes. Since here we do not have any data
         // payload, This section is commented out. It is
         // here only for reference purposes.
-        if(remoteMessage.getData().size()>0){
-            showNotification(remoteMessage.getData().get("title"),
-                          remoteMessage.getData().get("message"));
+        if(remoteMessage.getData().size()>0)
+        {
+            try {
+              //  JSONObject jsonobje = new JSONObject(remoteMessage.getData().toString());
+               // String titlevalue = jsonobje.get("title").toString();
+                String titlevalue = "Smart Asset Manager";
+               // String messagevalue =jsonobje.get("message").toString();
+                String messagevalue =remoteMessage.getData().get("message").toString();
+                showNotification(titlevalue, messagevalue);
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         // Second case when notification payload is
@@ -64,9 +84,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Since the notification is received directly from
             // FCM, the title and the body can be fetched
             // directly as below.
-            showNotification(
-                    remoteMessage.getNotification().getTitle(),
-                    remoteMessage.getNotification().getBody());
+            try {
+               // JSONObject jsonobje = new JSONObject(remoteMessage.getNotification().toString());
+               // String titlevalue = jsonobje.get("title").toString();
+                String titlevalue = "Smart Asset Manager";
+               // String messagevalue = jsonobje.get("message").toString();
+                String messagevalue =remoteMessage.getNotification().getBody().toString();
+                showNotification(titlevalue, messagevalue);
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -87,71 +119,83 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     // Method to display the notifications
     public void showNotification(String title,
-                                 String message) {
-        // Pass the intent to switch to the MainActivity
-        Intent intent
-                = new Intent(this, SplashActivity.class);
-        // Assign channel ID
-        String channel_id = "notification_channel";
-        // Here FLAG_ACTIVITY_CLEAR_TOP flag is set to clear
-        // the activities present in the activity stack,
-        // on the top of the Activity that is to be launched
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Pass the intent to PendingIntent to start the
-        // next Activity
-        PendingIntent pendingIntent
-                = PendingIntent.getActivity(
-                this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        // Create a Builder object using NotificationCompat
-        // class. This will allow control over all the flags
-        NotificationCompat.Builder builder
-                = new NotificationCompat
-                .Builder(getApplicationContext(),
-                channel_id)
-                .setSmallIcon(R.drawable.sam_logo_icon)
-                .setAutoCancel(true)
-                .setVibrate(new long[]{1000, 1000, 1000,
-                        1000, 1000})
-                .setOnlyAlertOnce(true)
-                .setContentIntent(pendingIntent);
-
-        // A customized design for the notification can be
-        // set only for Android versions 4.1 and above. Thus
-        // condition for the same is checked here.
-        if (Build.VERSION.SDK_INT
-                >= Build.VERSION_CODES.JELLY_BEAN)
+                                 String message)
+    {
+        try
         {
-            builder = builder.setContent(
-                    getCustomDesign(title, message));
-        } // If Android Version is lower than Jelly Beans,
-        // customized layout cannot be used and thus the
-        // layout is set as follows
-        else {
-            builder = builder.setContentTitle(title)
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.sam_logo_icon);
-        }
-        // Create an object of NotificationManager class to
-        // notify the
-        // user of events that happen in the background.
-        NotificationManager notificationManager
-                = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        // Check if the Android Version is greater than Oreo
-        if (Build.VERSION.SDK_INT
-                >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel
-                    = new NotificationChannel(
-                    channel_id, "web_app",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(
-                    notificationChannel);
-        }
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "notify_001");
+            Intent ii = new Intent(getApplicationContext(), MyFirebaseMessagingService.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, ii, 0);
 
-        notificationManager.notify(0, builder.build());
-    }
+            NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+            //bigText.bigText(notificationsTextDetailMode); //detail mode is the "expanded" notification
+            //bigText.setBigContentTitle(notificationTitleDetailMode);
+            //bigText.setSummaryText(usuallyAppVersionOrNumberOfNotifications); //small text under notification
+            mBuilder.setAutoCancel(false);
+            mBuilder.setContentIntent(pendingIntent);
+            mBuilder.setSmallIcon(R.mipmap.ic_launcher); //notification icon
+            mBuilder.setContentTitle(title); //main title
+            mBuilder.setContentText(message); //main text when you "haven't expanded" the notification yet
+            mBuilder.setPriority(Notification.PRIORITY_MAX);
+            mBuilder.setStyle(bigText);
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationChannel channel = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                channel = new NotificationChannel("notify_001",
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+            }
+            if (mNotificationManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    mNotificationManager.createNotificationChannel(channel);
+                }
+            }
+
+            if (mNotificationManager != null) {
+                mNotificationManager.notify(0, mBuilder.build());
+            }
+
+            /*Intent intent
+                    = new Intent(this, SplashActivity.class);
+            // Assign channel ID
+            String channel_id = "notification_channel";
+            //creating notification channel if android version is greater than or equals to oreo
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                NotificationChannel channel = new NotificationChannel(channel_id, channel_id, NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                manager.createNotificationChannel(channel);
+            }
+            // Here FLAG_ACTIVITY_CLEAR_TOP flag is set to clear
+            // the activities present in the activity stack,
+            // on the top of the Activity that is to be launched
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // Pass the intent to PendingIntent to start the
+            // next Activity
+            PendingIntent pendingIntent
+                    = PendingIntent.getActivity(
+                    this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "notification_channel")
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
+            mBuilder.setOngoing(true);
+            NotificationManagerCompat mNotificationMgr = NotificationManagerCompat.from(getApplicationContext());
+            mNotificationMgr.notify(11, mBuilder.build());
+*/
+            //......
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+       }
 
 }
 /*

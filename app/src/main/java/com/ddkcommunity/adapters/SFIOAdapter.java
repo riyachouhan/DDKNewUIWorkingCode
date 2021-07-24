@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -150,7 +151,6 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
             }catch(ParseException pe){
                 pe.printStackTrace();
             }
-
             String remindaya=data.get(position).getRemaining_days().toString();
             String cancellation_status=data.get(position).getCancellation_status();
             String uploadreceipt_status=data.get(position).getUpload_btn().toString();
@@ -160,7 +160,6 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
                 SpannableString content1 = new SpannableString(udataupload);
                 content1.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
                 holder.uploadRequestview.setText(content1);
-
                 holder.uploadRequestview.setVisibility(View.VISIBLE);
                 holder.statusliner.setVisibility(View.GONE);
                 holder.cancelRequestview.setVisibility(View.GONE);
@@ -239,10 +238,15 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
                 holder.arrow_click.setVisibility(View.INVISIBLE);
             }
 
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
+            /*RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
             holder.rvRecycle.setLayoutManager(mLayoutManager);
             holder.rvRecycle.setItemAnimator(new DefaultItemAnimator());
-
+*/
+            // setting grid layout manager to implement grid view.
+            // in this method '2' represents number of columns to be displayed in grid view.
+            GridLayoutManager layoutManager=new GridLayoutManager(activity,3);
+            // at last set adapter to recycler view.
+            holder.rvRecycle.setLayoutManager(layoutManager);
             holder.tvtrxlink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)

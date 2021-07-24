@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -64,6 +65,8 @@ import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.UserModel;
 import com.ddkcommunity.adapters.SFIOAdapter;
+import com.ddkcommunity.adapters.SfioHeaderAdapter;
+import com.ddkcommunity.adapters.SfioHeaderAdapterAll;
 import com.ddkcommunity.fragment.ContactUsFragemnt;
 import com.ddkcommunity.fragment.GogoleAuthFragment;
 import com.ddkcommunity.fragment.GogolePasswordFragment;
@@ -94,13 +97,17 @@ import com.ddkcommunity.fragment.send.BcardFragment;
 import com.ddkcommunity.fragment.send.PayUsingScanFragment;
 import com.ddkcommunity.fragment.send.QrScanFragmentScan;
 import com.ddkcommunity.fragment.send.SendFragment;
+import com.ddkcommunity.fragment.send.SendLinkFragment;
+import com.ddkcommunity.fragment.settingModule.SettingFragment;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.interfaces.GetUSDAndBTCCallback;
 import com.ddkcommunity.interfaces.GetUserProfile;
+import com.ddkcommunity.model.adsDialogModel;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.mapLoginModel;
 import com.ddkcommunity.model.navigationModel;
+import com.ddkcommunity.model.sfioHeaderModel;
 import com.ddkcommunity.model.sfioModel;
 import com.ddkcommunity.model.user.User;
 import com.ddkcommunity.model.user.UserResponse;
@@ -124,6 +131,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.squareup.picasso.Picasso;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -208,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaction.addToBackStack(null);
         transaction.commit();
     }
-
     public static String activeStatus="";
     public static UserResponse userData;
     public static int mapcreditcard=0;
@@ -309,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getProfileCallnew(MainActivity.this,"1",AppConfig.getStringPreferences(MainActivity.this, Constant.JWTToken));
             }
         });
+
     }
     //for naviga
     /*
@@ -455,7 +463,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }else
                     {
-                        MainActivity.addFragment(new ProfileFragment(), true);
+                      //  MainActivity.addFragment(new ProfileFragment(), true);
+                        MainActivity.addFragment(new SettingFragment(), true);
                     }
                     drawer.closeDrawer(GravityCompat.START);
 
@@ -833,6 +842,92 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public static void submitBillingViewher(final SfioHeaderAdapter mAdapter ,final int position,final List<sfioHeaderModel.BankDeposit> data,String id, final Activity activity, final BottomSheetDialog dialogmain)
+    {
+        if (AppConfig.isInternetOn())
+        {
+            final ProgressDialog dialognew = new ProgressDialog(activity);
+            AppConfig.showLoading(dialognew, "Please wait verifying....");
+            File filefirstfinal = null;
+            try
+            {
+                if (changespasswordimgpath != null)
+                {
+                    filefirstfinal = new File(changespasswordimgpath);
+                }
+                try
+                {
+                    //for first
+                    File userimg=new File(changespasswordimgpath);
+                    FileOutputStream out = new FileOutputStream(userimg);
+                    changespasswordbitmap.compress(Bitmap.CompressFormat.PNG, 100, out); //100-best quality
+                    out.close();
+                    filefirstfinal = new File(changespasswordimgpath);
+
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                RequestBody requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), filefirstfinal);
+                MultipartBody.Part body1 = MultipartBody.Part.createFormData("document", filefirstfinal.getName(), requestFile1);
+
+                Call<ResponseBody> call = AppConfig.getLoadInterface().sfioSubmiticon(
+                        AppConfig.getStringPreferences(activity, Constant.JWTToken),
+                        AppConfig.setRequestBody(id),
+                        body1
+                );
+
+                call.enqueue(new Callback<ResponseBody>()
+                {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        dialognew.dismiss();
+                        try {
+                            if (response.isSuccessful() && response.body() != null) {
+                                String responseData = response.body().string();
+                                Log.d("get verification status", responseData);
+                                JSONObject object = new JSONObject(responseData);
+                                if (object.getInt(Constant.STATUS) == 1)
+                                {
+                                    dialogmain.dismiss();
+                                    //........
+                                    data.get(position).setUploadBtn(0);
+                                    data.get(position).setBankStatus("Pending");
+                                    mAdapter.updateData(data);
+                                    Toast.makeText(activity, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogmain.dismiss();
+                                    Toast.makeText(activity, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                AppConfig.showToast("Server error");
+                            }
+                        } catch (IOException e) {
+                            AppConfig.showToast("Server error");
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            AppConfig.showToast("Server json error");
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        AppConfig.hideLoading(dialognew);
+                        t.printStackTrace();
+                    }
+                });
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(getContext(),"error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            AppConfig.showToast("No internet.");
+        }
+    }
+
     public static void submitBillingView(final SFIOAdapter mAdapter ,final int position,final List<sfioModel.Datum> data,String id, final Activity activity, final BottomSheetDialog dialogmain)
     {
         if (AppConfig.isInternetOn())
@@ -949,6 +1044,260 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return urisfio;
     }
 
+    public static void showDialogHeaderData(final String reasone, final SfioHeaderAdapter mAdapter , final int position, final List<sfioHeaderModel.BankDeposit> data, final String id, final Context useravituv)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(useravituv);
+        View dialogView = layoutInflater.inflate(R.layout.uploadreceiptlayout, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(useravituv, R.style.DialogStyle);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(dialogView);
+        billingview=dialogView.findViewById(R.id.billingview);
+        TextView cancel = dialogView.findViewById(R.id.cancel);
+        TextView gallery = dialogView.findViewById(R.id.gallery);
+        TextView takepicture = dialogView.findViewById(R.id.takepicture);
+        TextView reasoneview = dialogView.findViewById(R.id.reasoneview);
+        submitview = dialogView.findViewById(R.id.submitview);
+        if(reasone==null || reasone.equalsIgnoreCase(""))
+        {
+            reasoneview.setVisibility(View.GONE);
+        }else
+        {
+            reasoneview.setVisibility(View.VISIBLE);
+            reasoneview.setText("Note : "+reasone);
+        }
+
+        takepicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    if (Utility.isExternalStorageAvailable())
+                    {
+                        Intent intent = new Intent();
+                        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURIsf(useravituv));
+                        if (intent.resolveActivity(useravituv.getPackageManager()) != null) {
+                            activity.startActivityForResult(intent, 1001);
+                        }
+                    } else
+                    {
+                        Toast.makeText(useravituv, "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        gallery.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    activity.startActivityForResult(Intent.createChooser(intent,
+                            "Select Picture"), 1178);
+                } catch (Exception e) {
+                    Toast.makeText(activity,
+                            e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                    //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                }
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        submitview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitBillingViewher(mAdapter,position,data,id,activity,dialog);
+            }
+        });
+
+        dialog.show();
+    }
+
+    //for new
+    public static void showDialogHeaderDataSubtitlw(final String reasone, final SfioHeaderAdapterAll mAdapter , final int position, final List<sfioHeaderModel.BankDeposit> data, final String id, final Context useravituv)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(useravituv);
+        View dialogView = layoutInflater.inflate(R.layout.uploadreceiptlayout, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(useravituv, R.style.DialogStyle);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(dialogView);
+        billingview=dialogView.findViewById(R.id.billingview);
+        TextView cancel = dialogView.findViewById(R.id.cancel);
+        TextView gallery = dialogView.findViewById(R.id.gallery);
+        TextView takepicture = dialogView.findViewById(R.id.takepicture);
+        TextView reasoneview = dialogView.findViewById(R.id.reasoneview);
+        submitview = dialogView.findViewById(R.id.submitview);
+        if(reasone==null || reasone.equalsIgnoreCase(""))
+        {
+            reasoneview.setVisibility(View.GONE);
+        }else
+        {
+            reasoneview.setVisibility(View.VISIBLE);
+            reasoneview.setText("Note : "+reasone);
+        }
+
+        takepicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    if (Utility.isExternalStorageAvailable())
+                    {
+                        Intent intent = new Intent();
+                        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileURIsf(useravituv));
+                        if (intent.resolveActivity(useravituv.getPackageManager()) != null) {
+                            activity.startActivityForResult(intent, 1001);
+                        }
+                    } else
+                    {
+                        Toast.makeText(useravituv, "Need permission for access external directory", Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        gallery.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    activity.startActivityForResult(Intent.createChooser(intent,
+                            "Select Picture"), 1178);
+                } catch (Exception e) {
+                    Toast.makeText(activity,
+                            e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                    //  Log.e(e.getClass().getName(), e.getMessage(), e);
+                }
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        submitview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitBillingViewhersub(mAdapter,position,data,id,activity,dialog);
+            }
+        });
+
+        dialog.show();
+    }
+
+    public static void submitBillingViewhersub(final SfioHeaderAdapterAll mAdapter ,final int position,final List<sfioHeaderModel.BankDeposit> data,String id, final Activity activity, final BottomSheetDialog dialogmain)
+    {
+        if (AppConfig.isInternetOn())
+        {
+            final ProgressDialog dialognew = new ProgressDialog(activity);
+            AppConfig.showLoading(dialognew, "Please wait verifying....");
+            File filefirstfinal = null;
+            try
+            {
+                if (changespasswordimgpath != null)
+                {
+                    filefirstfinal = new File(changespasswordimgpath);
+                }
+                try
+                {
+                    //for first
+                    File userimg=new File(changespasswordimgpath);
+                    FileOutputStream out = new FileOutputStream(userimg);
+                    changespasswordbitmap.compress(Bitmap.CompressFormat.PNG, 100, out); //100-best quality
+                    out.close();
+                    filefirstfinal = new File(changespasswordimgpath);
+
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                RequestBody requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), filefirstfinal);
+                MultipartBody.Part body1 = MultipartBody.Part.createFormData("document", filefirstfinal.getName(), requestFile1);
+
+                Call<ResponseBody> call = AppConfig.getLoadInterface().sfioSubmiticon(
+                        AppConfig.getStringPreferences(activity, Constant.JWTToken),
+                        AppConfig.setRequestBody(id),
+                        body1
+                );
+
+                call.enqueue(new Callback<ResponseBody>()
+                {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        dialognew.dismiss();
+                        try {
+                            if (response.isSuccessful() && response.body() != null) {
+                                String responseData = response.body().string();
+                                Log.d("get verification status", responseData);
+                                JSONObject object = new JSONObject(responseData);
+                                if (object.getInt(Constant.STATUS) == 1)
+                                {
+                                    dialogmain.dismiss();
+                                    //........
+                                    data.get(position).setUploadBtn(0);
+                                    data.get(position).setBankStatus("Pending");
+                                    mAdapter.updateData(data);
+                                    Toast.makeText(activity, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogmain.dismiss();
+                                    Toast.makeText(activity, ""+object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                AppConfig.showToast("Server error");
+                            }
+                        } catch (IOException e) {
+                            AppConfig.showToast("Server error");
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            AppConfig.showToast("Server json error");
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        AppConfig.hideLoading(dialognew);
+                        t.printStackTrace();
+                    }
+                });
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(getContext(),"error", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            AppConfig.showToast("No internet.");
+        }
+    }
+
+
     public static void showDialogCryptoData(final String reasone,final SFIOAdapter mAdapter ,final int position, final List<sfioModel.Datum> data, final String id, final Context useravituv)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(useravituv);
@@ -1030,6 +1379,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         dialog.show();
+    }
+
+    public static void showAdsDialog(final Context useravituv, String img, final String link)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(useravituv);
+        final View dialogView;
+        dialogView = layoutInflater.inflate(R.layout.adslayout, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(useravituv, R.style.DialogStyle);
+        dialog.setContentView(dialogView);
+        CommonMethodFunction.setupFullHeight(activity,dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.setCancelable(false);
+        final ImageView logo1=dialog.findViewById(R.id.logo1);
+        Picasso.with(activity)
+                .load(Constant.SLIDERIMG+img)
+                .error(R.drawable.ic_error)
+                .placeholder(R.drawable.loaderiv)
+                .into(logo1);
+
+        logo1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String linkvalue=link;
+                if(linkvalue!=null) {
+                    //send view
+                    Fragment fragment = new SendLinkFragment();
+                    Bundle arg = new Bundle();
+                    arg.putString("link", linkvalue);
+                    fragment.setArguments(arg);
+                    MainActivity.addFragment(fragment, true);
+
+                    dialog.dismiss();
+
+                }else
+                {
+                    Toast.makeText(activity, "Link not available ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        LinearLayout remind_me = dialog.findViewById(R.id.remind_me);
+        remind_me.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    dialog.dismiss();
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -1215,13 +1622,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         body
                 );
 
-                call.enqueue(new Callback<ResponseBody>() {
+                call.enqueue(new Callback<ResponseBody>()
+                {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+                    {
                         if (response.isSuccessful())
                         {
                             dialog.dismiss();
-                            try {
+                            try
+                            {
                                 String responseData = response.body().string();
                                 JSONObject object = new JSONObject(responseData);
                                 if (object.getInt(Constant.STATUS) == 1)
@@ -1229,37 +1639,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     PasswordChangesSuccessfully();
                                     dialogp.dismiss();
 
-                                } else if (object.getInt(Constant.STATUS) == 3) {
+                                } else if (object.getInt(Constant.STATUS) == 3)
+                                {
                                     AppConfig.showToast(object.getString("msg"));
                                     AppConfig.openSplashActivity(MainActivity.this);
                                 } else {
                                     AppConfig.showToast(object.getString("msg"));
                                 }
-                            } catch (IOException e) {
+                            } catch (IOException e)
+                            {
                                 e.printStackTrace();
-                            } catch (JsonSyntaxException e) {
+                            } catch (JsonSyntaxException e)
+                            {
                                 e.printStackTrace();
-                            } catch (JSONException e) {
+                            } catch (JSONException e)
+                            {
                                 e.printStackTrace();
                             }
-                        } else {
+                        } else
+                        {
                             dialog.dismiss();
                             ShowApiError(MainActivity.this,"server error in edit-user-profile");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t)
+                    {
                         AppConfig.hideLoading(dialog);
                         errordurigApiCalling(MainActivity.this,t.getMessage());
                     }
                 });
+
             }catch (Exception e)
             {
                 e.printStackTrace();
                 //  Toast.makeText(getContext(),"error", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else
+            {
             AppConfig.showToast("No internet.");
         }
     }
@@ -1324,11 +1742,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             };
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
-        UserModel.getInstance().getProfileCall(mContext, new GetUserProfile() {
+        UserModel.getInstance().getProfileCall(mContext, new GetUserProfile()
+        {
             @Override
-            public void getUserInfo(UserResponse userResponse) {
+            public void getUserInfo(UserResponse userResponse)
+            {
                 setUserDetail(userResponse.getUser());
                 userData=userResponse;
             }
@@ -1373,7 +1794,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 MainActivity.addFragment(fragment,true);
                             }
                         }
-                    } else {
+                    } else
+                        {
                         AppConfig.hideLoading(dialog);
                         ShowApiError(MainActivity.this,"server error check-mail-exist");
                     }
@@ -1425,7 +1847,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         fragment.setArguments(arg);
                         MainActivity.addFragment(fragment,true);
 
-                    } else {
+                    } else
+                    {
                         ShowApiError(MainActivity.this,"server error check-mail-exist");
                     }
 
@@ -1647,7 +2070,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }else
                 {
-                    MainActivity.addFragment(new ProfileFragment(), true);
+                   // MainActivity.addFragment(new ProfileFragment(), true);
+                    MainActivity.addFragment(new SettingFragment(), true);
                 }
                 break;
             case R.id.credentials:

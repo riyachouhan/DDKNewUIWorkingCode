@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +26,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.adapters.SFIOAdapter;
+import com.ddkcommunity.adapters.SfioHeaderAdapter;
 import com.ddkcommunity.adapters.activityAdapterv;
 import com.ddkcommunity.adapters.sfiosubfrgamentadapter;
 import com.ddkcommunity.fragment.mapmodule.adapter.grouptleveleadpater;
@@ -39,11 +48,13 @@ import com.ddkcommunity.fragment.mapmodule.adapter.grouptleveleadpaterright;
 import com.ddkcommunity.fragment.mapmodule.model.groupModel;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
 import com.ddkcommunity.model.activityModel;
+import com.ddkcommunity.model.sfioHeaderModel;
 import com.ddkcommunity.model.sfioModel;
 import com.ddkcommunity.model.sfioSubPackageModel;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.ScalingUtilities;
 import com.ddkcommunity.utilies.Utility;
+import com.dinuscxj.progressbar.CircleProgressBar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
@@ -59,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -80,9 +92,16 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
      LinearLayout addicon;
      View view;
      Context mContext;
-     RecyclerView rvRecycle;
+     RecyclerView rvRecycle,rvRecycleher;
     private ArrayList<sfioModel.Datum> funnelDAta;
     public static SFIOAdapter mAdapter;
+    CircleProgressBar custom_progress_outer;
+    CircleImageView imgprofile;
+    TextView name_TV,email_TV,totalpoint;
+    public static SfioHeaderAdapter mAdapterher;
+    LinearLayout upperheader;
+    TextView seelall;
+    SwipeRefreshLayout swiperefresh_items;
 
     public SFIOShowFragmement() {
     }
@@ -91,15 +110,79 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.activityfragment, container, false);
+        view = inflater.inflate(R.layout.sfioactivityfragment, container, false);
         mContext = getActivity();
+        swiperefresh_items=view.findViewById(R.id.swiperefresh_items);
+        seelall=view.findViewById(R.id.seelall);
+        String udata="See All..";
+        SpannableString content = new SpannableString(udata);
+        content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
+        seelall.setText(content);
+        upperheader=view.findViewById(R.id.upperheader);
+        totalpoint=view.findViewById(R.id.totalpoint);
+        name_TV=view.findViewById(R.id.name_TV);
+        email_TV=view.findViewById(R.id.email_TV);
+        imgprofile=view.findViewById(R.id.imgprofile);
         addicon=view.findViewById(R.id.addicon);
+        rvRecycleher=view.findViewById(R.id.rvRecycleher);
+        RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity());
+        rvRecycleher.setLayoutManager(mLayoutManager1);
+        rvRecycleher.setItemAnimator(new DefaultItemAnimator());
+
         rvRecycle=view.findViewById(R.id.rvRecycle);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvRecycle.setLayoutManager(mLayoutManager);
         rvRecycle.setItemAnimator(new DefaultItemAnimator());
-        getActivitydata();
+        getCurrentBonusSfio();
+        getActivitydata("yes");
         addicon.setOnClickListener(this);
+        custom_progress_outer=view.findViewById(R.id.custom_progress_outer);
+        custom_progress_outer.setProgress(100);
+        //.........
+        name_TV.setText(MainActivity.userData.getUser().getName());
+        email_TV.setText(MainActivity.userData.getUser().getEmail());
+
+        if(MainActivity.userData.getUser().getUserImage()!=null && !MainActivity.userData.getUser().getUserImage().equalsIgnoreCase(null) && !MainActivity.userData.getUser().getUserImage().equalsIgnoreCase(""))
+        {
+            Glide.with(getActivity())
+                    .asBitmap()
+                    .load(MainActivity.userData.getUser().getUserImage())
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                           imgprofile.setImageBitmap(resource);
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            super.onLoadFailed(errorDrawable);
+                            imgprofile.setImageResource(R.drawable.default_photo);
+                        }
+
+                    });
+        }
+
+        seelall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new SFIOSubFRagment();
+                Bundle arg = new Bundle();
+                fragment.setArguments(arg);
+                MainActivity.addFragment(fragment, true);
+            }
+        });
+
+        swiperefresh_items.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to make your refresh action
+                // CallYourRefreshingMethod();
+                getCurrentBonusSfio();
+                getActivitydata("no");
+
+            }
+        });
+
         return view;
     }
 
@@ -130,12 +213,14 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
         }
     }
 
-    private void getActivitydata()
+    private void getActivitydata(final String loaderview)
     {
         final ProgressDialog pd=new ProgressDialog(getActivity());
         pd.setCanceledOnTouchOutside(false);
         pd.setMessage("Please wait");
-        pd.show();
+        if(loaderview.equalsIgnoreCase("yes")) {
+            pd.show();
+        }
         AppConfig.getLoadInterface().getSFIOData(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<sfioModel>() {
             @Override
             public void onResponse(Call<sfioModel> call, Response<sfioModel> response) {
@@ -145,15 +230,18 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
                             {
                                 if (response.body().getStatus()==1)
                                 {
-                                    pd.dismiss();
+                                    if(loaderview.equalsIgnoreCase("yes")) {
+                                        pd.dismiss();
+                                    }
                                     funnelDAta=new ArrayList<>();
                                     funnelDAta.addAll(response.body().getData());
                                     mAdapter = new SFIOAdapter(funnelDAta, mContext);
                                     rvRecycle.setAdapter(mAdapter);
-
                                 }else
                                 {
-                                    pd.dismiss();
+                                    if(loaderview.equalsIgnoreCase("yes")) {
+                                        pd.dismiss();
+                                    }
                                     Fragment fragment = new TermsAndConsitionSubscription();
                                     Bundle arg = new Bundle();
                                     arg.putString("activityaction", "subscriptionSFIO");
@@ -161,10 +249,15 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
                                     MainActivity.addFragment(fragment,false);
 //                                    Toast.makeText(mContext, "Data Not Available", Toast.LENGTH_SHORT).show();
                                 }
-
+                                if(swiperefresh_items.isRefreshing()) {
+                                    swiperefresh_items.setRefreshing(false);
+                                }
                             } else {
                                 Log.d("context","::");
                                 ShowApiError(mContext,"server error direct-bonus");
+                                if(swiperefresh_items.isRefreshing()) {
+                                    swiperefresh_items.setRefreshing(false);
+                                }
                             }
 
                 } catch (Exception e) {
@@ -179,7 +272,69 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(Call<sfioModel> call, Throwable t)
             {
-                pd.dismiss();
+                if(loaderview.equalsIgnoreCase("yes")) {
+                    pd.dismiss();
+                } Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getCurrentBonusSfio()
+    {
+        AppConfig.getLoadInterface().getSumSubsciption(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<sfioHeaderModel>() {
+            @Override
+            public void onResponse(Call<sfioHeaderModel> call, Response<sfioHeaderModel> response) {
+                try {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus()==1)
+                        {
+                            String pointsvaleu=response.body().getData().getPoints();
+                            totalpoint.setText(pointsvaleu+"");
+                            ArrayList<sfioHeaderModel.BankDeposit> funnelDAtasf=new ArrayList<>();
+                            funnelDAtasf.addAll(response.body().getData().getBankDeposit());
+
+                            if(funnelDAtasf.size()>2)
+                            {
+                                seelall.setVisibility(View.VISIBLE);
+                                ArrayList<sfioHeaderModel.BankDeposit> funnelDAtasfnew=new ArrayList<>();
+                                for(int i=0;i<2;i++)
+                                {
+                                    funnelDAtasfnew.add(funnelDAtasf.get(i));
+                                }
+                                mAdapterher = new SfioHeaderAdapter(funnelDAtasfnew, mContext);
+                                rvRecycleher.setAdapter(mAdapterher);
+
+                            }else
+                            {
+                                seelall.setVisibility(View.GONE);
+                                mAdapterher = new SfioHeaderAdapter(funnelDAtasf, mContext);
+                                rvRecycleher.setAdapter(mAdapterher);
+
+                            }
+
+                            upperheader.setVisibility(View.VISIBLE);
+                        }else
+                        {
+                            upperheader.setVisibility(View.VISIBLE);
+                        }
+
+                    } else {
+                        Log.d("context","::");
+                        upperheader.setVisibility(View.VISIBLE);
+                        ShowApiError(mContext,"server error direct-bonus");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<sfioHeaderModel> call, Throwable t)
+            {
                 Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

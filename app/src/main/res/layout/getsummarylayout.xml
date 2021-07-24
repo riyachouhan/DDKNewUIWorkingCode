@@ -131,16 +131,16 @@
                         <TextView
                             android:text="Direct Referral"
                             android:layout_width="0dp"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1.1"
                             android:paddingLeft="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             style="@style/MyCustomTabText_small_frozen" />
 
                         <TextView
-                            android:text="..................."
+                            android:text="........."
                             android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.4"
                             android:gravity="center"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -151,8 +151,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:id="@+id/directReferral"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:layout_weight="0.9"
+                            android:layout_weight="1.5"
                             android:textColor="@color/colorPrimary"
                             style="@style/secondhintview" />
 
@@ -170,16 +169,16 @@
                         <TextView
                             android:text="Group Matrix"
                             android:layout_width="0dp"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1.1"
                             android:paddingLeft="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             style="@style/MyCustomTabText_small_frozen" />
 
                         <TextView
-                            android:text="......."
+                            android:text="........."
                             android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.4"
                             android:gravity="center"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -190,8 +189,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:layout_weight="0.9"
+                            android:layout_weight="1.5"
                             android:textColor="@color/colorPrimary"
                             style="@style/secondhintview" />
 
@@ -209,16 +207,15 @@
                         <TextView
                             android:text="Power of 10"
                             android:layout_width="0dp"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1.1"
                             android:paddingLeft="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             style="@style/MyCustomTabText_small_frozen" />
-
                         <TextView
-                            android:text="......."
+                            android:text="........."
                             android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.4"
                             android:gravity="center"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -229,8 +226,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:id="@+id/powerx10"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:layout_weight="0.9"
+                            android:layout_weight="1.5"
                             android:textColor="@color/colorPrimary"
                             style="@style/secondhintview" />
 
@@ -248,16 +244,16 @@
                         <TextView
                             android:text="Platinum"
                             android:layout_width="0dp"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1.1"
                             android:paddingLeft="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             style="@style/MyCustomTabText_small_frozen" />
 
                         <TextView
-                            android:text="......."
+                            android:text="........."
                             android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.4"
                             android:gravity="center"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -268,8 +264,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:id="@+id/platinum"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:layout_weight="0.9"
+                            android:layout_weight="1.5"
                             android:textColor="@color/colorPrimary"
                             style="@style/secondhintview" />
 
@@ -286,16 +281,16 @@
                         <TextView
                             android:text="Titanium"
                             android:layout_width="0dp"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1.1"
                             android:paddingLeft="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             style="@style/MyCustomTabText_small_frozen" />
 
                         <TextView
-                            android:text="......."
+                            android:text="........."
                             android:layout_width="0dp"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.4"
                             android:gravity="center"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -306,8 +301,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:id="@+id/titanium"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:layout_weight="0.9"
+                            android:layout_weight="1.5"
                             android:textColor="@color/colorPrimary"
                             style="@style/secondhintview" />
 

@@ -42,7 +42,9 @@ import com.ddkcommunity.model.TransactionFeesResponse;
 import com.ddkcommunity.model.UserBankListResponse;
 import com.ddkcommunity.model.activityModel;
 import com.ddkcommunity.model.addActivityModel;
+import com.ddkcommunity.model.adsDialogModel;
 import com.ddkcommunity.model.bankDepositeModel;
+import com.ddkcommunity.model.bankDetailsModel;
 import com.ddkcommunity.model.bankLstModel;
 import com.ddkcommunity.model.baseUrlModel;
 import com.ddkcommunity.model.buyCryptoModel;
@@ -56,6 +58,7 @@ import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.googleAuthPasswordModel;
 import com.ddkcommunity.model.mapLoginModel;
 import com.ddkcommunity.model.mapSubscriptionModel;
+import com.ddkcommunity.model.mapregistrationCombineModel;
 import com.ddkcommunity.model.mazigneModel;
 import com.ddkcommunity.model.navigationModel;
 import com.ddkcommunity.model.projects.PoolingTransactionHistory;
@@ -65,6 +68,7 @@ import com.ddkcommunity.model.samBalanceModel;
 import com.ddkcommunity.model.samModel;
 import com.ddkcommunity.model.scanQRModel;
 import com.ddkcommunity.model.sfioAddModelsee;
+import com.ddkcommunity.model.sfioHeaderModel;
 import com.ddkcommunity.model.sfioModel;
 import com.ddkcommunity.model.sfioSubPackageModel;
 import com.ddkcommunity.model.smpdModelNew;
@@ -503,6 +507,9 @@ public interface LoadInterface {
     @POST("commondetails/sliders-with-type")
     Call<SliderWithType> getSlidersType(@Query("token") String token, @Body HashMap<String, String> hm);
 
+    @POST("samads/get-ads")
+    Call<adsDialogModel> getAds(@Query("token") String token);
+
     @POST("ibayad/category-list")
     Call<categoryAllModel> getCategorylist(@Query("token") String token, @Body HashMap<String, String> hm);
 
@@ -523,6 +530,9 @@ public interface LoadInterface {
 
     @POST("sampd-company/add-remove-fav-sampd-company")
     Call<smpdfavmodel> AddFavItem(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sampd-company/add-remove-fav-sampd-company")
+    Call<conatcModel> AddEmergencyContact(@Query("token") String token, @Body HashMap<String, String> hm);
 
     //@POST("ninethface/token")
     @POST("commondetails/token")
@@ -1063,10 +1073,6 @@ public interface LoadInterface {
     @POST("check-refcode-exist")
     Call<checkRefferalModel> getRefferalCode(@Body HashMap<String, String> hm);
 
-   /* @POST("subscribe-package")
-    Call<checkRefferalModel> getSubscribePackage(@Body HashMap<String, String> hm);
-*/
-
     @POST("get-user-token")
     Call<checkRefferalModel> getUserToken(@Body HashMap<String, String> hm);
 
@@ -1075,6 +1081,11 @@ public interface LoadInterface {
 
     @POST("commondetails/map-registation-without-subscription")
     Call<checkRefferalModel> checkSusbcription(@Query("token") String token);
+
+   /*
+    @POST("subscribe-package")
+    Call<mapregistrationCombineModel> getSubscriptionREgiterCombine(@Body HashMap<String, String> hm);
+   */
 
     @POST("create-user-from-sam")
     Call<checkRefferalModel> cretaeUserFromSam(@Body HashMap<String, String> hm);
@@ -1101,7 +1112,7 @@ public interface LoadInterface {
     Call<phaseOneBonusModel> getPhaseOneBonusData(@Query("token") String token);
 
     @GET("direct-bonus")
-    Call<directReferralModel> getDirectbonus(@Query("token") String token);
+    Call<directReferralModel> getDirectbonus(@Query("token") String token,@Query("search") String status);
 
     @GET("daily-bonus")
     Call<dailyBonusModel> getDailyBonus(@Query("token") String token);
@@ -1136,6 +1147,9 @@ public interface LoadInterface {
     @POST("map-activity/list")
     Call<activityModel> mapActivityList(@Query("token") String token);
 
+    @POST("sfio/get-user-sum-subscription-points")
+    Call<sfioHeaderModel> getSumSubsciption(@Query("token") String token);
+
     @POST("sfio/sfio-list")
     Call<sfioModel> getSFIOData(@Query("token") String token);
 
@@ -1150,6 +1164,12 @@ public interface LoadInterface {
 
     @POST("map-activity/add")
     Call<addActivityModel> addActivity(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("userauth/profile-bank-details-save")
+    Call<sfioModel> addBankPRofileDetail(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("userauth/profile-bank-details-list")
+    Call<bankDetailsModel> getBankPRofileDetail(@Query("token") String token);
 
     @POST("get-user-all-package")
     Call<userPackagesModel> getAllPackage(@Body HashMap<String, String> hm);

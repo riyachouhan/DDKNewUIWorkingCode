@@ -75,8 +75,8 @@ public class sfiosubfrgamentadapter extends RecyclerView.Adapter<sfiosubfrgament
 
             if(data.get(position).getRedeem_btn_status().equalsIgnoreCase("0"))
             {
-                holder.redeemview.setVisibility(View.INVISIBLE);
-                holder.submit.setVisibility(View.INVISIBLE);
+                holder.redeemview.setVisibility(View.GONE);
+                holder.submit.setVisibility(View.GONE);
             }else
             {
                 holder.redeemview.setVisibility(View.VISIBLE);

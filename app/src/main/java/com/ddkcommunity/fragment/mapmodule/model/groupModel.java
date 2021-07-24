@@ -183,7 +183,7 @@ public class groupModel implements Serializable
         private String packageStatus;
         @SerializedName("renewal_no")
         @Expose
-        private Integer renewalNo;
+        private String renewalNo;
         private final static long serialVersionUID = 4436207572565049415L;
 
         public Integer getId() {
@@ -426,14 +426,13 @@ public class groupModel implements Serializable
             this.packageStatus = packageStatus;
         }
 
-        public Integer getRenewalNo() {
+        public String getRenewalNo() {
             return renewalNo;
         }
 
-        public void setRenewalNo(Integer renewalNo) {
+        public void setRenewalNo(String renewalNo) {
             this.renewalNo = renewalNo;
         }
-
     }
 
     public class Address implements Serializable

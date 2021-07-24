@@ -362,7 +362,7 @@ public class PayUsingCryptoFragment extends Fragment {
                         arg.putString("fee", fee);
                         arg.putString("total_usdt_subscription", total_usdt_subscription);
                         fragment.setArguments(arg);
-                        MainActivity.addFragment(fragment,true);
+                        MainActivity.addFragment(fragment,false);
                         //MainActivity.addFragment(new CreditCardPaymentFragment(input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription), true);
                         slideToActView.resetSlider();
 

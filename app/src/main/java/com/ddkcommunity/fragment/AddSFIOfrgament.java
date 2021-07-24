@@ -40,7 +40,7 @@ import com.ddkcommunity.model.addActivityModel;
 import com.ddkcommunity.utilies.AppConfig;
 import com.ddkcommunity.utilies.CommonMethodFunction;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.ncorti.slidetoact.SlideToActView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -36,7 +36,6 @@ public class ReferralChainPayoutActivity extends AppCompatActivity implements Vi
         AppConfig.hideKeyboard(ReferralChainPayoutActivity.this);
         btnReferralPayout = findViewById(R.id.btnReferralPayout);
         btnReferralChain = findViewById(R.id.btnReferralChain);
-
         addFragment(new ReferralChainFragment(), false, "ReferralChainFragment");
         findViewById(R.id.back).setOnClickListener(this);
         btnReferralChain.setOnClickListener(this);

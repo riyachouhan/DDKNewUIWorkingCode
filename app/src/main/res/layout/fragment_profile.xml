@@ -561,6 +561,7 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:weightSum="3"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_height="wrap_content">
@@ -594,11 +595,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="Person Name"
+                    android:visibility="gone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="12sp"/>
 
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/alt_name_ET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -610,12 +613,14 @@
                     android:textSize="14sp" />
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@color/lightcolor" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
@@ -625,6 +630,7 @@
                     android:textSize="12sp" />
 
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/alt_email_ET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -636,6 +642,7 @@
                     android:textSize="14sp"/>
 
                 <View
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -646,6 +653,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="Mobile No"
+                    android:visibility="gone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="12sp" />
@@ -657,6 +665,7 @@
                     android:background="@null"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:inputType="number"
+                    android:visibility="gone"
                     android:textColor="@color/colorBlackText"
                     android:textColorHint="@color/colorBlackText"
                     android:textSize="14sp" />
@@ -664,6 +673,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@color/lightcolor" />
 
