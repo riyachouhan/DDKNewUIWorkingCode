@@ -14,7 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -27,11 +30,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ddkcommunity.R;
+import com.ddkcommunity.adapters.CountryListAdapter;
 import com.ddkcommunity.fragment.GogoleAuthFragment;
 import com.ddkcommunity.fragment.GogolePasswordFragment;
+import com.ddkcommunity.fragment.ProfileFragment;
 import com.ddkcommunity.fragment.credential.CredentialsFragment;
+import com.ddkcommunity.model.Country;
 import com.ddkcommunity.model.CountryResponse;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.App;
@@ -41,6 +50,7 @@ import com.ddkcommunity.utilies.ScalingUtilities;
 import com.ddkcommunity.utilies.Utility;
 import com.ddkcommunity.utilies.dataPutMethods;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -61,9 +71,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -90,6 +102,7 @@ public class SignupActivity extends AppCompatActivity {
     int position = -1;
     CheckBox check_wallet;
     private String deviceToken="1234abcdsa";
+    private List<Country> countryList;
     int year;
     int month;
     int day;
@@ -578,6 +591,13 @@ public class SignupActivity extends AppCompatActivity {
                             if (object.getString(Constant.STATUS).equals("1"))
                             {
                                 CountryResponse registerResponse = new Gson().fromJson(responseData, CountryResponse.class);
+                                final ArrayList<Country> countrygender=new ArrayList<>();
+                                countryList=new ArrayList<>();
+                                countryList = registerResponse.getData();
+                                for(int i=0;i<countryList.size();i++)
+                                {
+                                    countrygender.add(countryList.get(i));
+                                }
                                 final String[] gender = new String[registerResponse.getData().size()];
                                 final String[] stateId = new String[registerResponse.getData().size()];
                                 final String[] countryCode = new String[registerResponse.getData().size()];
@@ -587,7 +607,8 @@ public class SignupActivity extends AppCompatActivity {
                                     countryCode[i] = registerResponse.getData().get(i).getPhoneCode();
                                     stateId[i] = registerResponse.getData().get(i).getId();
                                 }
-                                final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(context);
+
+                               /* final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(context);
                                 alert.setTitle("Select Country")
                                         .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                                             @Override
@@ -610,7 +631,8 @@ public class SignupActivity extends AppCompatActivity {
                                         position = which;
                                     }
                                 });
-                                alert.show();
+                                alert.show();*/
+                                showDialogForSearchCountrynew(SignupActivity.this,countrygender,gender,stateId,countryCode,countryET,phoneCodeET);
 
                             } else
                                 {
@@ -640,6 +662,59 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    public void showDialogForSearchCountrynew(final Context mContext, final ArrayList<Country> countrygender, final String[] genderlist, final String [] stateId, final String [] countryCode, final TextView countryET, final TextView phoneCodeET)
+    {
+        // country, mCountryId
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View dialogView = layoutInflater.inflate(R.layout.popup_wallet_pooling, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(mContext, R.style.DialogStyle);
+        dialog.setContentView(dialogView);
+        TextView countrynamehint=dialogView.findViewById(R.id.countrynamehint);
+        countrynamehint.setVisibility(View.VISIBLE);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recycler_view);
+        final EditText searchEt = dialogView.findViewById(R.id.search_ET);
+        RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(mLayoutManager1);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        final CountryListAdapter adapterCredential = new CountryListAdapter(countrygender,genderlist, mContext, searchEt, new CountryListAdapter.SetOnItemClickListener() {
+
+            @Override
+            public void onItemClick(String country, String stateid,String phoneid)
+            {
+                country = country;
+                mCountryId = stateid;
+                countryET.setText(phoneid);
+                phoneCodeET.setText(country);
+                //position = which;
+                dialog.dismiss();
+            }
+        });
+
+        recyclerView.setAdapter(adapterCredential);
+        searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                if (searchEt.getText().toString().length() > 0)
+                {
+                    dataPutMethods.filterCountry(searchEt.getText().toString(),countrygender,adapterCredential);
+                } else {
+                    adapterCredential.updateData(countrygender);
+                }
+            }
+        });
+
+        dialog.show();
+    }
 
     private void getProfileCall(String token) {
         if (AppConfig.isInternetOn()) {

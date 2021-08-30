@@ -46,6 +46,13 @@ public class SMPDCompanyDetailsModel implements Serializable
 
     public class SampdCompanyProfile implements Serializable
     {
+        @SerializedName("view_type")
+        @Expose
+        private String view_type;
+
+        @SerializedName("service_description")
+        @Expose
+        private String service_description;
 
         @SerializedName("id")
         @Expose
@@ -72,6 +79,22 @@ public class SMPDCompanyDetailsModel implements Serializable
         @Expose
         private String updatedAt;
         private final static long serialVersionUID = -9115150043611621666L;
+
+        public String getView_type() {
+            return view_type;
+        }
+
+        public void setView_type(String view_type) {
+            this.view_type = view_type;
+        }
+
+        public String getService_description() {
+            return service_description;
+        }
+
+        public void setService_description(String service_description) {
+            this.service_description = service_description;
+        }
 
         public Integer getId() {
             return id;

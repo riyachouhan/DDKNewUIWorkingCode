@@ -143,6 +143,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 str_top.append(otp_edt1.getText().toString()).append(otp_edt2.getText().toString()).append(otp_edt3.getText().toString()).append(otp_edt4.getText().toString());
                 if (str_top.length() > 0 && str_top.length() == 4)
                 {
+                    SplashActivity.customadds=1;
                     if (App.pref.getString("switchUser", "").equalsIgnoreCase("yes"))
                     {
                         switchUser(str_top.toString());
@@ -405,7 +406,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                             AppConfig.setUserData(context, data);
                             String user_idvalue=data.getUser().getId().toString();
                             String emailidv=data.getUser().getEmail().toString();
+                            String referalcode = data.getUser().unique_code;
+                            App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                             App.editor.putString(Constant.USER_ID,user_idvalue);
+                            App.editor.putString(Constant.USER_EMAIL,data.getUser().getEmail());
+                            App.editor.putString(Constant.USER_NAME,data.getUser().getName());
                             //...........
                             putGoogleAuthStatus(data.getUser().getGauth_status(),data.getUser().getGoogle_authentication(),data.getUser().getGoogle_auth_secret());
                             //..........

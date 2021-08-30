@@ -66,9 +66,10 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
     private Context mContext;
     RecyclerView rvProjectRecycle;
     TextView  companyname,countryname;
-    WebView contactview,profilelay;
+    WebView contactview,profilelay,productview;
     String company_id;
     ImageView ivCompanyImg;
+    String thirdviewstatus="";
     ArrayList<SMPDCompanyDetailsModel.SampdCompanyService> SAMPDList;
 
     public CompanyProfileFragmentSmpd()
@@ -81,6 +82,7 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.comapnysmpdprofile, container, false);
         mContext = getActivity();
+        productview=view.findViewById(R.id.productview);
         ivCompanyImg=view.findViewById(R.id.ivCompanyImg);
         companyname=view.findViewById(R.id.companyname);
         countryname=view.findViewById(R.id.countryname);
@@ -105,7 +107,7 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
         for(int i=0; i < tabLayout.getTabCount(); i++) {
             View tab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
-            p.setMargins(0, 0, 20, 0);
+            p.setMargins(0, 0, 15, 0);
             tab.requestLayout();
         }
         //..........
@@ -118,11 +120,13 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
                 {
                     profilelay.setVisibility(View.VISIBLE);
                     contactview.setVisibility(View.GONE);
+                    productview.setVisibility(View.GONE);
                     rvProjectRecycle.setVisibility(View.GONE);
 
                 } else if (tab.getPosition() == 1)
                 {
                     profilelay.setVisibility(View.GONE);
+                    productview.setVisibility(View.GONE);
                     contactview.setVisibility(View.VISIBLE);
                     rvProjectRecycle.setVisibility(View.GONE);
                 }else
@@ -130,6 +134,16 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
                     profilelay.setVisibility(View.GONE);
                     contactview.setVisibility(View.GONE);
                     rvProjectRecycle.setVisibility(View.VISIBLE);
+                    productview.setVisibility(View.GONE);
+                    if(thirdviewstatus.equalsIgnoreCase("text"))
+                    {
+                        productview.setVisibility(View.VISIBLE);
+                        rvProjectRecycle.setVisibility(View.GONE);
+                    }else
+                    {
+                        productview.setVisibility(View.GONE);
+                        rvProjectRecycle.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -174,10 +188,13 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
         HashMap<String, String> hm = new HashMap<>();
         hm.put("sampd_company_id",companyId);
         AppConfig.showLoading("Loading...", mContext);
+        Log.d("param",hm.toString());
         AppConfig.getLoadInterface().getCompanydetails(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken),hm).enqueue(new Callback<SMPDCompanyDetailsModel>() {
             @Override
             public void onResponse(Call<SMPDCompanyDetailsModel> call, Response<SMPDCompanyDetailsModel> response) {
                 AppConfig.hideLoader();
+                try {
+
                 if (response.isSuccessful() && response.body() != null)
                 {
                     if (response.body().getStatus() == 1)
@@ -189,7 +206,8 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
                         String description=response.body().getData().getDescription();
                         String companyprofile=response.body().getData().getSampdCompanyProfile().getProfileDescription();
                         String contactprofile=response.body().getData().getSampdCompanyProfile().getContactEngagementDescription();
-                         //...............................
+                        //thirdviewstatus
+                        //...............................
                         final String mimeType = "text/html";
                         final String encoding = "UTF-8";
                         String html = companyprofile;
@@ -197,6 +215,24 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
                         //...........................
                         String html1 = contactprofile;
                         contactview.loadDataWithBaseURL("", html1, mimeType, encoding, "");
+
+                        thirdviewstatus=response.body().getData().getSampdCompanyProfile().getView_type();
+                        if(thirdviewstatus.equalsIgnoreCase("text"))
+                        {
+                            if(response.body().getData().getSampdCompanyProfile().getService_description()!=null)
+                            {
+                                String html11 = response.body().getData().getSampdCompanyProfile().getService_description().toString();
+                                productview.loadDataWithBaseURL("", html11, mimeType, encoding, "");
+                            }
+
+                            productview.setVisibility(View.VISIBLE);
+                            rvProjectRecycle.setVisibility(View.GONE);
+
+                        }else
+                        {
+                            productview.setVisibility(View.GONE);
+                            rvProjectRecycle.setVisibility(View.GONE);
+                        }
                         companyname.setText(namecom);
                         countryname.setText(country_name);
                         Glide.with(getActivity())
@@ -231,6 +267,10 @@ public class CompanyProfileFragmentSmpd extends Fragment implements View.OnClick
                 } else
                 {
                     ShowApiError(getActivity(),"server error in sampd-company/company-details");
+                }
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
             }
 

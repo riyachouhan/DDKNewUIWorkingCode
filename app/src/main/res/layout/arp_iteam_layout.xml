@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:background="@drawable/tablayout_funnel_iteam"
+    android:id="@+id/viewclickdata"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_8sdp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.1"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/nametv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        style="@style/subsmallSize"/>
+
+                    <TextView
+                        android:id="@+id/emailtv"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlackText"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:text="Subscription Amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        style="@style/subsmallSize"/>
+
+                    <TextView
+                        android:id="@+id/subscriptionamt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlackText"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:gravity="end"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="100"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/powerbolde" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="ARP"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:textColor="@color/colorPrimary"
+                            style="@style/textSizehint" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/redeemlayout"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        android:background="@drawable/rounded_sfioadd"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:paddingLeft="@dimen/_8sdp"
+                            android:paddingBottom="@dimen/_3sdp"
+                            android:paddingTop="@dimen/_3sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white_color"
+                            android:text="Redeem"
+                            android:gravity="center"
+                            style="@style/MyCustomTabText_small"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+</LinearLayout>

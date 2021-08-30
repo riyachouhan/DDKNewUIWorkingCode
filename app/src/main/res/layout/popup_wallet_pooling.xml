@@ -34,6 +34,20 @@
         android:textColorHint="@color/colorApp"
         android:textSize="12sp" />
 
+    <TextView
+        android:text="Please select ownership type "
+        android:layout_width="match_parent"
+        android:id="@+id/titel_mainhin"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        style="@style/EditTextSize"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

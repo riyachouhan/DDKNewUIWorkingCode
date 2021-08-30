@@ -8,15 +8,15 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig
             {
                 applicationId "com.ddkcommunity"
                 minSdkVersion 21
-                targetSdkVersion 29
-                versionCode 54
-                versionName "2.4.25"
+                targetSdkVersion 30
+                versionCode 57
+                versionName "2.4.28"
                 multiDexEnabled true
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 buildConfigField("String", "YOUTUBE_API_KEY", apikeyProperties['YOUTUBE_API_KEY'])

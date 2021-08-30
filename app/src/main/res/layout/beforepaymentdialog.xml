@@ -33,15 +33,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_25sdp"
                 android:layout_marginLeft="@dimen/_25sdp"
-                android:text="Are you sure you want to /n subscribe on MAP ?"
+                android:text="Are you sure you want to \n subscribe on MAP ?"
                 android:paddingBottom="@dimen/_5sdp"
-                android:fontFamily="@font/montserrat_medium"
+                android:lineSpacingExtra="2dp"
                 android:textColor="@color/colorBlackText"
-                android:textSize="15sp" />
+                style="@style/subhintdataSize"/>
 
         <View
             android:layout_width="match_parent"

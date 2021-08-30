@@ -87,7 +87,7 @@
                     app:tabGravity="center"
                     android:background="@drawable/text_edit_view_bg_profile"
                     app:tabTextAppearance="@style/myhometext"
-                    app:tabMode="scrollable"
+                    app:tabMode="fixed"
                     app:tabPaddingBottom="@dimen/_5sdp"
                     app:tabPaddingTop="@dimen/_5sdp"
                     app:tabSelectedTextColor="@color/white_color"
@@ -126,6 +126,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                      tools:ignore="WebViewLayout" />
+
+                <WebView
+                    android:id="@+id/productview"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="WebViewLayout" />
 
             </LinearLayout>
 

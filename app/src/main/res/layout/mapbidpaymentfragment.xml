@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:id="@+id/mainpart"
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:paddingRight="@dimen/_15sdp"
+    android:paddingLeft="@dimen/_15sdp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:background="@drawable/text_card_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/paytototalview"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:paddingBottom="@dimen/_30sdp"
+            android:orientation="vertical"
+            >
+
+                <TextView
+                    android:text=""
+                    android:id="@+id/payamount"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    style="@style/hintheadpay" />
+
+                <LinearLayout
+                    android:paddingLeft="@dimen/_30sdp"
+                    android:id="@+id/avaiableview"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/_105sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Available balance "
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:text=":"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:id="@+id/currentBalance"
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:paddingLeft="@dimen/_30sdp"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            android:gravity="left"
+                            android:layout_width="@dimen/_105sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Fee "
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:text=":"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:id="@+id/feesview"
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:paddingLeft="@dimen/_30sdp"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            android:gravity="left"
+                            android:layout_width="@dimen/_105sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Total "
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:text=":"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:id="@+id/totalview"
+                            android:layout_marginLeft="@dimen/_4sdp"
+                            android:textColor="@color/black"
+                            style="@style/EditTextSize" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit_BT"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/button_accent_round"
+            android:text="Next"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            style="@style/submitButtontextSize"
+            />
+
+        <com.ncorti.slidetoact.SlideToActView
+            android:id="@+id/slide_custom_icon"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_40sdp"
+            app:slider_height="@dimen/_40sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            app:outer_color="#810B81"
+            app:inner_color="@color/white"
+            app:area_margin="1dp"
+            app:text_size="14sp"
+            android:visibility="visible"
+            android:layout_margin="@dimen/_1sdp"
+            app:slider_icon="@drawable/ic_slider_icon"
+            app:text="Slide To Confirm"/>
+
+</LinearLayout>

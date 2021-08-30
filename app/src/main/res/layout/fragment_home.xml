@@ -797,6 +797,33 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/btnarp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_22sdp"
+                                    android:layout_height="@dimen/_22sdp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/arp_wallet_hom" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    style="@style/myhometext"
+                                    android:text="ARP Wallet"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlackText"
+                                    />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:visibility="gone"
                                 android:id="@+id/btnforex"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"

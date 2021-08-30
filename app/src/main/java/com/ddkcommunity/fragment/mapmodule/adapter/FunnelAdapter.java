@@ -108,9 +108,13 @@ public class FunnelAdapter extends RecyclerView.Adapter<FunnelAdapter.MyViewHold
 
                 if(funnelDAta.get(position).getPaymentMode()!=null)
                 {
+                    String pay=funnelDAta.get(position).getPaymentMode().toString();
                     if (funnelDAta.get(position).getPaymentMode().toString().equalsIgnoreCase("sam_koin")) {
                         holder.tvpaidby.setText("paid by SAMKoin on " + output);
-                    } else {
+                    } else
+                    if (funnelDAta.get(position).getPaymentMode().toString().equalsIgnoreCase("credit card")) {
+                        holder.tvpaidby.setText("paid by CREDIT CARD on " + output);
+                    }else {
                         holder.tvpaidby.setText("paid by SAMKoin on " + output);
                     }
                 }else

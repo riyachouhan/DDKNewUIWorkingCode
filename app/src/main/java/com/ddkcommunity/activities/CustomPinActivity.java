@@ -20,10 +20,12 @@ import retrofit2.Response;
 
 import static com.ddkcommunity.utilies.dataPutMethods.getSettingServerDataSt;
 
-public class CustomPinActivity extends AppLockActivity {
+public class CustomPinActivity extends AppLockActivity
+{
 
     @Override
-     public void showForgotDialog() {
+     public void showForgotDialog()
+    {
          Resources res = getResources();
         getSettingServerDataSt(CustomPinActivity.this,"php");
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

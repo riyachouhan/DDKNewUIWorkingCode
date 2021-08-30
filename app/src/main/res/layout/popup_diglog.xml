@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+        style="@style/EditTextSize"
+        android:visibility="gone"
+        android:id="@+id/countrynamehint"
+        android:layout_margin="@dimen/_10sdp"
+        android:text="Select Country "
+        />
+
+    <TextView
+        android:text="Please select ownership type "
+        android:layout_width="match_parent"
+        android:id="@+id/titel_mainhin"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        style="@style/EditTextSize"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+
+
+    <!---->

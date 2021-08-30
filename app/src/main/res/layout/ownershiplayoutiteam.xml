@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/_7sdp"
+    android:id="@+id/viewclickdata"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:gravity="center"
+        android:background="@drawable/ownerbacktrangle"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:id="@+id/titel_main"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    style="@style/MyCustomTabText_small_frozen" />
+
+              <LinearLayout
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:layout_height="match_parent">
+
+                  <TextView
+                      android:id="@+id/tvmelimun"
+                      android:layout_width="match_parent"
+                      android:gravity="center_vertical"
+                      android:layout_height="match_parent"
+                      android:textColor="@color/colorPrimary"
+                      style="@style/secondhintview"  />
+
+              </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/percentvalue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textColor="@color/black"
+                style="@style/MyCustomTabText_small_frozen" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingBottom="@dimen/_1sdp"
+                android:background="@drawable/light_card_purple"
+                android:textColor="@color/colorPrimary"
+                style="@style/hintview_frozen" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

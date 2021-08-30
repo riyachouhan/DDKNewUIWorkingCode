@@ -1,51 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/_5sdp"
     android:layout_marginLeft="@dimen/_5sdp"
     android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     android:id="@+id/viewclickdata"
     android:background="@drawable/text_card_bg"
     android:gravity="center"
     android:paddingTop="@dimen/_2sdp"
     android:paddingBottom="@dimen/_2sdp"
     android:paddingRight="@dimen/_5sdp"
-    android:paddingLeft="@dimen/_5sdp"
+    android:paddingLeft="@dimen/_3sdp"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
+            android:weightSum="2"
             android:gravity="center_vertical"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvtrxnumber"
-                android:layout_width="@dimen/_28sdp"
-                android:padding="@dimen/_1sdp"
-                android:layout_height="@dimen/_28sdp"
-                android:textColor="@color/white_color"
-                android:gravity="center"
-                android:background="@drawable/circle_new_graydark"
-                style="@style/hintview"
-                />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_weight="1.15"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/newwalletic"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    >
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_24sdp">
+
+                        <TextView
+                            android:id="@+id/tvtrxnumber"
+                            android:layout_width="match_parent"
+                            android:padding="@dimen/_1sdp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white_color"
+                            android:gravity="center"
+                            style="@style/MyCustomTabText_small_frozen"
+                            />
+
+                    </LinearLayout>
+
+                   <LinearLayout
+                       android:orientation="horizontal"
+                       android:gravity="center"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+                       <TextView
+                           style="@style/subhinttexthi"
+                           android:gravity="bottom"
+                           android:paddingTop="@dimen/_2sdp"
+                           android:text="Pts. "
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/white_color"
+                           />
+
+                       <TextView
+                           android:id="@+id/tvamountsb"
+                           style="@style/subhintdataSize"
+                           android:gravity="center"
+                           android:textStyle="bold"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/white_color"
+                           />
+
+                   </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.85"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical"
                 >
 
                 <TextView
                     android:id="@+id/tvDate"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
@@ -56,46 +110,34 @@
                     android:id="@+id/tvstatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="center"
+                    android:layout_marginTop="-4dp"
                     android:textColor="@color/green_color"
                     android:text="Send"
                     style="@style/hintview_frozen" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="right"
+                    android:id="@+id/redeemview"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/button_accent_round"
+                        android:text="  Redeem  "
+                        android:textColor="@color/white"
+                        style="@style/MyCustomTabText_small"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:gravity="right"
-            android:visibility="gone"
-            android:id="@+id/redeemview"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/submit"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:background="@drawable/button_accent_round"
-                android:text="Redeem"
-                android:textColor="@color/white"
-                style="@style/MyCustomTabText_small"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_marginTop="@dimen/_2sdp"
-            android:id="@+id/tvamountsb"
-            android:textStyle="bold"
-            style="@style/subhintdataSize"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black_color"
-            />
 
     </LinearLayout>
-
-
-</LinearLayout>

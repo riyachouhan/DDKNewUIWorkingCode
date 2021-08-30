@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:id="@+id/mainpart"
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp"
+    android:paddingRight="@dimen/_15sdp"
+    android:paddingLeft="@dimen/_15sdp"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/submenuiteam"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:background="@drawable/card_white_bg"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_20sdp"
+            android:orientation="vertical">
+
+                <TextView
+                    android:text="Do you want to copy the same ownership ?"
+                    android:layout_width="match_parent"
+                    android:id="@+id/titel_main"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    style="@style/subhintdataSize"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/radioview"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                        <RadioGroup
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radioGroup">
+
+                                <RadioButton
+                                    android:id="@+id/radioyes"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Yes"
+                                    style="@style/textSizehint_hint"
+                                    android:checked="true"
+                                    />
+
+                                <RadioButton
+                                    android:layout_marginLeft="@dimen/_45sdp"
+                                    style="@style/textSizehint_hint"
+                                    android:id="@+id/radiono"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="No"
+                                    android:checked="false"
+                                    />
+
+                        </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/nolayput"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!--<LinearLayout
+                            android:id="@+id/ownerhsiview"
+                            android:background="@drawable/edittxt_new"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/subhintdataSize"
+                                    android:textColor="@color/black_color"
+                                    android:textColorHint="@color/dark_gray"
+                                    android:hint="Ownership Type : "
+                                    />
+
+                                <TextView
+                                    android:id="@+id/packageamount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@style/subhintdataSize"
+                                    android:textColor="@color/black_color"
+                                    android:textColorHint="@color/dark_gray"
+                                    />
+
+                        </LinearLayout>
+                        -->
+                        <TextView
+                            android:drawableRight="@drawable/arrownavigate"
+                            android:id="@+id/packageamount"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittxt_new"
+                            style="@style/subhintdataSize"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/dark_gray"
+                            android:hint="Ownership Type"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            />
+
+                        <EditText
+                            android:id="@+id/name_ET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name"
+                            android:background="@drawable/edittxt_new"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:inputType="text"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/dark_gray"
+                            style="@style/textSizehint_hint" />
+
+                        <EditText
+                            android:id="@+id/contact_ET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contact No"
+                            android:background="@drawable/edittxt_new"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:inputType="number"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/dark_gray"
+                            style="@style/textSizehint_hint" />
+
+                        <EditText
+                            android:id="@+id/email_ET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:background="@drawable/edittxt_new"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:inputType="text"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/dark_gray"
+                            style="@style/textSizehint_hint" />
+
+
+                        <EditText
+                            android:id="@+id/address_ET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/textSizehint_hint"
+                            android:hint="Complete address"
+                            android:background="@drawable/edittxt_new"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:paddingBottom="@dimen/_7sdp"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:inputType="text"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/dark_gray"
+                            />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/submit_BT"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_35sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/button_accent_round"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Submit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp" />
+
+        </LinearLayout>
+
+
+</LinearLayout>

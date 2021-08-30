@@ -37,6 +37,7 @@ public class sfioSelectionFragment extends Fragment {
     AppCompatButton submit;
     LinearLayout selection_type_layout,form_layout,creditcard_layout,bankdepositelayout;
     String input_amount,fee;
+    String ownershipjoin_status,ownershiptype,name,email,contact,address;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +54,31 @@ public class sfioSelectionFragment extends Fragment {
         {
             fee= getArguments().getString("fee");
         }
+
+        if (getArguments().getString("ownershipjoin_status") != null)
+        {
+            ownershipjoin_status= getArguments().getString("ownershipjoin_status");
+                if (getArguments().getString("ownershiptype") != null)
+                {
+                    ownershiptype= getArguments().getString("ownershiptype");
+                }
+                if (getArguments().getString("name") != null)
+                {
+                    name= getArguments().getString("name");
+                }
+                if (getArguments().getString("email") != null)
+                {
+                    email= getArguments().getString("email");
+                }
+                if (getArguments().getString("contact") != null)
+                {
+                    contact= getArguments().getString("contact");
+                }
+                if (getArguments().getString("address") != null)
+                {
+                    address= getArguments().getString("address");
+                }
+        }
         //for amount
         selection_type_layout=view.findViewById(R.id.selection_type_layout);
         form_layout=view.findViewById(R.id.form_layout);
@@ -67,6 +93,12 @@ public class sfioSelectionFragment extends Fragment {
                 Fragment fragment = new CreditCardPaymentSFIOFragment();
                 Bundle arg = new Bundle();
                 arg.putString("input_amount", input_amount);
+                arg.putString("ownershipjoin_status", ownershipjoin_status);
+                arg.putString("ownershiptype", ownershiptype);
+                arg.putString("name", name);
+                arg.putString("email", email);
+                arg.putString("contact", contact);
+                arg.putString("address", address);
                 arg.putString("fee", fee);
                 fragment.setArguments(arg);
                 MainActivity.addFragment(fragment,false);
@@ -80,6 +112,12 @@ public class sfioSelectionFragment extends Fragment {
                 Fragment fragment = new bankDepositeFragment();
                 Bundle arg = new Bundle();
                 arg.putString("input_amount", input_amount);
+                arg.putString("ownershipjoin_status",ownershipjoin_status);
+                arg.putString("ownershiptype", ownershiptype);
+                arg.putString("name", name);
+                arg.putString("email", email);
+                arg.putString("contact", contact);
+                arg.putString("address", address);
                 arg.putString("fee", fee);
                 fragment.setArguments(arg);
                 MainActivity.addFragment(fragment,false);

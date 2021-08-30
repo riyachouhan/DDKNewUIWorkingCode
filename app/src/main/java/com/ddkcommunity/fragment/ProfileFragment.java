@@ -22,6 +22,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,13 +62,17 @@ import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.SplashActivity;
 import com.ddkcommunity.adapters.UserAdapter;
 import com.ddkcommunity.fragment.send.SendDDkFragment;
+import com.ddkcommunity.fragment.settingModule.changeEmailFragment;
+import com.ddkcommunity.fragment.settingModule.changeReferalRequest;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.model.AllowGoogleModel;
 import com.ddkcommunity.model.Country;
 import com.ddkcommunity.model.CountryResponse;
 import com.ddkcommunity.model.LoggedUser;
+import com.ddkcommunity.model.OtpResponse;
 import com.ddkcommunity.model.ReferralPayoutModel;
 import com.ddkcommunity.model.getSettingModel;
+import com.ddkcommunity.model.referalRequestsendModel;
 import com.ddkcommunity.model.samModel;
 import com.ddkcommunity.model.user.User;
 import com.ddkcommunity.model.user.UserResponse;
@@ -123,7 +129,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment
+{
     private static EditText ddkCodeET, nameET, emailform_ET,emailET, oldPassET, newPassET, confirmPassET, mobileET, designationET;
     Bitmap userbitmap;
     EditText alt_contactnumber_ET,alt_email_ET,alt_name_ET;
@@ -154,6 +161,7 @@ public class ProfileFragment extends Fragment {
     String gendervalue="";
     RadioButton rmale,rfemale,rtoher;
     View view;
+    TextView seelall;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -182,6 +190,8 @@ public class ProfileFragment extends Fragment {
                                 MainActivity.userData=userResponse;
                                 ddkCodeET.setText(userResponse.getUser().unique_code);
                                 MainActivity.setUserDetail(userResponse.getUser());
+                                String referalcode = userResponse.getUser().unique_code;
+                                App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                                 App.editor.putString(Constant.USER_NAME, userResponse.getUser().getName());
                                 App.editor.putString(Constant.USER_EMAIL, userResponse.getUser().getEmail());
                                 if (userResponse.getUser().getMobile() != null) {
@@ -362,12 +372,45 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    public void sendRequestReferral(final Activity mContext)
+    {
+        final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
+        AppConfig.showLoading(dialog, "Please wait....");
+
+        AppConfig.getLoadInterface().countReferalLevel(AppConfig.getStringPreferences(mContext, Constant.JWTToken)).enqueue(new Callback<referalRequestsendModel>() {
+            @Override
+            public void onResponse(Call<referalRequestsendModel> call, Response<referalRequestsendModel> response) {
+                dialog.dismiss();
+                if (response.isSuccessful() && response.body().getStatus() == 1) {
+                    MainActivity.addFragment(new changeReferalRequest(), true);
+                } else if (response.isSuccessful() && response.body() != null && response.body().getStatus() == 3) {
+                    dataPutMethods.userResponseMsg(getActivity(),response.body().getMsg());
+                } else if (response.isSuccessful() && response.body() != null && response.body().getStatus() == 0) {
+                    dataPutMethods.userResponseMsg(getActivity(),response.body().getMsg());
+                } else {
+                    dataPutMethods.userResponseMsg(getActivity(),response.body().getMsg());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<referalRequestsendModel> call, Throwable t) {
+                dialog.dismiss();
+                errordurigApiCalling(mContext,t.getMessage());
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         mContext = getActivity();
+        seelall=view.findViewById(R.id.seelall);
+        String udata="Request custom referral";
+        SpannableString content = new SpannableString(udata);
+        content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
+        seelall.setText(content);
         alt_contactnumber_ET=view.findViewById(R.id.alt_contactnumber_ET);
         alt_email_ET=view.findViewById(R.id.alt_email_ET);
         alt_name_ET=view.findViewById(R.id.alt_name_ET);
@@ -658,6 +701,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SelectDate();
+            }
+        });
+
+        seelall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // MainActivity.addFragment(new changeReferalRequest(), true);
+                sendRequestReferral(getActivity());
             }
         });
         return view;

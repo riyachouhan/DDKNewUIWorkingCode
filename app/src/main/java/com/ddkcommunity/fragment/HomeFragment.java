@@ -63,6 +63,7 @@ import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.activities.MapsActivity;
 import com.ddkcommunity.activities.ReceivedActivity;
 import com.ddkcommunity.activities.ReferralChainPayoutActivity;
+import com.ddkcommunity.activities.SplashActivity;
 import com.ddkcommunity.adapters.AnnouncementAdapter;
 import com.ddkcommunity.adapters.HomeBannerPagerAdapter;
 import com.ddkcommunity.adapters.WalletPopupAdapter;
@@ -85,6 +86,7 @@ import com.ddkcommunity.model.Announcement;
 import com.ddkcommunity.model.EthModelBalance;
 import com.ddkcommunity.model.MapTransactionReceiverModel;
 import com.ddkcommunity.model.RedeemOptionModel;
+import com.ddkcommunity.model.SAMPDModel;
 import com.ddkcommunity.model.SliderWithType;
 import com.ddkcommunity.model.TransactionFeeData;
 import com.ddkcommunity.model.TransactionFeesResponse;
@@ -148,6 +150,7 @@ import static com.ddkcommunity.utilies.dataPutMethods.ReplacecommaValue;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowCahsoutDialog;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowFunctionalityAlert;
+import static com.ddkcommunity.utilies.dataPutMethods.ShowSAMPDDialog;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowServerPost;
 import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 import static com.ddkcommunity.utilies.dataPutMethods.getSettingServerDataSt;
@@ -185,7 +188,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private AnnouncementAdapter announcementAdapter;
     private String wallet_type = "";
     public static int tabclickevent=0;
-    public LinearLayout btnmarketplcae,btnPayBills,btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
+    public LinearLayout btnarp,btnmarketplcae,btnPayBills,btnMAp,btnSAMPD_2,btnsampd,btnexchange,btnaccoutnverification,btnremittance,btnallsam,btndelivery,sam_view_layout,ridelayout,otherwalletlayout,newsamlayout,redeem_layout,history_layout,paybills_layout;
     TextView tvSelectDdkAddress,facebook_invite,share_app;
     public static ArrayList listdata;
     ImageView userimg;
@@ -290,6 +293,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             view = inflater.inflate(R.layout.fragment_home, container, false);
             mContext = getActivity();
             activity = getActivity();
+            btnarp=view.findViewById(R.id.btnarp);
             FacebookSdk.sdkInitialize(getContext());
             userData = AppConfig.getUserData(mContext);
             getSettingServerDataSt(getActivity(),"php");
@@ -331,6 +335,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             tvAddressCode.setOnClickListener(this);
             btnPayBills.setOnClickListener(this);
             btnmarketplcae.setOnClickListener(this);
+            view.findViewById(R.id.btnarp).setOnClickListener(this);
             view.findViewById(R.id.btnSAMPD_2).setOnClickListener(this);
             view.findViewById(R.id.btnsampd).setOnClickListener(this);
             view.findViewById(R.id.btnexchange).setOnClickListener(this);
@@ -547,7 +552,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 String status=response.body().getData().getAdStatus();
                                 if(status.equalsIgnoreCase("active"))
                                 {
-                                    showAdsDialog(activity, img, url);
+                                    if(SplashActivity.customadds==1) {
+                                        showAdsDialog(activity, img, url);
+                                    }
                                 }
                             }
                         }else
@@ -557,12 +564,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                     } else {
                         AppConfig.hideLoader();
-                        ShowApiError(mContext,"server error sampd-company/company-list");
+                        ShowApiError(mContext,"server error samads/get-ads");
                     }
 
                 } catch (Exception e) {
                     AppConfig.hideLoader();
-                    ShowApiError(mContext,"error in response sampd-company/company-list");
+                    ShowApiError(mContext,"error in response samads/get-ads");
                     e.printStackTrace();
                 }
             }
@@ -1350,12 +1357,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         }
                     } else {
                         AppConfig.hideLoader();
-                        ShowApiError(mContext,"server error sampd-company/company-list");
+                        ShowApiError(mContext,"server error commondetails/sliders-with-type");
                     }
 
                 } catch (Exception e) {
                     AppConfig.hideLoader();
-                    ShowApiError(mContext,"error in response sampd-company/company-list");
+                    ShowApiError(mContext,"error in response commondetails/sliders-with-type");
                     e.printStackTrace();
                 }
             }
@@ -2299,7 +2306,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             MainActivity.userData=data;
                             String user_idvalue=data.getUser().getId().toString();
                             String emailidv=data.getUser().getEmail().toString();
+                            String referalcode = data.getUser().unique_code;
+                            App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                             App.editor.putString(Constant.USER_ID,user_idvalue);
+                            App.editor.putString(Constant.USER_EMAIL,data.getUser().getEmail());
+                            App.editor.putString(Constant.USER_NAME,data.getUser().getName());
+                            App.editor.apply();
                             //...........
                             String userphotoidvalue=data.getUser().getUser_photo_id().toString();
                             String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString();
@@ -2778,10 +2790,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
               //  MainActivity.addFragment(new ExchangeFragment(), true);
                 break;
 
+            case R.id.btnarp:
+                getActiveSubscriptionStatus("arp");
+                break;
+
             case R.id.btnSAMPD_2:
             case R.id.btnsampd:
                // MainActivity.addFragment(new SAMPDFragment(), true);
-                MainActivity.addFragment(new SAMPDNewFragment(), true);
+                getActiveSubscriptionStatus("smpd");
                 break;
 
             case R.id.btnremittance:
@@ -2910,6 +2926,43 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             */
         }
+    }
+
+    private void getActiveSubscriptionStatus(final String functionalityname)
+    {
+        AppConfig.showLoading("Loading...", mContext);
+        AppConfig.getLoadInterface().getActivteSubscriptionStatus(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<SAMPDModel>() {
+            @Override
+            public void onResponse(Call<SAMPDModel> call, Response<SAMPDModel> response) {
+                if (response.isSuccessful() && response.body() != null)
+                {
+                    if (response.body().getStatus() == 1)
+                    {
+                        if(functionalityname.equalsIgnoreCase("arp"))
+                        {
+
+                        }else
+                        {
+                            MainActivity.addFragment(new SAMPDNewFragment(), true);
+                        }
+                    }else
+                    {
+                        AppConfig.hideLoader();
+                        ShowSAMPDDialog(getActivity(),response.body().getMsg());
+                    }
+                } else
+                {
+                    AppConfig.hideLoader();
+                    ShowApiError(getActivity(),"server error in all_transactions/check-active-subscription-user");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SAMPDModel> call, Throwable t) {
+                AppConfig.hideLoader();
+                errordurigApiCalling(getActivity(),t.getMessage());
+            }
+        });
     }
 
     private void goToGoogleMap()

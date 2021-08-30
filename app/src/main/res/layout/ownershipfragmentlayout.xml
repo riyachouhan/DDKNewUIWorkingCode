@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_8sdp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:paddingRight="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_6sdp"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/roundprimarycilor"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.8"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:id="@+id/herdername"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:textColor="@color/white_color"
+                    style="@style/myhometext" />
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:src="@drawable/placeholder"
+                        android:tint="@color/white_color"
+                        android:padding="@dimen/_2sdp"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvaddress"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingTop="@dimen/_1sdp"
+                        android:paddingBottom="@dimen/_1sdp"
+                        android:textColor="@color/white_color"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/setdefault"
+                    android:text="Set as default"
+                    android:textColor="@color/white_color"
+                    style="@style/hintview_frozen" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:text="Edit"
+                    android:id="@+id/edit"
+                    android:textColor="@color/white_color"
+                    style="@style/hintview_frozen" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:text="SUB NO."
+                android:layout_width="0dp"
+                android:id="@+id/titel_main"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                style="@style/MyCustomTabText_small" />
+
+                <TextView
+                    android:id="@+id/tvmelimun"
+                    android:text="AMOUNT"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    style="@style/MyCustomTabText_small"   />
+
+                <TextView
+                    android:id="@+id/percentvalue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="OWNER"
+                    android:textColor="@color/black"
+                    style="@style/MyCustomTabText_small" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProjectRecycle"
+                    android:layout_width="match_parent"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+</LinearLayout>

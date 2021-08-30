@@ -34,9 +34,11 @@ import com.ddkcommunity.fragment.mapmodule.powerofxfragmetn;
 import com.ddkcommunity.fragment.projects.Mapsubfragmentclick;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
+import com.ddkcommunity.model.arpstausModel;
 import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.mapoptionmodel;
+import com.ddkcommunity.model.sfioHeaderModel;
 import com.ddkcommunity.model.user.UserResponse;
 import com.ddkcommunity.utilies.AppConfig;
 
@@ -152,12 +154,11 @@ public class subscriptonAdapter extends RecyclerView.Adapter<subscriptonAdapter.
             @Override
             public void getResponse(Response<getSettingModel> response)
             {
-                //   AppConfig.hideLoader();
                 try
                 {
+                    AppConfig.hideLoading(dialog);
                     if (response.body().getStatus() == 1)
                     {
-                        AppConfig.hideLoading(dialog);
                         Fragment fragment = new SFIOShowFragmement();
                         Bundle arg = new Bundle();
                         fragment.setArguments(arg);
@@ -165,7 +166,6 @@ public class subscriptonAdapter extends RecyclerView.Adapter<subscriptonAdapter.
 
                     } else
                     {
-                        AppConfig.hideLoading(dialog);
                         ShowFunctionalityAlert(activity, response.body().getMsg());
                     }
 

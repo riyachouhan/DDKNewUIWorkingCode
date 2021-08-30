@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +48,13 @@ import com.ddkcommunity.fragment.mapmodule.adapter.grouptleveleadpater;
 import com.ddkcommunity.fragment.mapmodule.adapter.grouptleveleadpaterright;
 import com.ddkcommunity.fragment.mapmodule.model.groupModel;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
+import com.ddkcommunity.fragment.settingModule.ARPFragement;
+import com.ddkcommunity.fragment.settingModule.ARPWalletBalanceModel;
+import com.ddkcommunity.fragment.settingModule.OwnerShipFragment;
+import com.ddkcommunity.fragment.settingModule.editOwnershipFragment;
 import com.ddkcommunity.model.activityModel;
+import com.ddkcommunity.model.arpstausModel;
+import com.ddkcommunity.model.referalRequestsendModel;
 import com.ddkcommunity.model.sfioHeaderModel;
 import com.ddkcommunity.model.sfioModel;
 import com.ddkcommunity.model.sfioSubPackageModel;
@@ -97,11 +104,14 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
     public static SFIOAdapter mAdapter;
     CircleProgressBar custom_progress_outer;
     CircleImageView imgprofile;
+    int bankonesttaus=0;
     TextView name_TV,email_TV,totalpoint;
     public static SfioHeaderAdapter mAdapterher;
-    LinearLayout upperheader;
-    TextView seelall;
+    LinearLayout applyforarp,upperheader;
+    TextView seelall,appliedarp;
     SwipeRefreshLayout swiperefresh_items;
+    LinearLayout ownershiplay,mainlayout;
+    ProgressDialog pd;
 
     public SFIOShowFragmement() {
     }
@@ -112,6 +122,10 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.sfioactivityfragment, container, false);
         mContext = getActivity();
+        mainlayout=view.findViewById(R.id.mainlayout);
+        ownershiplay=view.findViewById(R.id.ownershiplay);
+        applyforarp=view.findViewById(R.id.applyforarp);
+        appliedarp=view.findViewById(R.id.appliedarp);
         swiperefresh_items=view.findViewById(R.id.swiperefresh_items);
         seelall=view.findViewById(R.id.seelall);
         String udata="See All..";
@@ -128,13 +142,16 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
         RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity());
         rvRecycleher.setLayoutManager(mLayoutManager1);
         rvRecycleher.setItemAnimator(new DefaultItemAnimator());
-
         rvRecycle=view.findViewById(R.id.rvRecycle);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvRecycle.setLayoutManager(mLayoutManager);
         rvRecycle.setItemAnimator(new DefaultItemAnimator());
+        getArpBalance();
+        pd=new ProgressDialog(getActivity());
+        pd.setCanceledOnTouchOutside(false);
+        pd.setMessage("Please wait");
+        pd.show();
         getCurrentBonusSfio();
-        getActivitydata("yes");
         addicon.setOnClickListener(this);
         custom_progress_outer=view.findViewById(R.id.custom_progress_outer);
         custom_progress_outer.setProgress(100);
@@ -177,12 +194,47 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
             public void onRefresh() {
                 // Your code to make your refresh action
                 // CallYourRefreshingMethod();
+                getArpBalance();
                 getCurrentBonusSfio();
-                getActivitydata("no");
+               // getActivitydata("no");
 
             }
         });
 
+        applyforarp.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                String arpdata=appliedarp.getText().toString();
+                if(arpdata.equalsIgnoreCase("Apply for ARP"))
+                {
+                    getArpStatus();
+                }else if(arpdata.equalsIgnoreCase("Applied for ARP"))
+                {
+                    getArpStatus();
+
+                }else
+                {
+                    Fragment fragment = new ARPFragement();
+                    Bundle arg = new Bundle();
+                    fragment.setArguments(arg);
+                    MainActivity.addFragment(fragment, true);
+                }
+            }
+        });
+
+        ownershiplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Fragment fragment = new OwnerShipFragment();
+                Bundle arg = new Bundle();
+                fragment.setArguments(arg);
+                MainActivity.addFragment(fragment, true);
+
+            }
+        });
         return view;
     }
 
@@ -213,14 +265,8 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
         }
     }
 
-    private void getActivitydata(final String loaderview)
+    private void getActivitydata(final ProgressDialog pd)
     {
-        final ProgressDialog pd=new ProgressDialog(getActivity());
-        pd.setCanceledOnTouchOutside(false);
-        pd.setMessage("Please wait");
-        if(loaderview.equalsIgnoreCase("yes")) {
-            pd.show();
-        }
         AppConfig.getLoadInterface().getSFIOData(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<sfioModel>() {
             @Override
             public void onResponse(Call<sfioModel> call, Response<sfioModel> response) {
@@ -228,26 +274,30 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
                     Log.d("sam erro par invi",response.body().toString());
                             if (response.isSuccessful() && response.body() != null)
                             {
+                                if(pd.isShowing())
+                                    pd.dismiss();
                                 if (response.body().getStatus()==1)
                                 {
-                                    if(loaderview.equalsIgnoreCase("yes")) {
-                                        pd.dismiss();
-                                    }
+                                    mainlayout.setVisibility(View.VISIBLE);
+
                                     funnelDAta=new ArrayList<>();
                                     funnelDAta.addAll(response.body().getData());
                                     mAdapter = new SFIOAdapter(funnelDAta, mContext);
                                     rvRecycle.setAdapter(mAdapter);
                                 }else
                                 {
-                                    if(loaderview.equalsIgnoreCase("yes")) {
-                                        pd.dismiss();
+                                    if(bankonesttaus!=1) {
+                                        Fragment fragment = new TermsAndConsitionSubscription();
+                                        Bundle arg = new Bundle();
+                                        arg.putString("activityaction", "subscriptionSFIO");
+                                        fragment.setArguments(arg);
+                                        MainActivity.addFragment(fragment, false);
+                                        mainlayout.setVisibility(View.GONE);
+
+                                    }else
+                                    {
+                                        mainlayout.setVisibility(View.VISIBLE);
                                     }
-                                    Fragment fragment = new TermsAndConsitionSubscription();
-                                    Bundle arg = new Bundle();
-                                    arg.putString("activityaction", "subscriptionSFIO");
-                                    fragment.setArguments(arg);
-                                    MainActivity.addFragment(fragment,false);
-//                                    Toast.makeText(mContext, "Data Not Available", Toast.LENGTH_SHORT).show();
                                 }
                                 if(swiperefresh_items.isRefreshing()) {
                                     swiperefresh_items.setRefreshing(false);
@@ -272,9 +322,11 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(Call<sfioModel> call, Throwable t)
             {
-                if(loaderview.equalsIgnoreCase("yes")) {
+                if(pd.isShowing())
+                {
                     pd.dismiss();
-                } Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -306,25 +358,32 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
                                 }
                                 mAdapterher = new SfioHeaderAdapter(funnelDAtasfnew, mContext);
                                 rvRecycleher.setAdapter(mAdapterher);
-
+                                bankonesttaus=1;
                             }else
                             {
                                 seelall.setVisibility(View.GONE);
                                 mAdapterher = new SfioHeaderAdapter(funnelDAtasf, mContext);
                                 rvRecycleher.setAdapter(mAdapterher);
-
+                                if(funnelDAtasf.size()!=0)
+                                {
+                                    bankonesttaus=1;
+                                }
                             }
-
                             upperheader.setVisibility(View.VISIBLE);
+                            getActivitydata(pd);
+
                         }else
                         {
                             upperheader.setVisibility(View.VISIBLE);
+                            seelall.setVisibility(View.GONE);
+                            pd.dismiss();
                         }
 
                     } else {
                         Log.d("context","::");
                         upperheader.setVisibility(View.VISIBLE);
                         ShowApiError(mContext,"server error direct-bonus");
+                        pd.dismiss();
                     }
 
                 } catch (Exception e) {
@@ -335,10 +394,126 @@ public class SFIOShowFragmement extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(Call<sfioHeaderModel> call, Throwable t)
             {
+                pd.dismiss();
                 Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    private void getArpStatus()
+    {
+        final ProgressDialog pd=new ProgressDialog(getActivity());
+        pd.setMessage("Please wait ......");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
+
+        AppConfig.getLoadInterface().getArpStatus(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<arpstausModel>() {
+            @Override
+            public void onResponse(Call<arpstausModel> call, Response<arpstausModel> response) {
+                try {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        pd.dismiss();
+                        if (response.body().getStatus()==1)
+                        {
+                            appliedarp.setText("Applied for ARP");
+                            ShowSuccessDialog(getActivity(),response.body().getMsg(),"Success","OK");
+
+                        }else if (response.body().getStatus()==2)
+                        {
+                            appliedarp.setText("Applied for ARP");
+                            ShowSuccessDialog(getActivity(),response.body().getMsg(),"Alert","OK");
+
+                        }else
+                        {
+                            appliedarp.setText("Apply for ARP");
+                        }
+
+                    } else {
+                        pd.dismiss();
+                        Log.d("context","::");
+                        ShowApiError(mContext,"server error direct-bonus");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<arpstausModel> call, Throwable t)
+            {
+                pd.dismiss();
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void getArpBalance()
+    {
+        AppConfig.getLoadInterface().getArpWalletBalance(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<ARPWalletBalanceModel>() {
+            @Override
+            public void onResponse(Call<ARPWalletBalanceModel> call, Response<ARPWalletBalanceModel> response) {
+                try {
+                    Log.d("sam erro par invi",response.body().toString());
+                    if (response.isSuccessful() && response.body() != null)
+                    {
+                        if (response.body().getStatus()==1)
+                        {
+                            appliedarp.setText("ARP Balance "+response.body().getBalance());
+
+                        }else if(response.body().getStatus()==2)
+                        {
+                            appliedarp.setText("Applied for ARP");
+                        }else
+                        {
+                            appliedarp.setText("Apply for ARP");
+                        }
+
+                    } else {
+                        Log.d("context","::");
+                         ShowApiError(mContext,"server error direct-bonus");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ARPWalletBalanceModel> call, Throwable t)
+            {
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public static void ShowSuccessDialog(Context activity,String succesmsg,String titleher,String buttonstatus)
+    {
+        //api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.alertshowsuccess, null);
+        TextView btnGoHome =customView.findViewById(R.id.btnGoHome);
+        TextView titile=customView.findViewById(R.id.titile);
+        TextView tvOrderStatus=customView.findViewById(R.id.tvOrderStatus);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        titile.setText(titleher);
+        btnGoHome.setText(buttonstatus);
+        tvOrderStatus.setText(succesmsg);
+        final AlertDialog dialog = alert.create();
+        dialog.show();
+        dialog.setCancelable(false);
+        btnGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+              }
+        });
+    }
 }

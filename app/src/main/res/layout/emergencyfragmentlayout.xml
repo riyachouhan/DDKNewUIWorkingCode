@@ -27,14 +27,14 @@
             android:layout_height="wrap_content">
 
             <View
-                android:layout_weight="0.9"
+                android:layout_weight="0.6"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:background="@color/txtblack"/>
 
             <TextView
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_weight="1.2"
+                android:layout_weight="1.8"
                 android:layout_width="0dp"
                 android:gravity="center"
                 android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                 />
 
             <View
-                android:layout_weight="0.9"
+                android:layout_weight="0.6"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:background="@color/txtblack"/>

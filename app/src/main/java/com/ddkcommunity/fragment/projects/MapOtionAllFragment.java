@@ -151,7 +151,7 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
             circularProgressBar2.setProgress(maptoken);
             custom_progress_inner.setProgress(maptoken);
 
-            ShowUserOnly(getActivity(),"You registerd successfully . Now please subscribe for access the MAP first.");
+            ShowUserOnly(getActivity(),"You registered successfully. Now please subscribe to access the MAP.");
         }
         //............
         tvAddressCode.setOnClickListener(new View.OnClickListener() {
@@ -184,17 +184,22 @@ public class MapOtionAllFragment extends Fragment implements View.OnClickListene
         mapoptionList.add(new mapoptionmodel("Daily Rewards Bonus",R.drawable.daily_rearws));
         mapoptionList.add(new mapoptionmodel("Overflow",R.drawable.overflow_b));
         mapoptionList.add(new mapoptionmodel("M.A.P. Activity",R.drawable.mapactivtiy));
+        mapoptionList.add(new mapoptionmodel("Direct Position Purches",R.drawable.powerxlogo));
+
         recyclerviewGridView=view.findViewById(R.id.recyclerviewGridView);
         mapoptionadapter allTypeCashoutFragmentAdapter = new mapoptionadapter("","main",mapoptionList, getActivity());
         recyclerviewGridView.setAdapter(allTypeCashoutFragmentAdapter);
         copyview=view.findViewById(R.id.copyview);
-        copyview.setOnClickListener(new View.OnClickListener() {
+        copyview.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 AppConfig.copyPass(Portal.getText().toString().trim(), "Copy Address", getActivity());
             }
         });
-        browseview.setOnClickListener(new View.OnClickListener() {
+        browseview.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {

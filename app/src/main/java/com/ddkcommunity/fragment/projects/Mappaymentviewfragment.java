@@ -3,6 +3,7 @@ package com.ddkcommunity.fragment.projects;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ddkcommunity.R;
@@ -23,10 +25,12 @@ import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.adapters.mapoptionadapter;
 import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
+import com.ddkcommunity.interfaces.GetBTCUSDTETHPriceCallback;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.mapoptionmodel;
 import com.ddkcommunity.utilies.AppConfig;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import retrofit2.Response;
@@ -46,6 +50,7 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
     ArrayList<mapoptionmodel> mapoptionList;
     String amount,selecetdpackage;
     String action="",usereferrlacode;
+    String emailp,passwordp,bidposiiton,bidpositionid,bidamount;
 
     public Mappaymentviewfragment()
     {
@@ -61,21 +66,39 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
             action= getArguments().getString("action");
         }
 
-        if(action.equalsIgnoreCase("mapwithreferral"))
+        if(action.equalsIgnoreCase("bid"))
         {
-            if (getArguments().getString("userenterreferrla") != null) {
-                usereferrlacode= getArguments().getString("userenterreferrla");
+            if (getArguments().getString("email") != null) {
+                emailp= getArguments().getString("email");
+            }
+            if (getArguments().getString("password") != null) {
+                passwordp= getArguments().getString("password");
+            }
+            if (getArguments().getString("bidposiiton") != null) {
+                bidposiiton= getArguments().getString("bidposiiton");
+            }
+            if (getArguments().getString("bidposiitonID") != null) {
+                bidpositionid= getArguments().getString("bidposiitonID");
+            }
+            if (getArguments().getString("bidamount") != null) {
+                bidamount= getArguments().getString("bidamount");
+            }
+        }else
+        {
+            if (action.equalsIgnoreCase("mapwithreferral")) {
+                if (getArguments().getString("userenterreferrla") != null) {
+                    usereferrlacode = getArguments().getString("userenterreferrla");
+                }
+            }
+
+            if (getArguments().getString("amount") != null) {
+                amount = getArguments().getString("amount");
+            }
+            if (getArguments().getString("selecetdpackage") != null) {
+                selecetdpackage = getArguments().getString("selecetdpackage");
             }
         }
-
-        if (getArguments().getString("amount") != null)
-        {
-            amount= getArguments().getString("amount");
-        }
-        if (getArguments().getString("selecetdpackage") != null)
-        {
-            selecetdpackage= getArguments().getString("selecetdpackage");
-        }
+        getViewValue();
         mainpart=view.findViewById(R.id.mainpart);
         paymenthours=view.findViewById(R.id.paymenthours);
         submit_BT=view.findViewById(R.id.submit_BT);
@@ -112,6 +135,49 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
         super.onResume();
         MainActivity.setTitle("M.A.P");
         MainActivity.enableBackViews(true);
+    }
+
+    public void getViewValue()
+    {
+        UserModel.getInstance().getUsdtEthBtcPriceCall(new GetBTCUSDTETHPriceCallback() {
+            @Override
+            public void getValues(BigDecimal btcPrice, BigDecimal eth, BigDecimal usdt, BigDecimal tron)
+            {
+                BigDecimal ONE_HUNDRED = new BigDecimal(100);
+                BigDecimal btcpercent=UserModel.getInstance().btcBuyPercentage;
+                if (UserModel.getInstance().btcBuyPercentage != null) {
+                    BigDecimal btcBuyPer = btcPrice.multiply(UserModel.getInstance().btcBuyPercentage).divide(ONE_HUNDRED);
+                    BigDecimal ethBuyPer = eth.multiply(UserModel.getInstance().ethBuyPercentage).divide(ONE_HUNDRED);
+                    BigDecimal usdtBuyPer = usdt.multiply(UserModel.getInstance().usdtBuyPercentage).divide(ONE_HUNDRED);
+                    BigDecimal samkoinBuyPer = UserModel.getInstance().samkoinvalueper.multiply(UserModel.getInstance().samkoinBuyPercentage).divide(ONE_HUNDRED);
+                    BigDecimal tronBuyPer = tron.multiply(UserModel.getInstance().tronBuyPercentage).divide(ONE_HUNDRED);
+
+                    BigDecimal btcSellPer = btcPrice.multiply(UserModel.getInstance().btcSellPercentage).divide(ONE_HUNDRED);
+                    BigDecimal ethSellPer = eth.multiply(UserModel.getInstance().ethSellPercentage).divide(ONE_HUNDRED);
+                    BigDecimal usdtSellPer = usdt.multiply(UserModel.getInstance().usdtSellPercentage).divide(ONE_HUNDRED);
+                    BigDecimal samkoinSellPer = UserModel.getInstance().samkoinvalueper.multiply(UserModel.getInstance().samkoinSellPercentage).divide(ONE_HUNDRED);
+                    BigDecimal tronSellPer = tron.multiply(UserModel.getInstance().tronSellPercentage).divide(ONE_HUNDRED);
+
+                    UserModel.getInstance().btcBuyPrice = btcBuyPer.add(btcPrice);
+                    UserModel.getInstance().btcSellPrice = btcPrice.subtract(btcSellPer);
+
+                    UserModel.getInstance().ethBuyPrice = ethBuyPer.add(eth);
+                    UserModel.getInstance().ethSellPrice = eth.subtract(ethSellPer);
+
+                    UserModel.getInstance().usdtBuyPrice = usdtBuyPer.add(usdt);
+                    UserModel.getInstance().usdtSellPrice = usdt.subtract(usdtSellPer);
+
+                    UserModel.getInstance().samkoinBuyPrice= samkoinBuyPer.add(UserModel.getInstance().samkoinvalueper);
+                    UserModel.getInstance().samkoinSellPrice= UserModel.getInstance().samkoinvalueper.subtract(samkoinSellPer);
+
+                    UserModel.getInstance().tronBuyPrice= tronBuyPer.add(tron);
+                    UserModel.getInstance().tronSellPrice= tron.subtract(tronSellPer);
+
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("updatePrice"));
+                }
+            }
+        }, getActivity());
+
     }
 
     @Override
@@ -207,7 +273,21 @@ public class Mappaymentviewfragment extends Fragment implements View.OnClickList
             arg.putString("amount", amount);
             fragment.setArguments(arg);
             MainActivity.addFragment(fragment, false);
-         }else {
+         }else if(action.equalsIgnoreCase("bid"))
+         {
+            Fragment fragment = new MapBidPaymentFragment();
+            Bundle arg = new Bundle();
+            arg.putString("email",emailp);
+            arg.putString("action", "bid");
+             arg.putString("actiontype", actionname);
+             arg.putString("password", passwordp);
+            arg.putString("bidposiiton", bidposiiton);
+            arg.putString("bidpositionid",bidpositionid);
+            arg.putString("bidamount",bidamount);
+            fragment.setArguments(arg);
+            MainActivity.addFragment(fragment, false);
+        }else
+        {
             Fragment fragment = new MapPAyemnASkFragment();
             Bundle arg = new Bundle();
             arg.putString("action", action);

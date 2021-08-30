@@ -29,7 +29,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
-                android:text="Your account does not have an active subscription.\n
+                android:text="Your account does not have an active Map subscription.\n
  Do you want to subscribe now ?"
                 android:paddingBottom="@dimen/_5sdp"
                 android:fontFamily="@font/montserrat_medium"

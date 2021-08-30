@@ -55,7 +55,6 @@
     <string name="facebook_app_id" translatable="false">926276997907305</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb926276997907305</string>
 
-
     <string name="notification_add_to_cart_button" translatable="false">Like</string>
     <string name="group_name" translatable="false">Group 1</string>
 
@@ -92,7 +91,7 @@
     <string name="othersecondhint" translatable="false"> Coin share this QR Code
 with your friends/relative</string>
     <string name="sendcoinother" translatable="false"> Coins in one just click via any of the following methods.</string>
-    <string name="api_error" translatable="false">Something went wrong on the application, Please close and re-open.
+    <string name="api_error" translatable="false">Something went wrong on the application, please close and re-open.
 If this message continue to display please contact the technical team.</string>
 
     <string name="calling_api" translatable="false">Your internet is unstable. Please try again later.</string>
@@ -102,7 +101,6 @@ If this message continue to display please contact the technical team.</string>
     <string name="fa_search">&#xf002;</string>
     <string name="fa_envelope_o">&#xf003;</string>
     <string name="fa_heart">&#xf004;</string>
-
 
     <string name="fa_chevron_right">&#xf054;</string>
     <string name="fa_chevron_down">&#xf078;</string>

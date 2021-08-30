@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@drawable/text_card_bg"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/_15sdp"
+        android:layout_margin="@dimen/_15sdp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/_45sdp"
+        android:paddingBottom="@dimen/_45sdp"
+        android:paddingLeft="@dimen/_15sdp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_25sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:text="Please enter desired referral code. \n *This is a one time use only."
+            style="@style/textSizehint"
+            android:textColor="@color/colorBlackText"
+            />
+
+        <EditText
+            android:id="@+id/alt_referralcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Referral code"
+            android:background="@drawable/edittxt_new"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:inputType="text"
+            android:textColor="@color/black_color"
+            android:textColorHint="@color/black_color"
+            style="@style/textSizehint_hint" />
+
+        <TextView
+            android:id="@+id/validate_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingTop="@dimen/_25sdp"
+            android:text="Validate"
+            style="@style/textSizehint_hint"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit_BT"
+            android:visibility="gone"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/button_accent_round"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -244,7 +244,7 @@ public class SFIOAdapter extends RecyclerView.Adapter<SFIOAdapter.MyViewHolder>
 */
             // setting grid layout manager to implement grid view.
             // in this method '2' represents number of columns to be displayed in grid view.
-            GridLayoutManager layoutManager=new GridLayoutManager(activity,3);
+            GridLayoutManager layoutManager=new GridLayoutManager(activity,2);
             // at last set adapter to recycler view.
             holder.rvRecycle.setLayoutManager(layoutManager);
             holder.tvtrxlink.setOnClickListener(new View.OnClickListener() {

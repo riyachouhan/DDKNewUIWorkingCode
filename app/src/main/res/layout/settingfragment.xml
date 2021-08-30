@@ -207,7 +207,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:tint="@color/colorPrimary"
-                        android:src="@drawable/email_ac" />
+                        android:src="@drawable/emailicon" />
 
                 </LinearLayout>
 
@@ -236,6 +236,7 @@
 
             <View
                 android:layout_width="match_parent"
+                android:visibility="visible"
                 android:background="@color/texthint"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:layout_marginTop="@dimen/_2sdp"

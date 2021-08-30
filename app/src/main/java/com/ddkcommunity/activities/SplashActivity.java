@@ -86,6 +86,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public static List<Country> countryList;
     public static String finalcall,baseurl;
     AppSignatureHelper appSignatureHelper;
+    public static int customadds=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    private void proceed() {
+    private void proceed()
+    {
         //**************************** Location ( Latitude & longitude ) *********************************
         if (ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
             ActivityCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -481,6 +483,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                                 UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
                                 AppConfig.setUserData(mContext, data);
                                 String user_idvalue=data.getUser().getId().toString();
+                                String referalcode = data.getUser().unique_code;
+                                App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                                 App.editor.putString(Constant.USER_ID,user_idvalue);
                                 App.editor.putString(Constant.USER_EMAIL, data.getUser().getEmail());
                                 App.editor.putString(Constant.USER_NAME, data.getUser().getName());
@@ -589,7 +593,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MainActivity.REQUEST_CODE_DISABLE) {
+        if (requestCode == MainActivity.REQUEST_CODE_DISABLE)
+        {
+            SplashActivity.customadds=1;
             openHomeActivity();
         }
         if (requestCode == MY_REQUEST_CODE)

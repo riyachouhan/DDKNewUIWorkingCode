@@ -36,6 +36,7 @@ import com.ddkcommunity.fragment.mapmodule.phaseonefragment;
 import com.ddkcommunity.fragment.mapmodule.powerofxfragmetn;
 import com.ddkcommunity.fragment.projects.MapOtionAllFragment;
 import com.ddkcommunity.fragment.projects.Mapsubfragmentclick;
+import com.ddkcommunity.fragment.projects.directReferralBidFragment;
 import com.ddkcommunity.fragment.send.SendLinkFragment;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
 import com.ddkcommunity.model.AllAvailableBankList;
@@ -195,6 +196,9 @@ public class mapoptionadapter extends RecyclerView.Adapter<mapoptionadapter.MyVi
                                     }else if(position==8)
                                     {
                                         MainActivity.addFragment(new dailybonousFragment(), true);
+                                    }else if(position==11)
+                                    {
+                                        MainActivity.addFragment(new directReferralBidFragment(), true);
                                     }
 
                                 }else 

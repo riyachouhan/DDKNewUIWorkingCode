@@ -71,7 +71,7 @@ public class sfiosubfrgamentadapter extends RecyclerView.Adapter<sfiosubfrgament
         try {
 
             holder.tvtrxnumber.setText("#"+data.get(position).getTrxNo()+"");
-            holder.tvamountsb.setText("Pts. "+data.get(position).getAmount()+"");
+            holder.tvamountsb.setText(data.get(position).getAmount()+"");
 
             if(data.get(position).getRedeem_btn_status().equalsIgnoreCase("0"))
             {

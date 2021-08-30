@@ -111,11 +111,11 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
             mapoptionList.add(new mapoptionmodel("iiRide",R.drawable.iiride));
             subscriptonAdapter allTypeCashoutFragmentAdapter = new subscriptonAdapter("","main",mapoptionList, getActivity());
             recyclerviewsubc.setAdapter(allTypeCashoutFragmentAdapter);
-            getActiveSubscriptionStatus();
+           // getActiveSubscriptionStatus();
+            getSMPDListData();
         }
         return view1;
     }
-
     //for banner
     private void setBannerImages()
     {
@@ -218,7 +218,7 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    private void getActiveSubscriptionStatus()
+    /*private void getActiveSubscriptionStatus()
     {
         AppConfig.showLoading("Loading...", mContext);
         AppConfig.getLoadInterface().getActivteSubscriptionStatus(AppConfig.getStringPreferences(getActivity(), Constant.JWTToken)).enqueue(new Callback<SAMPDModel>() {
@@ -249,7 +249,7 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
             }
         });
     }
-
+*/
     public static void switchActivty()
     {
         Fragment fragment = new TermsAndConsitionSubscription();
@@ -261,7 +261,7 @@ public class SAMPDNewFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity.setTitle("Project Development");
+        MainActivity.setTitle("SFIO");
         MainActivity.enableBackViews(true);
     }
 

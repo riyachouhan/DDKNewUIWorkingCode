@@ -173,9 +173,21 @@
                     android:background="@color/lightcolor" />
 
                 <TextView
+                    android:id="@+id/seelall"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Request custom referral"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:gravity="right"
+                    style="@style/secondhintview"
+                    />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -187,11 +199,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:inputType="textPersonName"
                     android:textColor="@color/colorBlackText"
                     android:textColorHint="@color/colorBlackText"
-                    android:textSize="@dimen/_14ssp" />
+                    style="@style/textSizehint_hint"/>
 
                 <View
                     android:layout_width="match_parent"

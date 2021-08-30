@@ -89,6 +89,7 @@ public class CreditCardPaymentSFIOFragment extends Fragment {
     String action="",usereferrlacode;
     TextView  subscriptionAmount,FeesAmount,TotalAmount;
     LinearLayout mainbotton;
+    String ownershipjoin_status,ownershiptype,name,email,contact,address;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +105,32 @@ public class CreditCardPaymentSFIOFragment extends Fragment {
         if (getArguments().getString("fee") != null)
         {
             fee= getArguments().getString("fee");
+        }
+
+        if (getArguments().getString("ownershipjoin_status") != null)
+        {
+            ownershipjoin_status= getArguments().getString("ownershipjoin_status");
+                if (getArguments().getString("ownershiptype") != null)
+                {
+                    ownershiptype= getArguments().getString("ownershiptype");
+                }
+                if (getArguments().getString("name") != null)
+                {
+                    name= getArguments().getString("name");
+                }
+                if (getArguments().getString("email") != null)
+                {
+                    email= getArguments().getString("email");
+                }
+                if (getArguments().getString("contact") != null)
+                {
+                    contact= getArguments().getString("contact");
+                }
+                if (getArguments().getString("address") != null)
+                {
+                    address= getArguments().getString("address");
+                }
+
         }
 
         view.findViewById(R.id.btnGoBack).setOnClickListener(new View.OnClickListener() {
@@ -415,6 +442,12 @@ public class CreditCardPaymentSFIOFragment extends Fragment {
         hm.put("amount", input_amount);
         hm.put("fee", fee);
         hm.put("transaction_id", transaction_id);
+        hm.put("ownership",ownershipjoin_status);
+        hm.put("ownership_type",ownershiptype);
+        hm.put("name",name);
+        hm.put("email",email);
+        hm.put("contact",contact);
+        hm.put("address",address);
         Log.d("paramterHM",hm+"");
         AppConfig.getLoadInterface().addSFIOAmt(AppConfig.getStringPreferences(activity, Constant.JWTToken), hm).enqueue(new Callback<sfioAddModelsee>() {
             @Override

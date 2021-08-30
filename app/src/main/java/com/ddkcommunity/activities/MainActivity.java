@@ -696,7 +696,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
                             AppConfig.setUserData(activity, data);
                             String user_idvalue=data.getUser().getId().toString();
+                            String referalcode = data.getUser().unique_code;
+                            App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                             App.editor.putString(Constant.USER_ID,user_idvalue);
+                            App.editor.putString(Constant.USER_EMAIL,data.getUser().getEmail());
+                            App.editor.putString(Constant.USER_NAME,data.getUser().getName());
                             String userphotoidvalue=data.getUser().getUser_photo_id().toString();
                             String userPhotoisVerified=data.getUser().getIs_user_photo_id_verified().toString();
                             String emailvalue=data.getUser().getEmail().toString();
@@ -1383,6 +1387,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static void showAdsDialog(final Context useravituv, String img, final String link)
     {
+        SplashActivity.customadds=0;
         LayoutInflater layoutInflater = LayoutInflater.from(useravituv);
         final View dialogView;
         dialogView = layoutInflater.inflate(R.layout.adslayout, null);
@@ -1756,7 +1761,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void CheckUserActiveStaus(final ProgressDialog dialog)
+    public static void getProfileCallnew(final Activity activity, final ProgressDialog statusdialog) {
+
+        HashMap<String, String> hm = new HashMap<>();
+        hm.put("iv", App.pref.getString(Constant.IVPARAM, ""));
+        hm.put("key", App.pref.getString(Constant.KEYENCYPARAM, ""));
+        Call<ResponseBody> call = AppConfig.getLoadInterface().getProfileCall(App.pref.getString(Constant.JWTToken, ""),hm);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+            {
+                if (response.isSuccessful())
+                {
+                    try {
+                        String responseData = response.body().string();
+                        JSONObject object = new JSONObject(responseData);
+                        if (object.getInt(AppConfig.STATUS) == 1)
+                        {
+                            UserResponse data = new Gson().fromJson(responseData, UserResponse.class);
+                            AppConfig.setUserData(activity, data);
+                            MainActivity.userData=data;
+                            String referalcode = data.getUser().unique_code;
+                            App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
+                            String user_idvalue=data.getUser().getId().toString();
+                            String emailidv=data.getUser().getEmail().toString();
+                            App.editor.putString(Constant.USER_ID,user_idvalue);
+                            App.editor.putString(Constant.USER_EMAIL,data.getUser().getEmail());
+                            App.editor.putString(Constant.USER_NAME,data.getUser().getName());
+                            App.editor.apply();
+                            //...........
+                            CheckUserActiveStaus(activity,statusdialog);
+
+                        }else
+                        {
+                            AppConfig.hideLoading(statusdialog);
+                            AppConfig.showToast(object.getString("msg"));
+                        }
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                } else
+                {
+                    AppConfig.hideLoading(statusdialog);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t)
+            {
+                t.printStackTrace();
+                AppConfig.hideLoading(statusdialog);
+
+            }
+        });
+    }
+
+    public static void CheckUserActiveStaus(final Activity activity,final ProgressDialog dialog)
     {
         String emailid=userData.getUser().getEmail();
         HashMap<String, String> hm = new HashMap<>();
@@ -1771,7 +1832,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     {
                         if (response.body().getSubscription_status().equalsIgnoreCase("true"))
                         {
-                            mapLogin(dialog);
+                            mapLogin(activity,dialog);
 
                         }else
                         {
@@ -1797,7 +1858,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } else
                         {
                         AppConfig.hideLoading(dialog);
-                        ShowApiError(MainActivity.this,"server error check-mail-exist");
+                        ShowApiError(activity,"server error check-mail-exist");
                     }
 
                 } catch (Exception e)
@@ -1811,12 +1872,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onFailure(Call<checkRefferalModel> call, Throwable t)
             {
                 AppConfig.hideLoading(dialog);
-                Toast.makeText(MainActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void mapLogin(final ProgressDialog dialog)
+    public static void mapLogin(final Activity activity,final ProgressDialog dialog)
     {
         String emailid=userData.getUser().getEmail();
         String password=userData.getUser().getPassword();
@@ -1849,7 +1910,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     } else
                     {
-                        ShowApiError(MainActivity.this,"server error check-mail-exist");
+                        ShowApiError(activity,"server error check-mail-exist");
                     }
 
                 } catch (Exception e)
@@ -1863,7 +1924,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onFailure(Call<mapLoginModel> call, Throwable t)
             {
                 AppConfig.hideLoading(dialog);
-                Toast.makeText(MainActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -1873,7 +1934,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         titleText.setText(title);
     }
 
-    public void getSettingServerOnTab(Activity activity, final String functionname)
+    public static void getSettingServerOnTab(final Activity activity, final String functionname)
     {
         final ProgressDialog dialog = new ProgressDialog(MainActivity.activity);
         AppConfig.showLoading(dialog, "Please wait ....");
@@ -1891,11 +1952,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 {
                     if (response.body().getStatus() == 1)
                     {
-                        CheckUserActiveStaus(dialog);
+                        getProfileCallnew(activity,dialog);
                     } else
                     {
                         AppConfig.hideLoading(dialog);
-                        ShowFunctionalityAlert(MainActivity.this, response.body().getMsg());
+                        ShowFunctionalityAlert(activity, response.body().getMsg());
                     }
 
                 } catch (Exception e)

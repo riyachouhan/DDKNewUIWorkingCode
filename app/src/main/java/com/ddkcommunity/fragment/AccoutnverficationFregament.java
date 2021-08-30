@@ -38,6 +38,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ddkcommunity.App;
 import com.ddkcommunity.Constant;
@@ -147,6 +148,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     ImageView billingview;
     TextView submitview;
     TextView submitimgbilling;
+    SwipeRefreshLayout swiperefresh_items;
 
     public AccoutnverficationFregament() {
         // Required empty public constructor
@@ -181,6 +183,7 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     public void getAllViewIds()
     {
         basiclevelstaus=rootView.findViewById(R.id.basiclevelstaus);
+        swiperefresh_items=rootView.findViewById(R.id.swiperefresh_items);
         fullyveririefstatus=rootView.findViewById(R.id.fullyveririefstatus);
         basicinforlayout=rootView.findViewById(R.id.basicinforlayout);
         fullyforlayout=rootView.findViewById(R.id.fullyforlayout);
@@ -243,11 +246,22 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                 ShowbasicValiationView(getActivity(),"fully");
             }
         });
-
+        swiperefresh_items.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to make your refresh action
+                // CallYourRefreshingMethod();
+                getFundSources();
+                getGovermentList();
+                getVerificationStatus();
+                getKycRules();
+            }
+        });
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         MainActivity.setTitle("Account Verification");
         MainActivity.enableBackViews(true);
@@ -409,7 +423,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         }
     }
 
-    private void getFundSources() {
+    private void getFundSources()
+    {
         LoadInterface apiservice = AppConfig.getClient().create(LoadInterface.class);
         //we havd to  correct
         Call<verifcationFundSource> call = apiservice.getFundSource();
@@ -460,7 +475,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
         });
     }
 
-    private void getGovermentList() {
+    private void getGovermentList()
+    {
         LoadInterface apiservice = AppConfig.getClient().create(LoadInterface.class);
         //we havd to  correct
         Call<verifcationFundSource> call = apiservice.getVerificationsoucer();
@@ -512,7 +528,8 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId())
         {
             case R.id.contactus_view:
@@ -618,9 +635,11 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
 
     public void viewdelay(final int buttonclick)
     {
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 if(buttonclick==1)
                 {
                     sendEmailVerification();
@@ -1788,15 +1807,27 @@ public class AccoutnverficationFregament extends Fragment implements View.OnClic
                                             fullyvarifiedmonthlylimit.setText(monthlylimit2+ " USD \n Fiat and Crypto");
                                         }
                                     }
-                                   } catch (JSONException e) {
+
+                                    if(swiperefresh_items.isRefreshing()) {
+                                        swiperefresh_items.setRefreshing(false);
+                                    }
+
+                                } catch (JSONException e) {
                                     AppConfig.showToast("Server error");
                                     e.printStackTrace();
                                 }
                             } else {
                                 AppConfig.showToast(object.getString("msg"));
+                                if(swiperefresh_items.isRefreshing()) {
+                                    swiperefresh_items.setRefreshing(false);
+                                }
                             }
                         } else {
                             AppConfig.showToast("Server error");
+                            if(swiperefresh_items.isRefreshing()) {
+                                swiperefresh_items.setRefreshing(false);
+                            }
+
                         }
                     } catch (IOException e) {
                         AppConfig.showToast("Server error");

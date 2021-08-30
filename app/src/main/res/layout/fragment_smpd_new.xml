@@ -23,6 +23,7 @@
               android:orientation="vertical"
               android:layout_marginLeft="@dimen/_10sdp"
               android:layout_marginTop="@dimen/_5sdp"
+              android:id="@+id/subsc_layout"
               android:paddingBottom="@dimen/_5sdp"
               android:background="@drawable/text_card_bg"
               android:gravity="center_vertical"

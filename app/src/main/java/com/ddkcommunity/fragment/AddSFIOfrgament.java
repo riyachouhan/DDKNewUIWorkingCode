@@ -33,6 +33,7 @@ import com.ddkcommunity.activities.OTPActivity;
 import com.ddkcommunity.fragment.projects.CreditCardPaymentFragment;
 import com.ddkcommunity.fragment.projects.SelectPaymentPoolingFragment;
 import com.ddkcommunity.fragment.send.SuccessFragmentScan;
+import com.ddkcommunity.fragment.settingModule.editOwnershipFragment;
 import com.ddkcommunity.interfaces.GetCryptoSubscriptionResponse;
 import com.ddkcommunity.interfaces.GetUSDAndBTCCallback;
 import com.ddkcommunity.model.OtpResponse;
@@ -116,12 +117,12 @@ public class AddSFIOfrgament extends Fragment {
 
                         //..........
 
-                        Fragment fragment = new sfioSelectionFragment();
+                        Fragment fragment = new editOwnershipFragment();
                         Bundle arg = new Bundle();
                         arg.putString("input_amount", amountvlaue);
                         arg.putString("fee", fee);
                         fragment.setArguments(arg);
-                        MainActivity.addFragment(fragment,false);
+                        MainActivity.addFragment(fragment, true);
 
                     }
 

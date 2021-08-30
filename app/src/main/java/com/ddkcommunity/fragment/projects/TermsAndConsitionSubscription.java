@@ -87,7 +87,8 @@ public class TermsAndConsitionSubscription extends Fragment implements OnPageCha
             String urlapp= App.pref.getString(Constant.apiserver,"");
             if(activityaction.equalsIgnoreCase("subscriptionSFIO"))
             {
-                linkmain=SplashActivity.baseurl+"new_api/api/sifo-terms-and-conditions";
+               // linkmain=SplashActivity.baseurl+"new_api/api/sifo-terms-and-conditions";
+                linkmain=SplashActivity.baseurl+"new_api/api/map-terms-and-conditions";
 
             }else if(!activityaction.equalsIgnoreCase("subscription"))
             {

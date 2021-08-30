@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/mainlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -28,7 +29,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/_135sdp"
+                        android:layout_height="@dimen/_150sdp"
                         android:background="@drawable/mapbacksfio"
                         android:gravity="bottom"
                         android:id="@+id/homeheader"
@@ -57,7 +58,7 @@
 
                             <TextView
                                 android:id="@+id/name_TV"
-                                android:layout_marginTop="@dimen/_25sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/darkShbla"
@@ -115,6 +116,26 @@
 
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/ownershiplay"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:background="@drawable/rounded_sfioadd"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="@dimen/_100sdp"
+                                    android:layout_height="@dimen/_28sdp"
+                                    android:textColor="@color/white_color"
+                                    android:text="Ownership"
+                                    android:gravity="center"
+                                    style="@style/MyCustomTabText_small"
+                                    />
+
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -167,29 +188,29 @@
                                 android:textColor="@color/colorBlackText"
                                 android:text="Total Points"
                                 android:gravity="center_horizontal"
-                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
                                 style="@style/textSizehint_hint"
                                 />
 
                             <RelativeLayout
                                 android:layout_marginBottom="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:layout_width="@dimen/_80sdp"
-                                android:layout_height="@dimen/_80sdp"
+                                android:layout_width="@dimen/_70sdp"
+                                android:layout_height="@dimen/_70sdp"
                                 >
 
                                 <com.dinuscxj.progressbar.CircleProgressBar
                                     android:id="@+id/custom_progress_outer"
                                     android:layout_centerVertical="true"
-                                    android:layout_width="@dimen/_80sdp"
-                                    android:layout_height="@dimen/_80sdp"
+                                    android:layout_width="@dimen/_70sdp"
+                                    android:layout_height="@dimen/_70sdp"
                                     app:line_count="30"
                                     app:line_width="@dimen/_5sdp"
                                     app:progress_background_color="#B1AEAE"
                                     app:progress_end_color="@color/colorPrimary"
                                     app:progress_start_color="@color/colorPrimary"
                                     app:progress_stroke_cap="round"
-                                    app:progress_stroke_width="@dimen/_7sdp"
+                                    app:progress_stroke_width="@dimen/_5sdp"
                                     app:progress_style="solid_line"
                                     app:progress_text_size="0sp"
                                     app:progress_text_color="@color/colorPrimary" />
@@ -205,6 +226,30 @@
                                     />
 
                             </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="@dimen/_20sdp"
+                                android:paddingRight="@dimen/_20sdp"
+                                android:paddingTop="@dimen/_5sdp"
+                                android:paddingBottom="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:id="@+id/applyforarp"
+                                android:background="@drawable/rounded_sfioadd"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white_color"
+                                    android:text="Apply for ARP"
+                                    android:id="@+id/appliedarp"
+                                    style="@style/MyCustomTabText_small"
+                                    />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

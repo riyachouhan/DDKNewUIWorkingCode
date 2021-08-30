@@ -8,12 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -35,6 +39,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -583,7 +588,36 @@ public class dataPutMethods
                 dialog.dismiss();
             }
         });
+    }
 
+    public static void userResponseMsg(final Activity activity, String apierroname)
+    {
+        //api_error
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.alert_dialog_not_found, null);
+        TextView btnGoHome =customView.findViewById(R.id.btnGoHome);
+        TextView apierrorname=customView.findViewById(R.id.apidatanotfoundname);
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setView(customView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            apierrorname.setText(Html.fromHtml(apierroname, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            apierrorname.setText(Html.fromHtml(apierroname));
+        }
+        final AlertDialog dialog = alert.create();
+        DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        dialog.show();
+        dialog.getWindow().setLayout((6 * width)/7, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        btnGoHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dialog.dismiss();
+            }
+        });
     }
 
     public static void ShowServerPost(final Activity activity, String apierroname)
@@ -749,7 +783,7 @@ public class dataPutMethods
             public void onClick(View v)
             {
                 dialog.dismiss();
-                SAMPDFragment.switchActivty();
+                SAMPDFragment.switchActivty(activity);
             }
         });
 
@@ -2116,6 +2150,23 @@ public class dataPutMethods
 
         dialog.show();
     }
+
+    public static Rect locateView(View v) {
+        int[] loc_int = new int[2];
+        if (v == null) return null;
+        try {
+            v.getLocationOnScreen(loc_int);
+        } catch (NullPointerException npe) {
+            return null;
+        }
+        Rect location = new Rect();
+        location.left = loc_int[0];
+        location.top = loc_int[1];
+        location.right = location.left + v.getWidth();
+        location.bottom = location.top + v.getHeight();
+        return location;
+    }
+
 
     public static void showDialogForSearchCountry(final View mview, final Context mContext, final ArrayList<Country> countrygender, final String[] genderlist, final String [] stateId, final String [] countryCode, final TextView countryET, final TextView phoneCodeET)
     {

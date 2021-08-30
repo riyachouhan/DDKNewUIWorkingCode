@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:background="@drawable/tablayout_funnel_iteam"
+    android:id="@+id/viewclickdata"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_8sdp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.4"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:text="Jocelyn Trillado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        style="@style/subsmallSize"/>
+
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="jcoelyntrillado@yahoo.com"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlackText"
+                        style="@style/MyCustomTabText_small" />
+
+                </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tvremark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+               android:textColor="@color/colorPrimary"
+                style="@style/subsmallSize" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:paddingRight="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_8sdp"
+                style="@style/subsmallSize"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:gravity="end"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/colorPrimary"
+                        style="@style/powerbolde" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="pts"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textColor="@color/colorPrimary"
+                        style="@style/textSizehint" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+</LinearLayout>

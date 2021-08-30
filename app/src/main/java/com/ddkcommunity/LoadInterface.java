@@ -3,6 +3,8 @@ package com.ddkcommunity;
 
 import com.ddkcommunity.fragment.mapmodule.model.GroupBonusModel;
 import com.ddkcommunity.fragment.mapmodule.model.dailyBonusModel;
+import com.ddkcommunity.fragment.mapmodule.model.direcetBidModel;
+import com.ddkcommunity.fragment.mapmodule.model.directPurchesModel;
 import com.ddkcommunity.fragment.mapmodule.model.directReferralModel;
 import com.ddkcommunity.fragment.mapmodule.model.finnelModel;
 import com.ddkcommunity.fragment.mapmodule.model.groupModel;
@@ -11,10 +13,14 @@ import com.ddkcommunity.fragment.mapmodule.model.phaseOneBonusModel;
 import com.ddkcommunity.fragment.mapmodule.model.powerOfXModel;
 import com.ddkcommunity.fragment.mapmodule.model.powerXSubFragment;
 import com.ddkcommunity.fragment.mapmodule.model.summaryModelNavi;
-import com.ddkcommunity.fragment.paybillsModule.models.addformModelBiller;
 import com.ddkcommunity.fragment.paybillsModule.models.billerAllModel;
 import com.ddkcommunity.fragment.paybillsModule.models.catModel;
 import com.ddkcommunity.fragment.paybillsModule.models.categoryAllModel;
+import com.ddkcommunity.fragment.settingModule.ARPDirectModel;
+import com.ddkcommunity.fragment.settingModule.ARPHistoryModel;
+import com.ddkcommunity.fragment.settingModule.ARPWalletBalanceModel;
+import com.ddkcommunity.fragment.settingModule.ownershipListShowModel;
+import com.ddkcommunity.fragment.settingModule.ownershipStatusModel;
 import com.ddkcommunity.model.AllowGoogleModel;
 import com.ddkcommunity.model.Announcement;
 import com.ddkcommunity.model.BankList;
@@ -43,6 +49,7 @@ import com.ddkcommunity.model.UserBankListResponse;
 import com.ddkcommunity.model.activityModel;
 import com.ddkcommunity.model.addActivityModel;
 import com.ddkcommunity.model.adsDialogModel;
+import com.ddkcommunity.model.arpstausModel;
 import com.ddkcommunity.model.bankDepositeModel;
 import com.ddkcommunity.model.bankDetailsModel;
 import com.ddkcommunity.model.bankLstModel;
@@ -52,16 +59,18 @@ import com.ddkcommunity.model.checkRefferalModel;
 import com.ddkcommunity.model.conatcModel;
 import com.ddkcommunity.model.currencyModelClick;
 import com.ddkcommunity.model.depositeModelSaveData;
+import com.ddkcommunity.model.emergencyModel;
 import com.ddkcommunity.model.exchange.CurrencyList;
 import com.ddkcommunity.model.getGoogleAuthSecraModel;
 import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.googleAuthPasswordModel;
 import com.ddkcommunity.model.mapLoginModel;
 import com.ddkcommunity.model.mapSubscriptionModel;
-import com.ddkcommunity.model.mapregistrationCombineModel;
 import com.ddkcommunity.model.mazigneModel;
 import com.ddkcommunity.model.navigationModel;
+import com.ddkcommunity.model.owneeshipstausModel;
 import com.ddkcommunity.model.projects.PoolingTransactionHistory;
+import com.ddkcommunity.model.referalRequestsendModel;
 import com.ddkcommunity.model.referral.ReferralChain;
 import com.ddkcommunity.model.referralSublistModel;
 import com.ddkcommunity.model.samBalanceModel;
@@ -80,7 +89,6 @@ import com.ddkcommunity.model.userPackagesModel;
 import com.ddkcommunity.model.verifcationFundSource;
 import com.ddkcommunity.model.versionModel;
 import com.ddkcommunity.model.withdrawal.Withdrawal;
-import com.ddkcommunity.utilies.AppConfig;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -531,8 +539,14 @@ public interface LoadInterface {
     @POST("sampd-company/add-remove-fav-sampd-company")
     Call<smpdfavmodel> AddFavItem(@Query("token") String token, @Body HashMap<String, String> hm);
 
-    @POST("sampd-company/add-remove-fav-sampd-company")
-    Call<conatcModel> AddEmergencyContact(@Query("token") String token, @Body HashMap<String, String> hm);
+    @POST("userauth/update-emergency-contact")
+    Call<emergencyModel> AddEmergencyContact(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("userauth/update-email-address")
+    Call<emergencyModel> updateEmailAddress(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("modify-referral/update-referal-code")
+    Call<referalRequestsendModel> updateReferalCode(@Query("token") String token, @Body HashMap<String, String> hm);
 
     //@POST("ninethface/token")
     @POST("commondetails/token")
@@ -582,6 +596,9 @@ public interface LoadInterface {
 
     @POST("map/subscription")
     Call<mapSubscriptionModel> mapSubscription(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("purchase-direct-position")
+    Call<directPurchesModel> mapDirectSubscription(@Query("token") String token, @Body HashMap<String, String> hm);
 
     @POST("sfio/add")
     Call<sfioAddModelsee> addSFIOAmt(@Query("token") String token, @Body HashMap<String, String> hm);
@@ -674,6 +691,18 @@ public interface LoadInterface {
     // @POST("secondFace/email-otp")
     @POST("commonevent/email-otp")
     Call<OtpResponse> postOtp(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("modify-referral/validate-referal-code")
+    Call<referalRequestsendModel> validateReferral(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("modify-referral/count-referal-level")
+    Call<referalRequestsendModel> countReferalLevel(@Query("token") String token);
+
+    @POST("userauth/verify-mobile-otp")
+    Call<OtpResponse> OtpVerified(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("userauth/send-mobile-otp")
+    Call<OtpResponse> sendtOtp(@Query("token") String token, @Body HashMap<String, String> hm);
 
     @POST("userauth/forgot-password")
     Call<OtpResponse> forgotPAssword(@Body HashMap<String, String> hm);
@@ -1099,6 +1128,9 @@ public interface LoadInterface {
     @POST("login")
     Call<mapLoginModel> mapLoginApp(@Body HashMap<String, String> hm);
 
+    @POST("get-direct-purchase-list")
+    Call<direcetBidModel> getDirectPurches(@Query("token") String token);
+
     @GET("progress")
     Call<navigationModel> mapNavigationData(@Query("token") String token);
 
@@ -1147,6 +1179,15 @@ public interface LoadInterface {
     @POST("map-activity/list")
     Call<activityModel> mapActivityList(@Query("token") String token);
 
+    @POST("arp/create-arp-wallet")
+    Call<arpstausModel> getArpStatus(@Query("token") String token);
+
+    @POST("arp/arp-wallet-status")
+    Call<ARPWalletBalanceModel> getArpWalletBalance(@Query("token") String token);
+
+    @POST("userauth/change-mail-status")
+    Call<ARPWalletBalanceModel> getChangeEmail(@Query("token") String token);
+
     @POST("sfio/get-user-sum-subscription-points")
     Call<sfioHeaderModel> getSumSubsciption(@Query("token") String token);
 
@@ -1156,6 +1197,30 @@ public interface LoadInterface {
     @POST("sfio/get-bank-details")
     Call<bankDepositeModel> getBankDetails(@Query("token") String token, @Body HashMap<String, String> hm);
 
+    @POST("sfio/add-sfio-ownership")
+    Call<arpstausModel> addSfioOwnership(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/update-sfio-ownership")
+    Call<owneeshipstausModel> updateSFIOData(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("sfio/check-sfio-ownership")
+    Call<ownershipStatusModel> checkSfioOwnership(@Query("token") String token);
+
+    @POST("sfio/get-sfio-ownership")
+    Call<ownershipStatusModel> getSFIOOwnershipData(@Query("token") String token);
+
+    @POST("sfio/sfio-ownership")
+    Call<ownershipListShowModel> getOwnershipList(@Query("token") String token);
+
+    @POST("arp/arp-history")
+    Call<ARPHistoryModel> getARPHistory(@Query("token") String token);
+
+     @POST("arp/arp-redeem-list")
+    Call<ARPHistoryModel> getARPRedeem(@Query("token") String token);
+
+    @POST("arp/arp-direct-referral")
+    Call<ARPDirectModel> getARPDirect(@Query("token") String token);
+
     @POST("sfio/usd-to-others")
     Call<currencyModelClick> getUSDTToConvert(@Query("token") String token, @Body HashMap<String, String> hm);
 
@@ -1164,6 +1229,9 @@ public interface LoadInterface {
 
     @POST("map-activity/add")
     Call<addActivityModel> addActivity(@Query("token") String token, @Body HashMap<String, String> hm);
+
+    @POST("arp/transfer-arp-balance")
+    Call<addActivityModel> transaferarpBalance(@Query("token") String token, @Body HashMap<String, String> hm);
 
     @POST("userauth/profile-bank-details-save")
     Call<sfioModel> addBankPRofileDetail(@Query("token") String token, @Body HashMap<String, String> hm);

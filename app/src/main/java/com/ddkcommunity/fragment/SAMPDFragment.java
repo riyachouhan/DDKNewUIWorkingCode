@@ -1,6 +1,8 @@
 package com.ddkcommunity.fragment;
 
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,22 +20,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ddkcommunity.Constant;
 import com.ddkcommunity.R;
+import com.ddkcommunity.UserModel;
 import com.ddkcommunity.activities.MainActivity;
 import com.ddkcommunity.adapters.CredentialAdapter;
 import com.ddkcommunity.fragment.SAMPD.FreeFlightVoucherFragment;
+import com.ddkcommunity.fragment.projects.MapOtionAllFragment;
 import com.ddkcommunity.fragment.projects.TermsAndConsitionSubscription;
 import com.ddkcommunity.fragment.send.SendDDkFragment;
+import com.ddkcommunity.interfaces.GegtSettingStatusinterface;
 import com.ddkcommunity.model.SAMPDModel;
+import com.ddkcommunity.model.checkRefferalModel;
+import com.ddkcommunity.model.getSettingModel;
 import com.ddkcommunity.model.mazigneModel;
 import com.ddkcommunity.utilies.AppConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ddkcommunity.utilies.dataPutMethods.ShowApiError;
+import static com.ddkcommunity.utilies.dataPutMethods.ShowFunctionalityAlert;
 import static com.ddkcommunity.utilies.dataPutMethods.ShowSAMPDDialog;
 import static com.ddkcommunity.utilies.dataPutMethods.errordurigApiCalling;
 
@@ -148,12 +157,13 @@ public class SAMPDFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    public static void switchActivty()
+    public static void switchActivty(Activity activity)
     {
-        Fragment fragment = new TermsAndConsitionSubscription();
+        MainActivity.getSettingServerOnTab(activity,"send_map");
+       /* Fragment fragment = new TermsAndConsitionSubscription();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
-        MainActivity.addFragment(fragment, false);
+        MainActivity.addFragment(fragment, false);*/
     }
 
     @Override

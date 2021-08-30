@@ -281,7 +281,7 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         return;
                     }
                     MainActivity.mapcreditcard=1;
-                    Fragment fragment = new CreditCardPaymentFragment();
+                    /*Fragment fragment = new CreditCardPaymentFragment();
                     Bundle arg = new Bundle();
                     arg.putString("userenterreferrla",usereferrlacode);
                     arg.putString("action", action);
@@ -291,9 +291,9 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                     arg.putString("fee", fee);
                     arg.putString("total_usdt_subscription", total_usdt_subscription);
                     fragment.setArguments(arg);
-                    MainActivity.addFragment(fragment,false);
+                    MainActivity.addFragment(fragment,false);*/
                     //for dialog
-                    //AskPermissionDialog(getActivity(),"creidtyes",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
+                    AskPermissionDialog(getActivity(),"creidtyes",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                     slideToActView.resetSlider();
 
                 }else
@@ -338,8 +338,8 @@ public class MapPAyemnASkFragment extends Fragment implements View.OnClickListen
                         return;
                     }
                     MainActivity.mapcreditcard=1;
-                    sendOtp();
-                    //AskPermissionDialog(getActivity(),"no",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
+                    //sendOtp();
+                    AskPermissionDialog(getActivity(),"no",input_amount,conversion_rate,sam_koin_conversion,fee,total_usdt_subscription,transaction_id);
                     slideToActView.resetSlider();
                 }
             }

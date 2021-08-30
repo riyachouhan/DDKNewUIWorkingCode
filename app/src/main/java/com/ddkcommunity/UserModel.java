@@ -391,7 +391,11 @@ public class UserModel {
                                 AppConfig.setUserData(mContext, userResponse);
                                 try {
                                     String user_idvalue=userResponse.getUser().getId().toString();
+                                    String referalcode = userResponse.getUser().unique_code;
+                                    App.editor.putString(Constant.USER_REFERAL_CODE,referalcode);
                                     App.editor.putString(Constant.USER_ID,user_idvalue);
+                                    App.editor.putString(Constant.USER_EMAIL,userResponse.getUser().getEmail());
+                                    App.editor.putString(Constant.USER_NAME,userResponse.getUser().getName());
                                     App.editor.apply();
                                     //........
                                     putGoogleAuthStatus(userResponse.getUser().getGauth_status(),userResponse.getUser().getGoogle_authentication(),userResponse.getUser().getGoogle_auth_secret());
